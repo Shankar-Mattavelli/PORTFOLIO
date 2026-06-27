@@ -7,6 +7,7 @@ import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const N = PROJECTS.length
 
 const PROJECT_IMAGES: Record<string, string> = {
   strata:   'https://picsum.photos/seed/strata42/800/600',
@@ -17,7 +18,52 @@ const PROJECT_IMAGES: Record<string, string> = {
   prism:    'https://picsum.photos/seed/prism33/800/600',
 }
 
-// ── Card ──────────────────────────────────────────────────────────────────
+// ── Slot logic ─────────────────────────────────────────────────────────────
+// Ogni card ha uno "slot" = distanza dal centro (-1, 0, +1, ±2 fuori campo)
+// Il wrapping è automatico perché (i - active + N) % N normalizza circolarmente.
+
+function getSlot(index: number, active: number): number {
+  let s = (index - active + N) % N
+  // Normalizza a [-floor(N/2), ceil(N/2)] così slot -1 = sinistra, +1 = destra
+  if (s > Math.floor(N / 2)) s -= N
+  return s
+}
+
+interface SlotStyle {
+  x: number
+  scale: number
+  opacity: number
+  filter: string
+  zIndex: number
+}
+
+function slotStyle(slot: number, step: number): SlotStyle {
+  const abs = Math.abs(slot)
+  if (abs === 0) return {
+    x: 0,
+    scale: 1.0,
+    opacity: 1,
+    filter: 'blur(0px) brightness(1)',
+    zIndex: 3,
+  }
+  if (abs === 1) return {
+    x: (slot > 0 ? 1 : -1) * step,
+    scale: 0.74,
+    opacity: 0.60,
+    filter: 'blur(3.5px) brightness(0.72)',
+    zIndex: 2,
+  }
+  // Staging/uscita — fuori campo, invisibili
+  return {
+    x: (slot > 0 ? 1 : -1) * step * 1.88,
+    scale: 0.65,
+    opacity: 0,
+    filter: 'blur(6px) brightness(0.5)',
+    zIndex: 0,
+  }
+}
+
+// ── Card ───────────────────────────────────────────────────────────────────
 
 function ProjectCard({
   project,
@@ -34,20 +80,17 @@ function ProjectCard({
 
   return (
     <div
-      style={{ width: cardW, flexShrink: 0 }}
+      style={{ width: cardW }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Link to={`/projects/${project.slug}`} tabIndex={-1} style={{ display: 'block' }}>
-        <motion.div
-          animate={{
-            scale:   isActive ? 1 : 0.72,
-            opacity: isActive ? 1 : 0.50,
-          }}
-          transition={{ duration: 0.55, ease }}
-          className="cursor-pointer"
-          onClick={onClick}
-        >
+      <Link
+        to={`/projects/${project.slug}`}
+        tabIndex={isActive ? 0 : -1}
+        style={{ display: 'block' }}
+      >
+        <div className="cursor-pointer" onClick={onClick}>
+
           {/* Immagine */}
           <div
             className="relative overflow-hidden"
@@ -75,7 +118,7 @@ function ProjectCard({
               loading="lazy"
             />
 
-            {/* Overlay — solo sulla card attiva */}
+            {/* Overlay hover — solo sulla card attiva */}
             <AnimatePresence>
               {hovered && isActive && (
                 <motion.div
@@ -133,26 +176,27 @@ function ProjectCard({
             <span className="text-[11px] font-mono text-white/30 shrink-0">{project.year}</span>
           </div>
           <div
-            className="mt-1.5 h-px w-full transition-colors duration-400"
+            className="mt-1.5 h-px w-full"
             style={{
               backgroundColor: isActive
                 ? 'var(--color-accent)'
                 : 'rgba(255,255,255,0.07)',
+              transition: 'background-color 0.45s ease',
             }}
           />
           <div className="mt-1.5 text-[9px] font-mono tracking-[0.15em] text-white/30 uppercase">
             {project.category}
           </div>
-        </motion.div>
+        </div>
       </Link>
     </div>
   )
 }
 
-// ── Sezione ───────────────────────────────────────────────────────────────
+// ── Sezione ────────────────────────────────────────────────────────────────
 
 export default function ProjectsSection() {
-  const [active, setActive]       = useState(0)
+  const [active, setActive]         = useState(0)
   const [containerW, setContainerW] = useState(0)
   const wrapRef   = useRef<HTMLDivElement>(null)
   const pausedRef = useRef(false)
@@ -165,35 +209,32 @@ export default function ProjectsSection() {
     return () => ro.disconnect()
   }, [])
 
-  // CARD_W * 0.515 ≈ containerW/2 → card laterale centrata sul bordo → ~50% visibile
+  // Card larga ~44% del container → step ≈ containerW/2 → card laterale al 50% visibile
   const CARD_W = containerW > 0
     ? Math.max(Math.min(Math.round(containerW * 0.44), 680), 300)
     : 400
-  const GAP = containerW > 0
+  const GAP  = containerW > 0
     ? Math.max(Math.min(Math.round(containerW * 0.052), 88), 40)
     : 52
-
-  const trackX = containerW > 0
-    ? containerW / 2 - (active * (CARD_W + GAP) + CARD_W / 2)
-    : 0
+  const STEP = CARD_W + GAP
+  // Altezza fissa del contenitore basata sulla card attiva (scala 1.0)
+  const CARD_H = Math.round(CARD_W * 0.75) + 84
 
   // Auto-advance ogni 2s
   useEffect(() => {
     const t = setInterval(() => {
-      if (!pausedRef.current) {
-        setActive(i => (i + 1) % PROJECTS.length)
-      }
+      if (!pausedRef.current) setActive(i => (i + 1) % N)
     }, 2000)
     return () => clearInterval(t)
   }, [])
 
-  const prev = useCallback(() => setActive(i => (i - 1 + PROJECTS.length) % PROJECTS.length), [])
-  const next = useCallback(() => setActive(i => (i + 1) % PROJECTS.length), [])
+  const prev = useCallback(() => setActive(i => (i - 1 + N) % N), [])
+  const next = useCallback(() => setActive(i => (i + 1) % N), [])
 
   return (
     <section
       id="progetti"
-      className="w-full py-20 overflow-hidden"
+      className="w-full py-20"
       onMouseEnter={() => { pausedRef.current = true }}
       onMouseLeave={() => { pausedRef.current = false }}
     >
@@ -220,7 +261,6 @@ export default function ProjectsSection() {
             </motion.h2>
           </div>
 
-          {/* Frecce */}
           <div className="flex gap-2 shrink-0 pb-1">
             {(['‹', '›'] as const).map((arrow, idx) => (
               <button
@@ -237,24 +277,45 @@ export default function ProjectsSection() {
         </div>
       </div>
 
-      {/* Carousel track */}
-      <div ref={wrapRef} className="w-full">
-        <motion.div
-          className="flex items-center"
-          style={{ gap: GAP, paddingBottom: 4 }}
-          animate={{ x: trackX }}
-          transition={{ duration: 0.60, ease }}
-        >
-          {PROJECTS.map((project, i) => (
-            <ProjectCard
+      {/* ── Carousel ── */}
+      {/* overflow:hidden taglia le card fuori campo; le card sono assolute centrate */}
+      <div
+        ref={wrapRef}
+        className="relative w-full overflow-hidden"
+        style={{ height: CARD_H }}
+      >
+        {PROJECTS.map((project, i) => {
+          const slot = getSlot(i, active)
+          const s    = slotStyle(slot, STEP)
+
+          return (
+            <motion.div
               key={project.id}
-              project={project}
-              isActive={i === active}
-              onClick={() => setActive(i)}
-              cardW={CARD_W}
-            />
-          ))}
-        </motion.div>
+              className="absolute top-0"
+              style={{
+                left: '50%',
+                marginLeft: -CARD_W / 2,
+                width: CARD_W,
+                zIndex: s.zIndex,
+                transformOrigin: 'center center',
+              }}
+              animate={{
+                x:       s.x,
+                scale:   s.scale,
+                opacity: s.opacity,
+                filter:  s.filter,
+              }}
+              transition={{ duration: 0.55, ease }}
+            >
+              <ProjectCard
+                project={project}
+                isActive={i === active}
+                onClick={() => setActive(i)}
+                cardW={CARD_W}
+              />
+            </motion.div>
+          )
+        })}
       </div>
 
       {/* Dot indicators */}
