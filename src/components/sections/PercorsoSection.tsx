@@ -8,24 +8,26 @@ import TypedText from '@/components/ui/TypedText'
 
 // ── SVG geometry ──────────────────────────────────────────────────────────
 const VW       = 160   // larghezza viewBox
-const VH       = 900   // altezza viewBox
+const VH       = 1360  // altezza viewBox (6 nodi)
 const CX       = VW / 2  // 80
 const CARD_GAP = 32
 const HALF_OFFSET = VW / 2 + CARD_GAP  // 112 px
 
 // Nodi fissi: il path PASSA per questi punti (bezier endpoints)
 const NODES = [
-  { x: CX, y: 70  },
-  { x: CX, y: 350 },
-  { x: CX, y: 610 },
-  { x: CX, y: 820 },
+  { x: CX, y: 70   },
+  { x: CX, y: 300  },
+  { x: CX, y: 540  },
+  { x: CX, y: 780  },
+  { x: CX, y: 1020 },
+  { x: CX, y: 1240 },
 ]
 
 // Progresso scrollY a cui ogni nodo diventa visibile (0 → 1)
-const NODE_T = [0.02, 0.30, 0.58, 0.82]
+const NODE_T = [0.02, 0.20, 0.38, 0.57, 0.75, 0.91]
 
 // Top assoluta di ogni card nel container desktop
-const CARD_TOPS = [40, 320, 580, 790]
+const CARD_TOPS = [40, 268, 508, 748, 988, 1208]
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
@@ -100,10 +102,19 @@ function TimelineCard({
       }}
     >
       <div className="border border-white/[0.09] bg-white/[0.02] p-5 backdrop-blur-sm" style={{ borderRadius: 8 }}>
-        <p className="text-[9px] font-mono tracking-[0.24em] uppercase mb-2"
-           style={{ color: 'var(--color-accent)' }}>
-          {item.institution}
-        </p>
+        <div className="flex items-center justify-between gap-3 mb-2">
+          <p className="text-[9px] font-mono tracking-[0.24em] uppercase"
+             style={{ color: 'var(--color-accent)' }}>
+            {item.institution}
+          </p>
+          {item.logo && (
+            <img
+              src={item.logo}
+              alt={item.institution}
+              style={{ height: 24, width: 'auto', objectFit: 'contain', opacity: 0.85 }}
+            />
+          )}
+        </div>
         <h3 className="font-display font-black text-[19px] text-[#f0ece0] leading-tight">
           {item.role}
         </h3>
@@ -136,10 +147,19 @@ function MobileTimeline() {
           <div className="absolute -left-[21px] top-1 w-3 h-3 rounded-full border border-[var(--color-accent)] bg-[#080808] flex items-center justify-center">
             <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)]" />
           </div>
-          <p className="text-[9px] font-mono tracking-[0.22em] uppercase mb-1.5"
-             style={{ color: 'var(--color-accent)' }}>
-            {item.yearRange ?? item.year} · {item.institution}
-          </p>
+          <div className="flex items-center justify-between gap-2 mb-1.5">
+            <p className="text-[9px] font-mono tracking-[0.22em] uppercase"
+               style={{ color: 'var(--color-accent)' }}>
+              {item.yearRange ?? item.year} · {item.institution}
+            </p>
+            {item.logo && (
+              <img
+                src={item.logo}
+                alt={item.institution}
+                style={{ height: 20, width: 'auto', objectFit: 'contain', opacity: 0.80 }}
+              />
+            )}
+          </div>
           <h3 className="font-display font-black text-[18px] text-[#f0ece0] leading-tight">
             {item.role}
           </h3>
@@ -214,7 +234,7 @@ export default function PercorsoSection() {
       <div
         ref={timelineRef}
         className="relative hidden lg:block max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24"
-        style={{ height: VH + 180 }}
+        style={{ height: VH + 200 }}
       >
         {/* SVG centrato */}
         <div

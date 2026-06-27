@@ -23,6 +23,7 @@ export interface TimelineItem {
   yearRange?: string
   location?: string
   description: string
+  logo?: string
 }
 
 export interface Certification {
