@@ -6,8 +6,10 @@ export const PERSONAL_INFO = {
   nameSecondLine: 'Mattavelli',
   role: 'Frontend Developer',
   location: 'Milano, Italia',
-  bio: 'Basato a Milano, Italia — specializzato in sviluppo web interattivo, computer grafica 3D e visual computing.',
+  bio: 'Sono alla ricerca di opportunità nel settore IT con focus su 3D interattivo e visual computing.',
   email: 'shankar.mattavelli@gmail.com',
+  phone: '+39 334 925 0900',
+  linkedin: 'https://www.linkedin.com/in/shankar-mattavelli',
   objective: 'Ruolo IT / Developer con focus su Computer Graphics, WebGL e Interactive 3D',
 } as const
 
