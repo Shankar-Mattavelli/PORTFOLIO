@@ -1,9 +1,24 @@
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { PERSONAL_INFO, STATS, HERO_BADGES } from '@/constants/data'
 
 const easeExpOut: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
+const ROLES = [
+  'Frontend Developer',
+  'Creative Developer',
+  'CG Artist & 3D Specialist',
+  'WebGL Enthusiast',
+]
+
 export default function HeroSection() {
+  const [roleIndex, setRoleIndex] = useState(0)
+
+  useEffect(() => {
+    const t = setInterval(() => setRoleIndex(i => (i + 1) % ROLES.length), 2800)
+    return () => clearInterval(t)
+  }, [])
+
   return (
     <section
       className="relative w-full min-h-svh flex flex-col overflow-hidden"
@@ -34,8 +49,14 @@ export default function HeroSection() {
           transition={{ delay: 1.4 + i * 0.08, duration: 0.5 }}
         >
           <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ duration: badge.floatDuration, repeat: Infinity, ease: 'easeInOut', delay: badge.floatDelay }}
+            animate={{ y: -7 }}
+            transition={{
+              duration: badge.floatDuration * 0.52,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut',
+              delay: badge.floatDelay,
+            }}
             className="border border-white/[0.1] bg-white/[0.02] px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] text-white/30 whitespace-nowrap"
           >
             {badge.label}
@@ -61,7 +82,7 @@ export default function HeroSection() {
             </span>
           </motion.div>
 
-          {/* Nome display */}
+          {/* Nome display — senza cursore, è statico */}
           <motion.h1
             className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0] min-w-0 w-full"
             style={{ fontSize: 'clamp(52px, 9.5vw, 138px)' }}
@@ -71,20 +92,29 @@ export default function HeroSection() {
           >
             {PERSONAL_INFO.nameFirstLine}
             <br />
-            <span className="inline-flex items-end gap-1">
-              {PERSONAL_INFO.nameSecondLine}
-              <span className="cursor-blink" aria-hidden="true" />
-            </span>
+            {PERSONAL_INFO.nameSecondLine}
           </motion.h1>
 
-          {/* Ruolo */}
+          {/* Ruolo ciclico con cursore lampeggiante */}
           <motion.p
             className="mt-5 md:mt-7 text-sm sm:text-base md:text-lg italic text-white/45 font-light tracking-wide"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.7 }}
           >
-            — {PERSONAL_INFO.role}
+            {'— '}
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={roleIndex}
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+              >
+                {ROLES[roleIndex]}
+              </motion.span>
+            </AnimatePresence>
+            <span className="cursor-blink" aria-hidden="true" />
           </motion.p>
         </div>
 
