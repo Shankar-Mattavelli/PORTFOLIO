@@ -79,7 +79,7 @@ export default function HeroSection() {
             {PERSONAL_INFO.nameFirstLine}
             <br />
             {PERSONAL_INFO.nameSecondLine}
-            <span className="cursor-blink">|</span>
+            <span className="cursor-blink" aria-hidden="true" />
           </motion.h1>
 
           {/* Role */}
@@ -121,11 +121,11 @@ export default function HeroSection() {
           </div>
 
           {/* Stats */}
-          <div className="flex items-end">
+          <div className="flex items-stretch">
             {STATS.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className={`flex flex-col items-center px-8 md:px-10 ${i > 0 ? 'border-l border-white/[0.08]' : ''}`}
+                className={`flex flex-col items-center justify-center px-6 md:px-8 py-2 ${i > 0 ? 'border-l border-white/[0.15]' : ''}`}
                 {...animFadeUp(1.0 + i * 0.12)}
               >
                 <span
@@ -134,7 +134,7 @@ export default function HeroSection() {
                 >
                   {stat.value}
                 </span>
-                <span className="mt-2 text-[9px] md:text-[10px] font-medium tracking-[0.3em] text-white/30 uppercase">
+                <span className="mt-2 text-[9px] md:text-[10px] font-medium tracking-[0.25em] text-white/30 uppercase whitespace-nowrap">
                   {stat.label}
                 </span>
               </motion.div>
