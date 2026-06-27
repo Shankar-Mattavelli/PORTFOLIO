@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PERSONAL_INFO, STATS, HERO_BADGES } from '@/constants/data'
+import TypedText from '@/components/ui/TypedText'
 
 const easeExpOut: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
@@ -86,13 +87,23 @@ export default function HeroSection() {
           <motion.h1
             className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0] min-w-0 w-full"
             style={{ fontSize: 'clamp(52px, 9.5vw, 138px)' }}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: easeExpOut, delay: 0.45 }}
+            initial={{ y: 30 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.9, ease: easeExpOut, delay: 0.3 }}
           >
-            {PERSONAL_INFO.nameFirstLine}
+            <TypedText
+              text={PERSONAL_INFO.nameFirstLine}
+              delay={0.45}
+              speed={0.055}
+              inView={false}
+            />
             <br />
-            {PERSONAL_INFO.nameSecondLine}
+            <TypedText
+              text={PERSONAL_INFO.nameSecondLine}
+              delay={0.45 + PERSONAL_INFO.nameFirstLine.length * 0.055 + 0.06}
+              speed={0.05}
+              inView={false}
+            />
           </motion.h1>
 
           {/* Ruolo ciclico con cursore lampeggiante */}

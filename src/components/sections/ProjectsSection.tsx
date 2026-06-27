@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { PROJECTS } from '@/constants/data'
 import type { Project } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
+import TypedText from '@/components/ui/TypedText'
 
 const CARD_W = 300
 const GAP = 24
@@ -200,14 +201,16 @@ export default function ProjectsSection() {
             <motion.h2
               className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
               style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 1, y: 24 }}
+              whileInView={{ y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease, delay: 0.1 }}
             >
-              <span className="text-[#f0ece0] block">Progetti</span>
+              <span className="text-[#f0ece0] block">
+                <TypedText text="Progetti" delay={0.2} />
+              </span>
               <span style={{ color: 'var(--color-accent)' }} className="block">
-                selezionati.
+                <TypedText text="selezionati." delay={0.2 + 8 * 0.045 + 0.06} />
               </span>
             </motion.h2>
           </div>
