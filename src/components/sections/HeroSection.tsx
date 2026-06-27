@@ -5,6 +5,22 @@ import TypedText from '@/components/ui/TypedText'
 
 const easeExpOut: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
+// Percorsi di wander 2D per ogni badge (indice = posizione in HERO_BADGES).
+// Sinistra: x sempre ≥ 0 (non escono dal bordo); destra: x ≤ 0.
+// Ogni badge ha un percorso unico → nessuna collisione.
+const BADGE_WANDER: Array<{ x: number[]; y: number[] }> = [
+  { x: [0, 18, 26, 12, 22, 0],   y: [0, -10,  5, 14, -6, 0]  }, // Blender
+  { x: [0, 22, 10, 20,  6, 0],   y: [0,   9, -8,  3, 12, 0]  }, // Word
+  { x: [0, 14, 24,  8, 18, 0],   y: [0,  -9,  7,-13,  8, 0]  }, // Excel
+  { x: [0, 20,  6, 24, 12, 0],   y: [0,   8,-11,  5, -7, 0]  }, // GitHub
+  { x: [0,-14,  8,-22,  5, 0],   y: [0,  11, -6, 13, -9, 0]  }, // Premiere Pro
+  { x: [0,-18,-10,-24, -5, 0],   y: [0,   8,-11,  6, 13, 0]  }, // ChatGPT
+  { x: [0,-20, -8,-26,-12, 0],   y: [0, -11,  9, -7, 13, 0]  }, // Claude
+  { x: [0,-14,-24, -8,-20, 0],   y: [0,  10, -8, 13, -5, 0]  }, // Visual Studio Code
+  { x: [0, 16,-12, 20, -8, 0],   y: [0,  -9, 11,-14,  7, 0]  }, // PowerPoint
+  { x: [0,-12,  9,-20,  5, 0],   y: [0,  -9,-15, -5,-11, 0]  }, // Unreal Engine
+]
+
 const ROLES = [
   'Frontend Developer',
   'Creative Developer',
@@ -50,13 +66,13 @@ export default function HeroSection() {
           transition={{ delay: 1.4 + i * 0.08, duration: 0.5 }}
         >
           <motion.div
-            animate={{ y: -7 }}
+            animate={BADGE_WANDER[i]}
             transition={{
-              duration: badge.floatDuration * 0.52,
+              duration: badge.floatDuration * 3.1,
               repeat: Infinity,
-              repeatType: 'reverse',
+              repeatType: 'loop',
               ease: 'easeInOut',
-              delay: badge.floatDelay,
+              delay: badge.floatDelay * 1.6,
             }}
             className="border border-white/[0.1] bg-white/[0.02] px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] text-white/30 whitespace-nowrap"
           >

@@ -20,20 +20,20 @@ export const STATS: Stat[] = [
 ]
 
 export const HERO_BADGES: HeroBadge[] = [
-  // Margine sinistro
-  { label: 'Blender',            top: '8%',  left: '0%',   floatDelay: 0,   floatDuration: 4.2 },
-  { label: 'Word',               top: '26%', left: '0%',   floatDelay: 0.6, floatDuration: 3.8 },
-  { label: 'Excel',              top: '54%', left: '0%',   floatDelay: 1.2, floatDuration: 4.5 },
-  { label: 'GitHub',             top: '72%', left: '0%',   floatDelay: 0.3, floatDuration: 3.7 },
-  // Top center-right (zona libera sopra/intorno al nome)
+  // Margine sinistro (20px dal bordo)
+  { label: 'Blender',            top: '8%',  left: '20px', floatDelay: 0,   floatDuration: 4.2 },
+  { label: 'Word',               top: '26%', left: '20px', floatDelay: 0.6, floatDuration: 3.8 },
+  { label: 'Excel',              top: '54%', left: '20px', floatDelay: 1.2, floatDuration: 4.5 },
+  { label: 'GitHub',             top: '72%', left: '20px', floatDelay: 0.3, floatDuration: 3.7 },
+  // Top center-right
   { label: 'Premiere Pro',       top: '7%',  right: '26%', floatDelay: 1.1, floatDuration: 3.9 },
   { label: 'ChatGPT',            top: '7%',  right: '2%',  floatDelay: 0.9, floatDuration: 4.3 },
-  // Metà destra (zona glow — nessun testo)
+  // Metà destra (zona glow)
   { label: 'Claude',             top: '28%', right: '10%', floatDelay: 1.5, floatDuration: 3.6 },
   { label: 'Visual Studio Code', top: '52%', right: '2%',  floatDelay: 0.4, floatDuration: 4.1 },
-  // Gap tra bio e stats (fondo, colonna centrale)
+  // Gap bio/stats
   { label: 'PowerPoint',         top: '68%', left: '38%',  floatDelay: 0.7, floatDuration: 4.4 },
-  // Bottom area
+  // Bottom
   { label: 'Unreal Engine',      top: '82%', right: '18%', floatDelay: 1.8, floatDuration: 4.0 },
 ]
 
