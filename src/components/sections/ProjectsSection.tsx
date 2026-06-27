@@ -35,36 +35,36 @@ interface SlotStyle {
   opacity: number
   filter: string
   zIndex: number
+  rotateY: number
 }
 
 // cardW è la larghezza della card centrale (slot 0).
 // Le card laterali (slot ±1) si sovrappongono DIETRO la centrale con un offset
 // inferiore a cardW/2: la centrale copre buona parte di ciascuna, lasciando
 // visibile solo la striscia esterna. Questo crea la profondità dell'esempio.
+//
+// Le card in staging (slot ±2+) restano sulla stessa x delle laterali visibili
+// ma ruotate di ±90° attorno all'asse Y: sembrano "di taglio" (invisibili).
+// L'animazione entra/esce ruotando su se stessa — nessun percorso laterale veloce.
 function slotStyle(slot: number, cardW: number): SlotStyle {
   const abs = Math.abs(slot)
   const dir = slot > 0 ? 1 : -1
+  const sideX = dir * Math.round(cardW * 0.62)
+
   if (abs === 0) return {
-    x: 0,
-    scale: 1.0,
-    opacity: 1,
-    filter: 'blur(0px) brightness(1)',
-    zIndex: 3,
+    x: 0, scale: 1.0, opacity: 1,
+    filter: 'blur(0px) brightness(1)', zIndex: 3, rotateY: 0,
   }
   if (abs === 1) return {
-    x: dir * Math.round(cardW * 0.62),   // centro laterale a 62% della larghezza → overlap
-    scale: 0.70,
-    opacity: 0.55,
-    filter: 'blur(3px) brightness(0.68)',
-    zIndex: 1,                            // sotto la centrale (zIndex 3)
+    x: sideX, scale: 0.70, opacity: 0.55,
+    filter: 'blur(3px) brightness(0.68)', zIndex: 1, rotateY: 0,
   }
-  // Staging/uscita — fuori campo, invisibili
+  // Staging/uscita: stessa posizione x delle laterali, di taglio (90°), invisibili.
+  // L'effetto risultante è una rotazione su se stessa senza spostamento laterale.
   return {
-    x: dir * Math.round(cardW * 1.7),
-    scale: 0.60,
-    opacity: 0,
-    filter: 'blur(6px) brightness(0.5)',
-    zIndex: 0,
+    x: sideX, scale: 0.70, opacity: 0,
+    filter: 'blur(3px) brightness(0.68)', zIndex: 0,
+    rotateY: dir * 90,   // +90 = destra entra girando, -90 = sinistra esce girando
   }
 }
 
@@ -280,11 +280,11 @@ export default function ProjectsSection() {
       </div>
 
       {/* ── Carousel ── */}
-      {/* overflow:hidden taglia le card fuori campo; le card sono assolute centrate */}
+      {/* perspective abilita l'effetto 3D per la rotazione Y delle card in staging */}
       <div
         ref={wrapRef}
         className="relative w-full overflow-hidden"
-        style={{ height: CARD_H }}
+        style={{ height: CARD_H, perspective: '1100px' }}
       >
         {PROJECTS.map((project, i) => {
           const slot = getSlot(i, active)
@@ -306,6 +306,7 @@ export default function ProjectsSection() {
                 scale:   s.scale,
                 opacity: s.opacity,
                 filter:  s.filter,
+                rotateY: s.rotateY,
               }}
               transition={{ duration: 0.55, ease }}
             >
