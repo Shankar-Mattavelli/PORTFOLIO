@@ -20,14 +20,20 @@ export const STATS: Stat[] = [
 ]
 
 export const HERO_BADGES: HeroBadge[] = [
-  { label: 'React', top: '11%', left: '0%', floatDelay: 0, floatDuration: 4.2 },
-  { label: 'Three.js', top: '21%', left: '13%', floatDelay: 0.5, floatDuration: 3.8 },
-  { label: 'Node.js', top: '9%', right: '20%', floatDelay: 1.2, floatDuration: 4.5 },
-  { label: 'After Effects', top: '37%', right: '1%', floatDelay: 0.8, floatDuration: 3.6 },
-  { label: 'Cinema 4D', top: '66%', right: '18%', floatDelay: 1.5, floatDuration: 4.1 },
-  { label: 'Blender', top: '54%', left: '40%', floatDelay: 0.3, floatDuration: 3.9 },
-  { label: 'WebGL', top: '75%', left: '54%', floatDelay: 1.0, floatDuration: 4.3 },
-  { label: 'Python', top: '82%', right: '9%', floatDelay: 0.6, floatDuration: 4.0 },
+  // Margine sinistro (prima del padding contenuto — etichette corte)
+  { label: 'Blender',            top: '8%',  left: '0%',   floatDelay: 0,   floatDuration: 4.2 },
+  { label: 'Word',               top: '22%', left: '0%',   floatDelay: 0.6, floatDuration: 3.8 },
+  { label: 'Excel',              top: '44%', left: '0%',   floatDelay: 1.2, floatDuration: 4.5 },
+  { label: 'GitHub',             top: '64%', left: '0%',   floatDelay: 0.3, floatDuration: 3.7 },
+  // Margine destro
+  { label: 'ChatGPT',            top: '9%',  right: '1%',  floatDelay: 0.9, floatDuration: 4.3 },
+  { label: 'Claude',             top: '30%', right: '1%',  floatDelay: 1.5, floatDuration: 3.6 },
+  { label: 'Visual Studio Code', top: '55%', right: '1%',  floatDelay: 0.4, floatDuration: 4.1 },
+  // Angolo top-right (sopra il nome)
+  { label: 'Premiere Pro',       top: '5%',  right: '22%', floatDelay: 1.1, floatDuration: 3.9 },
+  // Area bottom (sotto bio + stats)
+  { label: 'PowerPoint',         top: '80%', left: '36%',  floatDelay: 0.7, floatDuration: 4.4 },
+  { label: 'Unreal Engine',      top: '86%', right: '18%', floatDelay: 1.8, floatDuration: 4.0 },
 ]
 
 export const PROJECTS: Project[] = [
