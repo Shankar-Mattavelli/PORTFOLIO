@@ -27,7 +27,7 @@ const NODES = [
 const NODE_T = [0.02, 0.20, 0.38, 0.57, 0.75, 0.91]
 
 // Top assoluta di ogni card nel container desktop
-const CARD_TOPS = [40, 268, 508, 748, 988, 1208]
+const CARD_TOPS = [40, 268, 508, 748, 988, 1260]
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
