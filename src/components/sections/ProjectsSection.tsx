@@ -6,7 +6,7 @@ import type { Project } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
-const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const ease: [number, number, number, number] = [0.45, 0, 0.55, 1]
 const N = PROJECTS.length
 
 const PROJECT_IMAGES: Record<string, string> = {
@@ -226,7 +226,7 @@ export default function ProjectsSection() {
   useEffect(() => {
     const t = setInterval(() => {
       if (!pausedRef.current) setActive(i => (i + 1) % N)
-    }, 2000)
+    }, 3000)
     return () => clearInterval(t)
   }, [])
 
@@ -308,7 +308,7 @@ export default function ProjectsSection() {
                 filter:  s.filter,
                 rotateY: s.rotateY,
               }}
-              transition={{ duration: 0.55, ease }}
+              transition={{ duration: 0.85, ease }}
             >
               <ProjectCard
                 project={project}
