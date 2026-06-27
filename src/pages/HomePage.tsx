@@ -1,5 +1,6 @@
 import HeroSection from '@/components/sections/HeroSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
+import PercorsoSection from '@/components/sections/PercorsoSection'
 import SectionLabel from '@/components/ui/SectionLabel'
 import { motion } from 'framer-motion'
 
@@ -39,22 +40,7 @@ export default function HomePage() {
       <SectionDivider />
 
       {/* ── PERCORSO ── */}
-      <section
-        id="percorso"
-        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
-      >
-        <SectionLabel label="Il mio percorso" />
-        <SectionHeading white="Da zero" accent="all'obiettivo." />
-        <motion.p
-          className="mt-16 text-sm text-white/25 font-mono tracking-[0.15em]"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
-          — Sezione in sviluppo (Milestone 2)
-        </motion.p>
-      </section>
+      <PercorsoSection />
 
       <SectionDivider />
 

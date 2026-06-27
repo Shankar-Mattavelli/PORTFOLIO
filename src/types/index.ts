@@ -20,6 +20,8 @@ export interface TimelineItem {
   institution: string
   role: string
   year: string
+  yearRange?: string
+  location?: string
   description: string
 }
 
