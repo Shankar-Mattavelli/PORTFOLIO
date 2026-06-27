@@ -6,102 +6,103 @@ import type { Project } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
-const CARD_W = 300
-const GAP = 24
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
-// Immagini placeholder — da sostituire con screenshot reali
 const PROJECT_IMAGES: Record<string, string> = {
-  strata:   'https://picsum.photos/seed/strata42/600/450',
-  nocturne: 'https://picsum.photos/seed/nocturne7/600/450',
-  forma:    'https://picsum.photos/seed/forma88/600/450',
-  reverie:  'https://picsum.photos/seed/reverie21/600/450',
-  atlas:    'https://picsum.photos/seed/atlas55/600/450',
-  prism:    'https://picsum.photos/seed/prism33/600/450',
+  strata:   'https://picsum.photos/seed/strata42/800/600',
+  nocturne: 'https://picsum.photos/seed/nocturne7/800/600',
+  forma:    'https://picsum.photos/seed/forma88/800/600',
+  reverie:  'https://picsum.photos/seed/reverie21/800/600',
+  atlas:    'https://picsum.photos/seed/atlas55/800/600',
+  prism:    'https://picsum.photos/seed/prism33/800/600',
 }
+
+// ── Card ──────────────────────────────────────────────────────────────────
 
 function ProjectCard({
   project,
   isActive,
   onClick,
+  cardW,
 }: {
   project: Project
   isActive: boolean
   onClick: () => void
+  cardW: number
 }) {
   const [hovered, setHovered] = useState(false)
 
   return (
     <div
-      style={{ width: CARD_W, flexShrink: 0 }}
+      style={{ width: cardW, flexShrink: 0 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
       <Link to={`/projects/${project.slug}`} tabIndex={-1} style={{ display: 'block' }}>
         <motion.div
           animate={{
-            scale: isActive ? 1 : 0.78,
-            opacity: isActive ? 1 : 0.42,
+            scale:   isActive ? 1 : 0.72,
+            opacity: isActive ? 1 : 0.50,
           }}
-          transition={{ duration: 0.45, ease }}
+          transition={{ duration: 0.55, ease }}
           className="cursor-pointer"
           onClick={onClick}
         >
-          {/* ── Immagine ── */}
+          {/* Immagine */}
           <div
             className="relative overflow-hidden"
-            style={{ aspectRatio: '4/3', borderRadius: 6 }}
+            style={{ aspectRatio: '4/3', borderRadius: 8 }}
           >
-            {/* Badge 3D */}
             {project.tags.includes('3D') && (
-              <div className="absolute top-3 left-3 z-20 bg-[var(--color-accent)] px-2 py-[3px] text-[9px] font-mono tracking-[0.15em] text-white">
+              <div
+                className="absolute top-3 left-3 z-20 bg-[var(--color-accent)] px-2 py-[3px] text-[9px] font-mono tracking-[0.15em] text-white"
+                style={{ borderRadius: 3 }}
+              >
                 3D
               </div>
             )}
 
-            {/* Immagine con transizione filter */}
             <motion.img
               src={PROJECT_IMAGES[project.id]}
               alt={project.title}
               className="absolute inset-0 w-full h-full object-cover"
               animate={{
-                filter: hovered
-                  ? 'grayscale(1) brightness(0.3) blur(3px)'
-                  : 'grayscale(1) brightness(0.72)',
+                filter: hovered && isActive
+                  ? 'grayscale(1) brightness(0.28) blur(3px)'
+                  : 'grayscale(1) brightness(0.68)',
               }}
-              transition={{ duration: 0.4 }}
+              transition={{ duration: 0.38 }}
               loading="lazy"
             />
 
-            {/* Overlay hover */}
+            {/* Overlay — solo sulla card attiva */}
             <AnimatePresence>
-              {hovered && (
+              {hovered && isActive && (
                 <motion.div
-                  className="absolute inset-0 z-10 flex flex-col justify-between p-4"
+                  className="absolute inset-0 z-10 flex flex-col justify-between p-5"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.25 }}
+                  transition={{ duration: 0.22 }}
                 >
-                  {/* APRI — in alto a destra */}
                   <motion.div
                     className="self-end flex items-center gap-1.5 bg-[var(--color-accent)] px-3 py-1.5 text-[10px] font-mono tracking-[0.12em] text-white"
+                    style={{ borderRadius: 3 }}
                     initial={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                     exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.3, delay: 0.05 }}
+                    transition={{ duration: 0.28, delay: 0.04 }}
                   >
                     APRI ↗
                   </motion.div>
 
-                  {/* Descrizione + tag — in basso */}
                   <motion.div
                     initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                     exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.35, delay: 0.07 }}
+                    transition={{ duration: 0.32, delay: 0.06 }}
                   >
-                    <p className="text-[12px] leading-relaxed text-white/85 mb-3">
+                    <p className="text-[13px] leading-relaxed text-white/85 mb-3">
                       {project.description}
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -109,6 +110,7 @@ function ProjectCard({
                         <span
                           key={tag}
                           className="border border-[var(--color-accent)]/60 text-[var(--color-accent)] text-[8px] tracking-[0.15em] px-2 py-[3px] font-mono uppercase"
+                          style={{ borderRadius: 2 }}
                         >
                           {tag}
                         </span>
@@ -120,7 +122,7 @@ function ProjectCard({
             </AnimatePresence>
           </div>
 
-          {/* ── Footer card ── */}
+          {/* Footer */}
           <div className="mt-3 flex items-baseline justify-between gap-2">
             <div className="flex items-baseline gap-2 min-w-0">
               <span className="text-[11px] font-mono text-white/30 shrink-0">{project.num}</span>
@@ -131,12 +133,11 @@ function ProjectCard({
             <span className="text-[11px] font-mono text-white/30 shrink-0">{project.year}</span>
           </div>
           <div
-            className="mt-1.5 h-px w-full"
+            className="mt-1.5 h-px w-full transition-colors duration-400"
             style={{
               backgroundColor: isActive
                 ? 'var(--color-accent)'
                 : 'rgba(255,255,255,0.07)',
-              transition: 'background-color 0.4s ease',
             }}
           />
           <div className="mt-1.5 text-[9px] font-mono tracking-[0.15em] text-white/30 uppercase">
@@ -148,42 +149,46 @@ function ProjectCard({
   )
 }
 
+// ── Sezione ───────────────────────────────────────────────────────────────
+
 export default function ProjectsSection() {
-  const [active, setActive] = useState(0)
+  const [active, setActive]       = useState(0)
   const [containerW, setContainerW] = useState(0)
-  const wrapRef = useRef<HTMLDivElement>(null)
+  const wrapRef   = useRef<HTMLDivElement>(null)
   const pausedRef = useRef(false)
 
   useEffect(() => {
     const el = wrapRef.current
     if (!el) return
-    const ro = new ResizeObserver(([entry]) =>
-      setContainerW(entry.contentRect.width)
-    )
+    const ro = new ResizeObserver(([entry]) => setContainerW(entry.contentRect.width))
     ro.observe(el)
     return () => ro.disconnect()
   }, [])
 
-  // Auto-avanzamento ogni 3.5s — si ferma quando l'utente è in hover
+  // CARD_W * 0.515 ≈ containerW/2 → card laterale centrata sul bordo → ~50% visibile
+  const CARD_W = containerW > 0
+    ? Math.max(Math.min(Math.round(containerW * 0.44), 680), 300)
+    : 400
+  const GAP = containerW > 0
+    ? Math.max(Math.min(Math.round(containerW * 0.052), 88), 40)
+    : 52
+
+  const trackX = containerW > 0
+    ? containerW / 2 - (active * (CARD_W + GAP) + CARD_W / 2)
+    : 0
+
+  // Auto-advance ogni 2s
   useEffect(() => {
     const t = setInterval(() => {
       if (!pausedRef.current) {
         setActive(i => (i + 1) % PROJECTS.length)
       }
-    }, 3500)
+    }, 2000)
     return () => clearInterval(t)
   }, [])
 
-  const prev = useCallback(() =>
-    setActive(i => (i - 1 + PROJECTS.length) % PROJECTS.length), [])
-  const next = useCallback(() =>
-    setActive(i => (i + 1) % PROJECTS.length), [])
-
-  // Centra la card attiva nel contenitore
-  const trackX =
-    containerW > 0
-      ? containerW / 2 - (active * (CARD_W + GAP) + CARD_W / 2)
-      : 0
+  const prev = useCallback(() => setActive(i => (i - 1 + PROJECTS.length) % PROJECTS.length), [])
+  const next = useCallback(() => setActive(i => (i + 1) % PROJECTS.length), [])
 
   return (
     <section
@@ -193,7 +198,7 @@ export default function ProjectsSection() {
       onMouseLeave={() => { pausedRef.current = false }}
     >
 
-      {/* ── Header ── */}
+      {/* Header */}
       <div className="max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 mb-10">
         <div className="flex items-end justify-between gap-6">
           <div>
@@ -215,7 +220,7 @@ export default function ProjectsSection() {
             </motion.h2>
           </div>
 
-          {/* Frecce navigazione */}
+          {/* Frecce */}
           <div className="flex gap-2 shrink-0 pb-1">
             {(['‹', '›'] as const).map((arrow, idx) => (
               <button
@@ -223,6 +228,7 @@ export default function ProjectsSection() {
                 onClick={idx === 0 ? prev : next}
                 aria-label={idx === 0 ? 'Precedente' : 'Successivo'}
                 className="w-11 h-11 border border-white/[0.12] flex items-center justify-center text-white/40 text-xl hover:text-white hover:border-white/30 transition-colors duration-200"
+                style={{ borderRadius: 4 }}
               >
                 {arrow}
               </button>
@@ -231,13 +237,13 @@ export default function ProjectsSection() {
         </div>
       </div>
 
-      {/* ── Carousel track ── */}
-      <div ref={wrapRef} className="w-full overflow-visible">
+      {/* Carousel track */}
+      <div ref={wrapRef} className="w-full">
         <motion.div
-          className="flex items-end"
+          className="flex items-center"
           style={{ gap: GAP, paddingBottom: 4 }}
           animate={{ x: trackX }}
-          transition={{ duration: 0.55, ease }}
+          transition={{ duration: 0.60, ease }}
         >
           {PROJECTS.map((project, i) => (
             <ProjectCard
@@ -245,12 +251,13 @@ export default function ProjectsSection() {
               project={project}
               isActive={i === active}
               onClick={() => setActive(i)}
+              cardW={CARD_W}
             />
           ))}
         </motion.div>
       </div>
 
-      {/* ── Dot indicators ── */}
+      {/* Dot indicators */}
       <div className="flex justify-center items-center gap-2 mt-8">
         {PROJECTS.map((_, i) => (
           <button
@@ -260,10 +267,9 @@ export default function ProjectsSection() {
             className="h-[2px] rounded-full transition-all duration-300"
             style={{
               width: i === active ? 32 : 14,
-              backgroundColor:
-                i === active
-                  ? 'var(--color-accent)'
-                  : 'rgba(255,255,255,0.18)',
+              backgroundColor: i === active
+                ? 'var(--color-accent)'
+                : 'rgba(255,255,255,0.18)',
             }}
           />
         ))}
