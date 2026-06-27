@@ -277,43 +277,54 @@ export default function ProjectsSection() {
       </div>
 
       {/* ── Carousel ── */}
+      {/*
+        isolation:isolate crea uno stacking context isolato → zIndex tra fratelli
+        funziona sempre anche quando i figli hanno CSS transform.
+        In aggiunta, le card vengono ordinate per abs(slot) decrescente in modo che
+        la card centrale (abs=0) sia sempre l'ultimo figlio nel DOM → dipinta sopra.
+      */}
       <div
         ref={wrapRef}
         className="relative w-full overflow-hidden"
-        style={{ height: CARD_H }}
+        style={{ height: CARD_H, isolation: 'isolate' }}
       >
-        {PROJECTS.map((project, i) => {
-          const slot = getSlot(i, active)
-          const s    = slotStyle(slot, CARD_W)
-
-          return (
-            <motion.div
-              key={project.id}
-              className="absolute top-0"
-              style={{
-                left: '50%',
-                marginLeft: -CARD_W / 2,
-                width: CARD_W,
-                zIndex: s.zIndex,
-                transformOrigin: 'center center',
-              }}
-              animate={{
-                x:       s.x,
-                scale:   s.scale,
-                opacity: s.opacity,
-                filter:  s.filter,
-              }}
-              transition={{ duration: 0.85, ease }}
-            >
-              <ProjectCard
-                project={project}
-                isActive={i === active}
-                onClick={() => setActive(i)}
-                cardW={CARD_W}
-              />
-            </motion.div>
+        {([...PROJECTS.keys()] as number[])
+          .sort((a, b) =>
+            Math.abs(getSlot(b, active)) - Math.abs(getSlot(a, active))
           )
-        })}
+          .map(i => {
+            const project = PROJECTS[i]
+            const slot    = getSlot(i, active)
+            const s       = slotStyle(slot, CARD_W)
+
+            return (
+              <motion.div
+                key={project.id}
+                className="absolute top-0"
+                style={{
+                  left: '50%',
+                  marginLeft: -CARD_W / 2,
+                  width: CARD_W,
+                  zIndex: s.zIndex,
+                  transformOrigin: 'center center',
+                }}
+                animate={{
+                  x:       s.x,
+                  scale:   s.scale,
+                  opacity: s.opacity,
+                  filter:  s.filter,
+                }}
+                transition={{ duration: 0.85, ease }}
+              >
+                <ProjectCard
+                  project={project}
+                  isActive={i === active}
+                  onClick={() => setActive(i)}
+                  cardW={CARD_W}
+                />
+              </motion.div>
+            )
+          })}
       </div>
 
       {/* Dot indicators */}
