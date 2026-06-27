@@ -317,12 +317,25 @@ export default function ProjectsSection() {
               }}
               transition={{ duration: 0.85, ease }}
             >
-              <ProjectCard
-                project={project}
-                isActive={i === active}
-                onClick={() => setActive(i)}
-                cardW={CARD_W}
-              />
+              <div style={{ position: 'relative' }}>
+                <ProjectCard
+                  project={project}
+                  isActive={i === active}
+                  onClick={() => setActive(i)}
+                  cardW={CARD_W}
+                />
+                {/* Gradient overlay — softens the clipPath inner edge on side cards */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: slot > 0
+                      ? 'linear-gradient(to right, #080808 0%, rgba(8,8,8,0.55) 30%, transparent 62%)'
+                      : 'linear-gradient(to left, #080808 0%, rgba(8,8,8,0.55) 30%, transparent 62%)',
+                    opacity: Math.abs(slot) === 1 ? 1 : 0,
+                    transition: 'opacity 0.85s cubic-bezier(0.45, 0, 0.55, 1)',
+                  }}
+                />
+              </div>
             </motion.div>
           )
         })}
