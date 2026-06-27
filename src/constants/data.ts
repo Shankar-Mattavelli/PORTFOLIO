@@ -20,20 +20,21 @@ export const STATS: Stat[] = [
 ]
 
 export const HERO_BADGES: HeroBadge[] = [
-  // Margine sinistro (prima del padding contenuto — etichette corte)
+  // Margine sinistro
   { label: 'Blender',            top: '8%',  left: '0%',   floatDelay: 0,   floatDuration: 4.2 },
-  { label: 'Word',               top: '22%', left: '0%',   floatDelay: 0.6, floatDuration: 3.8 },
-  { label: 'Excel',              top: '44%', left: '0%',   floatDelay: 1.2, floatDuration: 4.5 },
-  { label: 'GitHub',             top: '64%', left: '0%',   floatDelay: 0.3, floatDuration: 3.7 },
-  // Margine destro
-  { label: 'ChatGPT',            top: '9%',  right: '1%',  floatDelay: 0.9, floatDuration: 4.3 },
-  { label: 'Claude',             top: '30%', right: '1%',  floatDelay: 1.5, floatDuration: 3.6 },
-  { label: 'Visual Studio Code', top: '55%', right: '1%',  floatDelay: 0.4, floatDuration: 4.1 },
-  // Angolo top-right (sopra il nome)
-  { label: 'Premiere Pro',       top: '5%',  right: '22%', floatDelay: 1.1, floatDuration: 3.9 },
-  // Area bottom (sotto bio + stats)
-  { label: 'PowerPoint',         top: '80%', left: '36%',  floatDelay: 0.7, floatDuration: 4.4 },
-  { label: 'Unreal Engine',      top: '86%', right: '18%', floatDelay: 1.8, floatDuration: 4.0 },
+  { label: 'Word',               top: '26%', left: '0%',   floatDelay: 0.6, floatDuration: 3.8 },
+  { label: 'Excel',              top: '54%', left: '0%',   floatDelay: 1.2, floatDuration: 4.5 },
+  { label: 'GitHub',             top: '72%', left: '0%',   floatDelay: 0.3, floatDuration: 3.7 },
+  // Top center-right (zona libera sopra/intorno al nome)
+  { label: 'Premiere Pro',       top: '7%',  right: '26%', floatDelay: 1.1, floatDuration: 3.9 },
+  { label: 'ChatGPT',            top: '7%',  right: '2%',  floatDelay: 0.9, floatDuration: 4.3 },
+  // Metà destra (zona glow — nessun testo)
+  { label: 'Claude',             top: '28%', right: '10%', floatDelay: 1.5, floatDuration: 3.6 },
+  { label: 'Visual Studio Code', top: '52%', right: '2%',  floatDelay: 0.4, floatDuration: 4.1 },
+  // Gap tra bio e stats (fondo, colonna centrale)
+  { label: 'PowerPoint',         top: '68%', left: '38%',  floatDelay: 0.7, floatDuration: 4.4 },
+  // Bottom area
+  { label: 'Unreal Engine',      top: '82%', right: '18%', floatDelay: 1.8, floatDuration: 4.0 },
 ]
 
 export const PROJECTS: Project[] = [
