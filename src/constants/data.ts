@@ -127,7 +127,7 @@ export const TIMELINE: TimelineItem[] = [
     yearRange: 'ott 2020 – giu 2021',
     location: 'Basiano (MI)',
     description: 'Contratto a chiamata. Gestione magazzino, ricezione e smistamento merci, picking e riassortimento scaffali in ambiente logistico ad alto volume.',
-    logo: '/logos/decathlon.png',
+    logo: '/logos/decathlon.jpg',
   },
   {
     id: 'lambdacorp',
@@ -138,7 +138,7 @@ export const TIMELINE: TimelineItem[] = [
     yearRange: 'ott 2023 – set 2024',
     location: 'Da remoto',
     description: 'Sviluppo gameplay in Unreal Engine 5 in un team indie. Progettazione di sistemi in Blueprint, cinematics e ottimizzazione di ambienti 3D real-time su pipeline Git collaborativa.',
-    logo: '/logos/lambdacorp.png',
+    logo: '/logos/lambdacorp.jpg',
   },
   {
     id: 'babalu',
@@ -149,7 +149,7 @@ export const TIMELINE: TimelineItem[] = [
     yearRange: 'dic 2023 – apr 2025',
     location: 'Milano · Torino · Roma',
     description: 'Freelance. Montaggio e post-produzione video, motion graphics e gestione tecnica di stand fieristici su scala nazionale. DaVinci Resolve, After Effects e attrezzatura di ripresa professionale.',
-    logo: '/logos/babalu.png',
+    logo: '/logos/babalu.jpg',
   },
   {
     id: 'leroy-merlin',
@@ -160,7 +160,7 @@ export const TIMELINE: TimelineItem[] = [
     yearRange: 'gen 2024 – lug 2024',
     location: 'Busnago (MB)',
     description: 'Part-time. Gestione del flusso merci interno, ricezione forniture e supporto alla supply chain del punto vendita in contesto retail di grande distribuzione.',
-    logo: '/logos/leroy-merlin.png',
+    logo: '/logos/leroy-merlin.jpg',
   },
   {
     id: 'digitech-tech',
@@ -171,7 +171,7 @@ export const TIMELINE: TimelineItem[] = [
     yearRange: 'set 2024 – Presente',
     location: 'Vimercate (MB)',
     description: 'Gestione dell\'infrastruttura tecnica e produzione di contenuti multimediali aziendali: video, grafica, presentazioni e materiali digitali per corsi professionali e comunicazione.',
-    logo: '/logos/digitech.png',
+    logo: '/logos/digitech.jpg',
   },
   {
     id: 'digitech-form',
@@ -182,7 +182,7 @@ export const TIMELINE: TimelineItem[] = [
     yearRange: 'nov 2024 – Presente',
     location: 'Vimercate (MB)',
     description: 'Docente di corsi obbligatori sulla sicurezza nei luoghi di lavoro (D.Lgs. 81/08). Gestione in aula, predisposizione materiali didattici e documentazione dei partecipanti.',
-    logo: '/logos/digitech.png',
+    logo: '/logos/digitech.jpg',
   },
 ]
 
