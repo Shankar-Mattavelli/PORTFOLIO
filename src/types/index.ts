@@ -4,13 +4,14 @@ export interface Project {
   title: string
   category: string
   year: string
-  tags: string[]
+  tags: string[]        // badge compatto (es. '3D')
+  techTags: string[]    // tag tecnici visualizzati nell'hover card
   slug: string
   image?: string
-  description?: string
-  role?: string
-  duration?: string
-  type?: string
+  description: string
+  role: string
+  duration: string
+  type: string
 }
 
 export interface TimelineItem {
