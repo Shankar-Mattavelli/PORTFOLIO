@@ -6,29 +6,26 @@ import type { TimelineItem } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
-// ── SVG geometry (base — jitter applicato via useMemo) ───────────────────
-const VW       = 160   // larghezza SVG in px
-const VH       = 840   // altezza SVG in px
+// ── SVG geometry ──────────────────────────────────────────────────────────
+const VW       = 160   // larghezza viewBox
+const VH       = 900   // altezza viewBox
 const CX       = VW / 2  // 80
-const CO_BASE  = 62    // offset orizzontale dei control-point (base)
-const CARD_GAP = 32    // gap tra bordo SVG e bordo card
+const CARD_GAP = 32
+const HALF_OFFSET = VW / 2 + CARD_GAP  // 112 px
 
-// Posizioni fisse dei nodi (Y in pixel SVG)
+// Nodi fissi: il path PASSA per questi punti (bezier endpoints)
 const NODES = [
-  { x: CX, y: 72  },
-  { x: CX, y: 284 },
-  { x: CX, y: 506 },
-  { x: CX, y: 706 },
+  { x: CX, y: 70  },
+  { x: CX, y: 350 },
+  { x: CX, y: 610 },
+  { x: CX, y: 820 },
 ]
 
-// Dove ogni nodo si trova lungo il path 0 → 1
-const NODE_T = [0.02, 0.34, 0.63, 0.87]
+// Progresso scrollY a cui ogni nodo diventa visibile (0 → 1)
+const NODE_T = [0.02, 0.30, 0.58, 0.82]
 
-// Top assoluta di ogni card nel container
-const CARD_TOPS = [42, 254, 474, 674]
-
-// Offset dal centro verso la card (VW/2 + gap)
-const HALF_OFFSET = VW / 2 + CARD_GAP  // 80 + 32 = 112 px
+// Top assoluta di ogni card nel container desktop
+const CARD_TOPS = [40, 320, 580, 790]
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
@@ -96,7 +93,6 @@ function TimelineCard({
         x,
         position: 'absolute',
         top,
-        // Larghezza esatta che riempie la metà disponibile senza sforare
         width: `calc(50% - ${HALF_OFFSET}px)`,
         ...(isLeft
           ? { right: `calc(50% + ${HALF_OFFSET}px)` }
@@ -163,21 +159,27 @@ function MobileTimeline() {
 
 export default function PercorsoSection() {
   const timelineRef = useRef<HTMLDivElement>(null)
+
+  // ['start X%', 'end X%'] con X uguale → range = altezza container (scroll 1:1)
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ['start 85%', 'end 20%'],
+    offset: ['start 70%', 'end 70%'],
   })
 
-  // Jitter: il path cambia leggermente ad ogni caricamento pagina
+  // Path completamente organico: control-point indipendenti per ogni segmento
   const pathD = useMemo(() => {
     const r = (n: number) => (Math.random() - 0.5) * n
-    const cos = [CO_BASE + r(20), CO_BASE + r(20), CO_BASE + r(20)]
-    return [
-      `M ${CX} ${NODES[0].y}`,
-      `C ${CX + cos[0]} ${NODES[0].y} ${CX - cos[0]} ${NODES[1].y} ${CX} ${NODES[1].y}`,
-      `C ${CX + cos[1]} ${NODES[1].y} ${CX - cos[1]} ${NODES[2].y} ${CX} ${NODES[2].y}`,
-      `C ${CX + cos[2]} ${NODES[2].y} ${CX - cos[2]} ${NODES[3].y} ${CX} ${NODES[3].y}`,
-    ].join(' ')
+    const segs: string[] = []
+    for (let i = 0; i < NODES.length - 1; i++) {
+      const n0 = NODES[i], n1 = NODES[i + 1]
+      const dy = n1.y - n0.y
+      const cp1x = +(CX + r(110)).toFixed(1)
+      const cp1y = +(n0.y + dy * (0.18 + Math.random() * 0.2) + r(28)).toFixed(1)
+      const cp2x = +(CX + r(110)).toFixed(1)
+      const cp2y = +(n0.y + dy * (0.62 + Math.random() * 0.2) + r(28)).toFixed(1)
+      segs.push(`C ${cp1x} ${cp1y} ${cp2x} ${cp2y} ${n1.x} ${n1.y}`)
+    }
+    return `M ${NODES[0].x} ${NODES[0].y} ${segs.join(' ')}`
   }, [])
 
   return (
@@ -208,11 +210,11 @@ export default function PercorsoSection() {
         <MobileTimeline />
       </div>
 
-      {/* Desktop S-curve — visibile da lg (1024px) in su */}
+      {/* Desktop — visibile da lg (1024px) in su */}
       <div
         ref={timelineRef}
         className="relative hidden lg:block max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24"
-        style={{ height: VH + 120 }}
+        style={{ height: VH + 180 }}
       >
         {/* SVG centrato */}
         <div
@@ -257,7 +259,7 @@ export default function PercorsoSection() {
           </svg>
         </div>
 
-        {/* Card alternanti sinistra / destra */}
+        {/* Card alternanti */}
         {TIMELINE.map((item, i) => (
           <TimelineCard
             key={item.id}
@@ -268,7 +270,7 @@ export default function PercorsoSection() {
           />
         ))}
 
-        {/* Label anni (lato opposto rispetto alla card) */}
+        {/* Label anni */}
         {TIMELINE.map((item, i) => (
           <YearLabel
             key={`yr-${item.id}`}

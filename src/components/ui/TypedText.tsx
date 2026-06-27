@@ -26,7 +26,7 @@ export default function TypedText({
   }
 
   const triggerProps = inView
-    ? { initial: 'hidden' as const, whileInView: 'visible' as const, viewport: { once: true } }
+    ? { initial: 'hidden' as const, whileInView: 'visible' as const, viewport: { once: true, amount: 0.1 } }
     : { initial: 'hidden' as const, animate: 'visible' as const }
 
   return (
