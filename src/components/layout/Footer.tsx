@@ -8,7 +8,7 @@ export default function Footer() {
           SM.DEV
         </span>
         <span className="font-mono text-[11px] tracking-[0.15em] text-white/15">
-          © {year} Shankar Mattavelli
+          © {year} Shankar Mattavelli — All rights reserved
         </span>
       </div>
     </footer>
