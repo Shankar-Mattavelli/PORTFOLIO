@@ -3,138 +3,135 @@ import { PERSONAL_INFO, STATS, HERO_BADGES } from '@/constants/data'
 
 const easeExpOut: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
-function animFadeUp(delay: number) {
-  return {
-    initial: { opacity: 0, y: 40 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.9, ease: easeExpOut, delay },
-  } as const
-}
-
-function animFadeIn(delay: number) {
-  return {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    transition: { duration: 0.7, ease: 'easeOut' as const, delay },
-  } as const
-}
-
 export default function HeroSection() {
   return (
     <section
-      className="relative min-h-svh flex flex-col pt-[68px] overflow-hidden"
+      className="relative w-full min-h-svh flex flex-col overflow-hidden"
       aria-label="Hero"
     >
+      {/* Spacer per header fisso */}
+      <div className="h-[68px] shrink-0" />
+
       {/* Purple glow — right side */}
       <div
-        className="pointer-events-none absolute right-[-200px] top-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 w-[50vw] h-[70vh] max-w-[700px]"
         style={{
-          background: 'radial-gradient(circle, rgba(124,91,223,0.12) 0%, transparent 70%)',
-          filter: 'blur(60px)',
+          background: 'radial-gradient(ellipse at right center, rgba(124,91,223,0.10) 0%, transparent 65%)',
+          filter: 'blur(40px)',
         }}
       />
 
-      {/* Floating tech badges */}
+      {/* Floating tech badges — solo desktop */}
       {HERO_BADGES.map((badge, i) => (
         <motion.div
           key={badge.label}
-          className="absolute pointer-events-none hidden md:block"
-          style={{ top: badge.top, left: badge.left, right: badge.right, bottom: badge.bottom }}
-          {...animFadeIn(1.2 + i * 0.08)}
+          aria-hidden="true"
+          className="absolute pointer-events-none hidden lg:block"
+          style={{ top: badge.top, left: badge.left, right: badge.right }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.4 + i * 0.08, duration: 0.5 }}
         >
           <motion.div
-            animate={{ y: [0, -7, 0] }}
-            transition={{
-              duration: badge.floatDuration,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: badge.floatDelay,
-            }}
-            className="border border-white/[0.1] bg-white/[0.02] backdrop-blur-sm px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] text-white/30 whitespace-nowrap"
+            animate={{ y: [0, -6, 0] }}
+            transition={{ duration: badge.floatDuration, repeat: Infinity, ease: 'easeInOut', delay: badge.floatDelay }}
+            className="border border-white/[0.1] bg-white/[0.02] px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] text-white/30 whitespace-nowrap"
           >
             {badge.label}
           </motion.div>
         </motion.div>
       ))}
 
-      {/* Main content */}
-      <div className="flex flex-col flex-1 max-w-[1440px] w-full mx-auto px-6 md:px-10 lg:px-14">
+      {/* Contenuto principale */}
+      <div className="relative flex flex-col flex-1 w-full max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 min-w-0">
 
-        {/* Top — label + name + subtitle */}
-        <div className="pt-10 md:pt-16">
+        {/* Blocco superiore — label + nome + ruolo */}
+        <div className="flex flex-col pt-8 sm:pt-12 md:pt-14">
 
-          {/* Section label */}
-          <motion.div className="section-label mb-6 md:mb-8" {...animFadeIn(0.3)}>
+          {/* Label sezione */}
+          <motion.div
+            className="section-label mb-5 md:mb-7"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <span className="text-[10px] font-medium tracking-[0.35em] text-white/35 uppercase">
               Portfolio 2024
             </span>
           </motion.div>
 
-          {/* Display name */}
+          {/* Nome display */}
           <motion.h1
-            className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0]"
-            style={{ fontSize: 'clamp(68px, 11.5vw, 162px)' }}
-            {...animFadeUp(0.45)}
+            className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0] min-w-0 w-full"
+            style={{ fontSize: 'clamp(46px, 8.5vw, 130px)' }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: easeExpOut, delay: 0.45 }}
           >
             {PERSONAL_INFO.nameFirstLine}
             <br />
-            {PERSONAL_INFO.nameSecondLine}
-            <span className="cursor-blink" aria-hidden="true" />
+            <span className="inline-flex items-end gap-1">
+              {PERSONAL_INFO.nameSecondLine}
+              <span className="cursor-blink" aria-hidden="true" />
+            </span>
           </motion.h1>
 
-          {/* Role */}
+          {/* Ruolo */}
           <motion.p
-            className="mt-6 md:mt-8 text-base md:text-lg italic text-white/45 font-light tracking-wide"
-            {...animFadeIn(0.7)}
+            className="mt-5 md:mt-7 text-sm sm:text-base md:text-lg italic text-white/45 font-light tracking-wide"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.7 }}
           >
             — {PERSONAL_INFO.role}
           </motion.p>
         </div>
 
-        {/* Separator */}
+        {/* Separatore orizzontale */}
         <motion.div
-          className="my-8 md:my-12 h-px bg-white/[0.08] w-full"
+          className="my-7 md:my-10 h-px bg-white/[0.08] w-full shrink-0"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           style={{ originX: 0 }}
           transition={{ duration: 1, ease: easeExpOut, delay: 0.9 }}
         />
 
-        {/* Bottom — bio + stats */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 md:gap-16 pb-12 md:pb-16">
+        {/* Blocco inferiore — bio + stats */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-8 pb-10 md:pb-14 min-w-0">
 
           {/* Bio + scroll hint */}
-          <div className="flex flex-col gap-6 max-w-sm">
-            <motion.p
-              className="text-sm md:text-[15px] leading-relaxed text-white/40 font-light"
-              {...animFadeIn(1.0)}
-            >
+          <motion.div
+            className="flex flex-col gap-4 min-w-0 max-w-xs"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 1.0 }}
+          >
+            <p className="text-sm md:text-[15px] leading-relaxed text-white/40 font-light">
               {PERSONAL_INFO.bio}
-            </motion.p>
-
-            <motion.div
-              className="inline-flex border border-white/[0.08] bg-white/[0.02] px-3 py-2 font-mono text-[11px] tracking-[0.1em] text-white/25 w-fit"
-              {...animFadeIn(1.2)}
-            >
+            </p>
+            <div className="inline-flex border border-white/[0.08] bg-white/[0.02] px-3 py-2 font-mono text-[11px] tracking-[0.1em] text-white/25 w-fit">
               scroll per esplorare
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
 
           {/* Stats */}
-          <div className="flex items-stretch">
+          <div className="flex items-stretch shrink-0">
             {STATS.map((stat, i) => (
               <motion.div
                 key={stat.label}
-                className={`flex flex-col items-center justify-center px-6 md:px-8 py-2 ${i > 0 ? 'border-l border-white/[0.15]' : ''}`}
-                {...animFadeUp(1.0 + i * 0.12)}
+                className={`flex flex-col items-center justify-center px-5 sm:px-7 md:px-8 py-2 ${i > 0 ? 'border-l border-white/[0.15]' : ''}`}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: easeExpOut, delay: 1.0 + i * 0.12 }}
               >
                 <span
-                  className="font-display font-black leading-none tracking-tight"
-                  style={{ fontSize: 'clamp(28px, 3.5vw, 44px)', color: 'var(--color-accent)' }}
+                  className="font-display font-black leading-none"
+                  style={{ fontSize: 'clamp(26px, 3vw, 42px)', color: 'var(--color-accent)' }}
                 >
                   {stat.value}
                 </span>
-                <span className="mt-2 text-[9px] md:text-[10px] font-medium tracking-[0.25em] text-white/30 uppercase whitespace-nowrap">
+                <span className="mt-1.5 text-[9px] font-medium tracking-[0.22em] text-white/30 uppercase whitespace-nowrap">
                   {stat.label}
                 </span>
               </motion.div>

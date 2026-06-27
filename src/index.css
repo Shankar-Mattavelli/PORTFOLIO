@@ -46,8 +46,7 @@ html {
   scroll-behavior: smooth;
 }
 
-html,
-body {
+html {
   overflow-x: clip;
 }
 
@@ -58,6 +57,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.6;
+  overflow-x: clip;
+  width: 100%;
 }
 
 #root {
