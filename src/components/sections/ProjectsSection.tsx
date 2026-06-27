@@ -37,8 +37,13 @@ interface SlotStyle {
   zIndex: number
 }
 
-function slotStyle(slot: number, step: number): SlotStyle {
+// cardW è la larghezza della card centrale (slot 0).
+// Le card laterali (slot ±1) si sovrappongono DIETRO la centrale con un offset
+// inferiore a cardW/2: la centrale copre buona parte di ciascuna, lasciando
+// visibile solo la striscia esterna. Questo crea la profondità dell'esempio.
+function slotStyle(slot: number, cardW: number): SlotStyle {
   const abs = Math.abs(slot)
+  const dir = slot > 0 ? 1 : -1
   if (abs === 0) return {
     x: 0,
     scale: 1.0,
@@ -47,16 +52,16 @@ function slotStyle(slot: number, step: number): SlotStyle {
     zIndex: 3,
   }
   if (abs === 1) return {
-    x: (slot > 0 ? 1 : -1) * step,
-    scale: 0.74,
-    opacity: 0.60,
-    filter: 'blur(3.5px) brightness(0.72)',
-    zIndex: 2,
+    x: dir * Math.round(cardW * 0.62),   // centro laterale a 62% della larghezza → overlap
+    scale: 0.70,
+    opacity: 0.55,
+    filter: 'blur(3px) brightness(0.68)',
+    zIndex: 1,                            // sotto la centrale (zIndex 3)
   }
   // Staging/uscita — fuori campo, invisibili
   return {
-    x: (slot > 0 ? 1 : -1) * step * 1.88,
-    scale: 0.65,
+    x: dir * Math.round(cardW * 1.7),
+    scale: 0.60,
     opacity: 0,
     filter: 'blur(6px) brightness(0.5)',
     zIndex: 0,
@@ -209,14 +214,11 @@ export default function ProjectsSection() {
     return () => ro.disconnect()
   }, [])
 
-  // Card larga ~44% del container → step ≈ containerW/2 → card laterale al 50% visibile
+  // Card centrale ~30% del viewport → le card laterali si sovrappongono dietro di essa
+  // lasciando ~49% della sua larghezza visibile su ciascun lato (striscia esterna)
   const CARD_W = containerW > 0
-    ? Math.max(Math.min(Math.round(containerW * 0.44), 680), 300)
-    : 400
-  const GAP  = containerW > 0
-    ? Math.max(Math.min(Math.round(containerW * 0.052), 88), 40)
-    : 52
-  const STEP = CARD_W + GAP
+    ? Math.max(Math.min(Math.round(containerW * 0.30), 500), 220)
+    : 320
   // Altezza fissa del contenitore basata sulla card attiva (scala 1.0)
   const CARD_H = Math.round(CARD_W * 0.75) + 84
 
@@ -286,7 +288,7 @@ export default function ProjectsSection() {
       >
         {PROJECTS.map((project, i) => {
           const slot = getSlot(i, active)
-          const s    = slotStyle(slot, STEP)
+          const s    = slotStyle(slot, CARD_W)
 
           return (
             <motion.div
