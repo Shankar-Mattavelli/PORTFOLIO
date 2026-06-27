@@ -6,7 +6,7 @@ import type { Project } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
-const ease: [number, number, number, number] = [0.45, 0, 0.55, 1]
+const ease: [number, number, number, number] = [0.45, 0, 0.55, 1]  // smooth ease-in-out
 const N = PROJECTS.length
 
 const PROJECT_IMAGES: Record<string, string> = {
@@ -37,31 +37,25 @@ interface SlotStyle {
   zIndex: number
 }
 
-// cardW è la larghezza della card centrale (slot 0).
-// Le card laterali (slot ±1) si sovrappongono DIETRO la centrale con un offset
-// inferiore a cardW/2: la centrale copre buona parte di ciascuna, lasciando
-// visibile solo la striscia esterna. Questo crea la profondità dell'esempio.
-//
-// Le card in staging (slot ±2+) restano sulla stessa x delle laterali visibili
-// ma con scale ~0: appaiono/scompaiono crescendo/restringendosi in loco.
-// Nessun transform 3D → nessun artefatto di z-index con perspective.
-function slotStyle(slot: number, cardW: number): SlotStyle {
+// STEP = CARD_W + GAP: le card laterali sono affiancate alla centrale senza
+// sovrapposizione fisica → nessun problema di z-index / stacking context.
+// La profondità è un'illusione visiva data da scale, blur e opacity ridotti.
+function slotStyle(slot: number, step: number): SlotStyle {
   const abs = Math.abs(slot)
   const dir = slot > 0 ? 1 : -1
-  const sideX = dir * Math.round(cardW * 0.62)
 
   if (abs === 0) return {
     x: 0, scale: 1.0, opacity: 1,
     filter: 'blur(0px) brightness(1)', zIndex: 3,
   }
   if (abs === 1) return {
-    x: sideX, scale: 0.70, opacity: 0.55,
-    filter: 'blur(3px) brightness(0.68)', zIndex: 1,
+    x: dir * step, scale: 0.74, opacity: 0.60,
+    filter: 'blur(3.5px) brightness(0.72)', zIndex: 2,
   }
-  // Staging: stessa x, ridotta quasi a zero → entra/esce crescendo in loco
+  // Staging: fuori campo
   return {
-    x: sideX, scale: 0.05, opacity: 0,
-    filter: 'blur(3px) brightness(0.68)', zIndex: 0,
+    x: dir * Math.round(step * 1.88), scale: 0.65, opacity: 0,
+    filter: 'blur(6px) brightness(0.5)', zIndex: 0,
   }
 }
 
@@ -211,19 +205,20 @@ export default function ProjectsSection() {
     return () => ro.disconnect()
   }, [])
 
-  // Card centrale ~30% del viewport → le card laterali si sovrappongono dietro di essa
-  // lasciando ~49% della sua larghezza visibile su ciascun lato (striscia esterna)
   const CARD_W = containerW > 0
-    ? Math.max(Math.min(Math.round(containerW * 0.30), 500), 220)
-    : 320
-  // Altezza fissa del contenitore basata sulla card attiva (scala 1.0)
+    ? Math.max(Math.min(Math.round(containerW * 0.44), 680), 300)
+    : 400
+  const GAP = containerW > 0
+    ? Math.max(Math.min(Math.round(containerW * 0.052), 88), 40)
+    : 52
+  const STEP   = CARD_W + GAP
   const CARD_H = Math.round(CARD_W * 0.75) + 84
 
   // Auto-advance ogni 2s
   useEffect(() => {
     const t = setInterval(() => {
       if (!pausedRef.current) setActive(i => (i + 1) % N)
-    }, 3000)
+    }, 2000)
     return () => clearInterval(t)
   }, [])
 
@@ -277,54 +272,43 @@ export default function ProjectsSection() {
       </div>
 
       {/* ── Carousel ── */}
-      {/*
-        isolation:isolate crea uno stacking context isolato → zIndex tra fratelli
-        funziona sempre anche quando i figli hanno CSS transform.
-        In aggiunta, le card vengono ordinate per abs(slot) decrescente in modo che
-        la card centrale (abs=0) sia sempre l'ultimo figlio nel DOM → dipinta sopra.
-      */}
       <div
         ref={wrapRef}
         className="relative w-full overflow-hidden"
-        style={{ height: CARD_H, isolation: 'isolate' }}
+        style={{ height: CARD_H }}
       >
-        {([...PROJECTS.keys()] as number[])
-          .sort((a, b) =>
-            Math.abs(getSlot(b, active)) - Math.abs(getSlot(a, active))
-          )
-          .map(i => {
-            const project = PROJECTS[i]
-            const slot    = getSlot(i, active)
-            const s       = slotStyle(slot, CARD_W)
+        {PROJECTS.map((project, i) => {
+          const slot = getSlot(i, active)
+          const s    = slotStyle(slot, STEP)
 
-            return (
-              <motion.div
-                key={project.id}
-                className="absolute top-0"
-                style={{
-                  left: '50%',
-                  marginLeft: -CARD_W / 2,
-                  width: CARD_W,
-                  zIndex: s.zIndex,
-                  transformOrigin: 'center center',
-                }}
-                animate={{
-                  x:       s.x,
-                  scale:   s.scale,
-                  opacity: s.opacity,
-                  filter:  s.filter,
-                }}
-                transition={{ duration: 0.85, ease }}
-              >
-                <ProjectCard
-                  project={project}
-                  isActive={i === active}
-                  onClick={() => setActive(i)}
-                  cardW={CARD_W}
-                />
-              </motion.div>
-            )
-          })}
+          return (
+            <motion.div
+              key={project.id}
+              className="absolute top-0"
+              style={{
+                left: '50%',
+                marginLeft: -CARD_W / 2,
+                width: CARD_W,
+                zIndex: s.zIndex,
+                transformOrigin: 'center center',
+              }}
+              animate={{
+                x:       s.x,
+                scale:   s.scale,
+                opacity: s.opacity,
+                filter:  s.filter,
+              }}
+              transition={{ duration: 0.85, ease }}
+            >
+              <ProjectCard
+                project={project}
+                isActive={i === active}
+                onClick={() => setActive(i)}
+                cardW={CARD_W}
+              />
+            </motion.div>
+          )
+        })}
       </div>
 
       {/* Dot indicators */}
