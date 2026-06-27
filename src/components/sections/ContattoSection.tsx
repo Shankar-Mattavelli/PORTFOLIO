@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PERSONAL_INFO, SOCIAL_LINKS } from '@/constants/data'
 import SectionLabel from '@/components/ui/SectionLabel'
-import ScrollTypedHeading from '@/components/ui/ScrollTypedHeading'
+import TypedText from '@/components/ui/TypedText'
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
@@ -255,14 +255,24 @@ export default function ContattoSection() {
         <div>
           <SectionLabel label="Contatto" />
 
-          <ScrollTypedHeading
-            lines={[
-              { text: 'Costruiamo' },
-              { text: 'qualcosa', accent: true },
-              { text: 'insieme.', accent: true },
-            ]}
-            fontSize="clamp(38px, 5vw, 72px)"
-          />
+          <motion.h2
+            className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
+            style={{ fontSize: 'clamp(38px, 5vw, 72px)' }}
+            initial={{ opacity: 1, y: 24 }}
+            whileInView={{ y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease, delay: 0.1 }}
+          >
+            <span className="text-[#f0ece0] block">
+              <TypedText text="Costruiamo" delay={0.25} />
+            </span>
+            <span style={{ color: 'var(--color-accent)' }} className="block">
+              <TypedText text="qualcosa" delay={0.25 + 10 * 0.045 + 0.06} />
+            </span>
+            <span style={{ color: 'var(--color-accent)' }} className="block">
+              <TypedText text="insieme." delay={0.25 + 18 * 0.045 + 0.12} />
+            </span>
+          </motion.h2>
 
           <motion.p
             className="mt-7 text-[14px] leading-relaxed text-white/40 font-light max-w-sm"

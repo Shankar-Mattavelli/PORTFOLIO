@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { CERTIFICATIONS } from '@/constants/data'
 import type { Certification } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
-import ScrollTypedHeading from '@/components/ui/ScrollTypedHeading'
+import TypedText from '@/components/ui/TypedText'
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
@@ -211,12 +211,21 @@ export default function CertificazioniSection() {
         className="w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
       >
         <SectionLabel label="Certificazioni" />
-        <ScrollTypedHeading
-          lines={[
-            { text: 'Competenze' },
-            { text: 'certificate.', accent: true },
-          ]}
-        />
+        <motion.h2
+          className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
+          style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
+          initial={{ opacity: 1, y: 24 }}
+          whileInView={{ y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease, delay: 0.1 }}
+        >
+          <span className="text-[#f0ece0] block">
+            <TypedText text="Competenze" delay={0.25} />
+          </span>
+          <span style={{ color: 'var(--color-accent)' }} className="block">
+            <TypedText text="certificate." delay={0.25 + 10 * 0.045 + 0.07} />
+          </span>
+        </motion.h2>
 
         <motion.p
           className="mt-4 text-[11px] font-mono text-white/25 tracking-[0.1em]"

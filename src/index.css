@@ -102,20 +102,6 @@
   animation: blink 1.1s step-end infinite;
 }
 
-/* Cursore scroll-driven (ScrollTypedHeading) */
-.typed-cursor {
-  display: inline-block;
-  width: 3px;
-  height: 0.82em;
-  background-color: var(--color-accent);
-  vertical-align: text-bottom;
-  margin-left: 3px;
-  border-radius: 1px;
-}
-.typed-cursor--blink {
-  animation: blink 0.85s step-end infinite;
-}
-
 /* Pattern label sezione: [linea accent] TESTO */
 .section-label {
   display: flex;
