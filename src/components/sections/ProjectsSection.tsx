@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { PROJECTS } from '@/constants/data'
@@ -39,8 +39,8 @@ function ProjectCard({
       <Link to={`/projects/${project.slug}`} tabIndex={-1} style={{ display: 'block' }}>
         <motion.div
           animate={{
-            scale: isActive ? 1 : 0.91,
-            opacity: isActive ? 1 : 0.5,
+            scale: isActive ? 1 : 0.78,
+            opacity: isActive ? 1 : 0.42,
           }}
           transition={{ duration: 0.45, ease }}
           className="cursor-pointer"
@@ -151,6 +151,7 @@ export default function ProjectsSection() {
   const [active, setActive] = useState(0)
   const [containerW, setContainerW] = useState(0)
   const wrapRef = useRef<HTMLDivElement>(null)
+  const pausedRef = useRef(false)
 
   useEffect(() => {
     const el = wrapRef.current
@@ -162,8 +163,20 @@ export default function ProjectsSection() {
     return () => ro.disconnect()
   }, [])
 
-  const prev = () => setActive(i => (i - 1 + PROJECTS.length) % PROJECTS.length)
-  const next = () => setActive(i => (i + 1) % PROJECTS.length)
+  // Auto-avanzamento ogni 3.5s — si ferma quando l'utente è in hover
+  useEffect(() => {
+    const t = setInterval(() => {
+      if (!pausedRef.current) {
+        setActive(i => (i + 1) % PROJECTS.length)
+      }
+    }, 3500)
+    return () => clearInterval(t)
+  }, [])
+
+  const prev = useCallback(() =>
+    setActive(i => (i - 1 + PROJECTS.length) % PROJECTS.length), [])
+  const next = useCallback(() =>
+    setActive(i => (i + 1) % PROJECTS.length), [])
 
   // Centra la card attiva nel contenitore
   const trackX =
@@ -172,7 +185,12 @@ export default function ProjectsSection() {
       : 0
 
   return (
-    <section id="progetti" className="w-full py-20 overflow-hidden">
+    <section
+      id="progetti"
+      className="w-full py-20 overflow-hidden"
+      onMouseEnter={() => { pausedRef.current = true }}
+      onMouseLeave={() => { pausedRef.current = false }}
+    >
 
       {/* ── Header ── */}
       <div className="max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 mb-10">
