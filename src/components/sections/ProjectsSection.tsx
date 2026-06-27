@@ -212,8 +212,8 @@ function ProjectCard({
 export default function ProjectsSection() {
   const [active, setActive]         = useState(0)
   const [containerW, setContainerW] = useState(0)
-  const wrapRef   = useRef<HTMLDivElement>(null)
-  const pausedRef = useRef(false)
+  const wrapRef    = useRef<HTMLDivElement>(null)
+  const throttleRef = useRef(false)
 
   useEffect(() => {
     const el = wrapRef.current
@@ -230,13 +230,25 @@ export default function ProjectsSection() {
   const STEP   = Math.round(CARD_W * 0.40)
   const CARD_H = Math.round(CARD_W * 0.75) + 84
 
-  // Auto-advance ogni 2s
-  useEffect(() => {
-    const t = setInterval(() => {
-      if (!pausedRef.current) setActive(i => (i + 1) % N)
-    }, 2000)
-    return () => clearInterval(t)
+  // Scroll wheel → avanza/retrocede la card (throttle 900ms per rispettare l'animazione)
+  const handleWheel = useCallback((e: WheelEvent) => {
+    e.preventDefault()
+    if (throttleRef.current) return
+    throttleRef.current = true
+    if (e.deltaY > 0) {
+      setActive(i => (i + 1) % N)
+    } else {
+      setActive(i => (i - 1 + N) % N)
+    }
+    setTimeout(() => { throttleRef.current = false }, 900)
   }, [])
+
+  useEffect(() => {
+    const el = wrapRef.current
+    if (!el) return
+    el.addEventListener('wheel', handleWheel, { passive: false })
+    return () => el.removeEventListener('wheel', handleWheel)
+  }, [handleWheel])
 
   const prev = useCallback(() => setActive(i => (i - 1 + N) % N), [])
   const next = useCallback(() => setActive(i => (i + 1) % N), [])
@@ -245,8 +257,6 @@ export default function ProjectsSection() {
     <section
       id="progetti"
       className="w-full py-20"
-      onMouseEnter={() => { pausedRef.current = true }}
-      onMouseLeave={() => { pausedRef.current = false }}
     >
 
       {/* Header */}
