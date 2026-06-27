@@ -99,7 +99,7 @@ function TimelineCard({
           : { left:  `calc(50% + ${HALF_OFFSET}px)` }),
       }}
     >
-      <div className="border border-white/[0.09] bg-white/[0.02] p-5 backdrop-blur-sm">
+      <div className="border border-white/[0.09] bg-white/[0.02] p-5 backdrop-blur-sm" style={{ borderRadius: 8 }}>
         <p className="text-[9px] font-mono tracking-[0.24em] uppercase mb-2"
            style={{ color: 'var(--color-accent)' }}>
           {item.institution}

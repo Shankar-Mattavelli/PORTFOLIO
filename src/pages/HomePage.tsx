@@ -1,6 +1,7 @@
 import HeroSection from '@/components/sections/HeroSection'
 import ProjectsSection from '@/components/sections/ProjectsSection'
 import PercorsoSection from '@/components/sections/PercorsoSection'
+import CertificazioniSection from '@/components/sections/CertificazioniSection'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 import { motion } from 'framer-motion'
@@ -50,22 +51,7 @@ export default function HomePage() {
       <SectionDivider />
 
       {/* ── CERTIFICAZIONI ── */}
-      <section
-        id="certificazioni"
-        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
-      >
-        <SectionLabel label="Certificazioni" />
-        <SectionHeading white="Competenze" accent="certificate." />
-        <motion.p
-          className="mt-16 text-sm text-white/25 font-mono tracking-[0.15em]"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
-          — Sezione in sviluppo (Milestone 2)
-        </motion.p>
-      </section>
+      <CertificazioniSection />
 
       <SectionDivider />
 

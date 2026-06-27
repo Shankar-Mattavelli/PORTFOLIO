@@ -50,7 +50,7 @@ function ProjectCard({
           {/* ── Immagine ── */}
           <div
             className="relative overflow-hidden"
-            style={{ aspectRatio: '4/3' }}
+            style={{ aspectRatio: '4/3', borderRadius: 6 }}
           >
             {/* Badge 3D */}
             {project.tags.includes('3D') && (
