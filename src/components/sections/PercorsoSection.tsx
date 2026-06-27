@@ -24,10 +24,10 @@ const NODES = [
 ]
 
 // Progresso scrollY a cui ogni nodo diventa visibile (0 → 1)
-const NODE_T = [0.02, 0.20, 0.38, 0.57, 0.75, 0.91]
+const NODE_T = [0.02, 0.20, 0.38, 0.57, 0.74, 0.84]
 
 // Top assoluta di ogni card nel container desktop
-const CARD_TOPS = [40, 268, 508, 748, 988, 1300]
+const CARD_TOPS = [40, 268, 508, 748, 988, 1370]
 
 // ── Sub-components ────────────────────────────────────────────────────────
 
