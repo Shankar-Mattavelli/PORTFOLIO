@@ -4,7 +4,7 @@ import type { MotionValue } from 'framer-motion'
 import { TIMELINE } from '@/constants/data'
 import type { TimelineItem } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
-import TypedText from '@/components/ui/TypedText'
+import ScrollTypedHeading from '@/components/ui/ScrollTypedHeading'
 
 // ── SVG geometry ──────────────────────────────────────────────────────────
 const VW       = 160   // larghezza viewBox
@@ -208,21 +208,12 @@ export default function PercorsoSection() {
       {/* Header */}
       <div className="max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 mb-16">
         <SectionLabel label="Il mio percorso" />
-        <motion.h2
-          className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
-          style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
-          initial={{ opacity: 1, y: 24 }}
-          whileInView={{ y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        >
-          <span className="text-[#f0ece0] block">
-            <TypedText text="Da zero" delay={0.3} />
-          </span>
-          <span style={{ color: 'var(--color-accent)' }} className="block">
-            <TypedText text="all'obiettivo." delay={0.3 + 7 * 0.045 + 0.08} />
-          </span>
-        </motion.h2>
+        <ScrollTypedHeading
+          lines={[
+            { text: 'Da zero' },
+            { text: "all'obiettivo.", accent: true },
+          ]}
+        />
       </div>
 
       {/* Mobile */}

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { PROJECTS } from '@/constants/data'
 import type { Project } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
-import TypedText from '@/components/ui/TypedText'
+import ScrollTypedHeading from '@/components/ui/ScrollTypedHeading'
 
 const ease: [number, number, number, number] = [0.45, 0, 0.55, 1]  // smooth ease-in-out
 const N = PROJECTS.length
@@ -254,21 +254,12 @@ export default function ProjectsSection() {
         <div className="flex items-end justify-between gap-6">
           <div>
             <SectionLabel label="Selected Work" />
-            <motion.h2
-              className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
-              style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
-              initial={{ opacity: 1, y: 24 }}
-              whileInView={{ y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease, delay: 0.1 }}
-            >
-              <span className="text-[#f0ece0] block">
-                <TypedText text="Progetti" delay={0.2} />
-              </span>
-              <span style={{ color: 'var(--color-accent)' }} className="block">
-                <TypedText text="selezionati." delay={0.2 + 8 * 0.045 + 0.06} />
-              </span>
-            </motion.h2>
+            <ScrollTypedHeading
+              lines={[
+                { text: 'Progetti' },
+                { text: 'selezionati.', accent: true },
+              ]}
+            />
           </div>
 
           <div className="flex gap-2 shrink-0 pb-1">
