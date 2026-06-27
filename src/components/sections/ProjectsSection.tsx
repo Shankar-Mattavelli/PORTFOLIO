@@ -35,31 +35,45 @@ interface SlotStyle {
   opacity: number
   filter: string
   zIndex: number
-  z: number   // translateZ — depth ordering garantito in 3D, immune da stacking context bugs
+  clipPath: string
 }
 
-// Le card laterali sono posizionate DIETRO la centrale (sovrapposizione fisica).
-// Per garantire che la centrale sia sempre davanti, usa translateZ(20) sulla
-// centrale e translateZ(0) sulle laterali: in un contesto 3D con perspective,
-// il browser ordina per profondità reale e ignora eventuali anomalie di z-index 2D.
-// Lo z snappa in 0.05s così la nuova card centrale prende subito il sopravvento.
-function slotStyle(slot: number, step: number): SlotStyle {
-  const abs = Math.abs(slot)
-  const dir = slot > 0 ? 1 : -1
+// Approccio: clipPath geometrico sulle card laterali.
+// La card laterale destra è posizionata fisicamente a STEP dal centro e
+// scalata a SCALE_SIDE. Il suo pixel visivo più a sinistra cadrebbe dentro
+// la centrale. Con clipPath calcoliamo esattamente dove troncare (in coordinate
+// locali pre-scale) così che il primo pixel visibile coincida con il bordo
+// destro della centrale. Risultato: ZERO pixel sovrapposti → nessun z-index bug.
+//
+// Formula: clipPct = (0.5 + (0.5 - step/cardW) / SCALE_SIDE) * 100
+// (derivata invertendo la trasformazione scale da centro del box)
+const SCALE_SIDE = 0.68
+
+function slotStyle(slot: number, step: number, cardW: number): SlotStyle {
+  const abs  = Math.abs(slot)
+  const dir  = slot > 0 ? 1 : -1
   const sideX = dir * step
+
+  // clip percent in local (pre-scale) coords dal lato interno
+  const cp  = ((0.5 + (0.5 - step / cardW) / SCALE_SIDE) * 100).toFixed(2)
+  const rClip = `inset(0% 0% 0% ${cp}%)`   // destra: taglia da sinistra
+  const lClip = `inset(0% ${cp}% 0% 0%)`   // sinistra: taglia da destra
+  const none  = 'inset(0% 0% 0% 0%)'
 
   if (abs === 0) return {
     x: 0, scale: 1.0, opacity: 1,
-    filter: 'blur(0px) brightness(1)', zIndex: 10, z: 20,
+    filter: 'blur(0px) brightness(1)', zIndex: 3, clipPath: none,
   }
   if (abs === 1) return {
-    x: sideX, scale: 0.68, opacity: 0.55,
-    filter: 'blur(3px) brightness(0.70)', zIndex: 1, z: 0,
+    x: sideX, scale: SCALE_SIDE, opacity: 0.60,
+    filter: 'blur(3px) brightness(0.72)', zIndex: 1,
+    clipPath: dir > 0 ? rClip : lClip,
   }
-  // Staging: stessa x delle laterali, scala quasi zero → cresce/rimpicciolisce in loco
+  // Staging: stessa x e stesso clip → solo scale/opacity animano (no movimento laterale)
   return {
     x: sideX, scale: 0.05, opacity: 0,
-    filter: 'blur(3px) brightness(0.70)', zIndex: 0, z: 0,
+    filter: 'blur(3px) brightness(0.72)', zIndex: 0,
+    clipPath: dir > 0 ? rClip : lClip,
   }
 }
 
@@ -274,52 +288,44 @@ export default function ProjectsSection() {
       </div>
 
       {/* ── Carousel ── */}
-      {/* perspective abilita la profondità 3D: translateZ determina chi sta davanti */}
       <div
         ref={wrapRef}
         className="relative w-full overflow-hidden"
-        style={{ height: CARD_H, perspective: '2000px' }}
+        style={{ height: CARD_H }}
       >
-        {([...PROJECTS.keys()] as number[])
-          // DOM sort: staging prima, laterali poi, centrale per ultima → dipinta sopra (doppia garanzia)
-          .sort((a, b) => Math.abs(getSlot(b, active)) - Math.abs(getSlot(a, active)))
-          .map(i => {
-            const project = PROJECTS[i]
-            const slot    = getSlot(i, active)
-            const s       = slotStyle(slot, STEP)
+        {PROJECTS.map((project, i) => {
+          const slot = getSlot(i, active)
+          const s    = slotStyle(slot, STEP, CARD_W)
 
-            return (
-              <motion.div
-                key={project.id}
-                className="absolute top-0"
-                style={{
-                  left: '50%',
-                  marginLeft: -CARD_W / 2,
-                  width: CARD_W,
-                  zIndex: s.zIndex,
-                  transformOrigin: 'center center',
-                }}
-                animate={{
-                  x:       s.x,
-                  scale:   s.scale,
-                  opacity: s.opacity,
-                  filter:  s.filter,
-                  z:       s.z,
-                }}
-                transition={{
-                  z:       { duration: 0.05, ease: 'linear' },
-                  default: { duration: 0.85, ease },
-                }}
-              >
-                <ProjectCard
-                  project={project}
-                  isActive={i === active}
-                  onClick={() => setActive(i)}
-                  cardW={CARD_W}
-                />
-              </motion.div>
-            )
-          })}
+          return (
+            <motion.div
+              key={project.id}
+              className="absolute top-0"
+              style={{
+                left: '50%',
+                marginLeft: -CARD_W / 2,
+                width: CARD_W,
+                zIndex: s.zIndex,
+                transformOrigin: 'center center',
+              }}
+              animate={{
+                x:        s.x,
+                scale:    s.scale,
+                opacity:  s.opacity,
+                filter:   s.filter,
+                clipPath: s.clipPath,
+              }}
+              transition={{ duration: 0.85, ease }}
+            >
+              <ProjectCard
+                project={project}
+                isActive={i === active}
+                onClick={() => setActive(i)}
+                cardW={CARD_W}
+              />
+            </motion.div>
+          )
+        })}
       </div>
 
       {/* Dot indicators */}
