@@ -209,11 +209,13 @@ function ProjectCard({
 
 // ── Sezione ────────────────────────────────────────────────────────────────
 
+const SCROLL_PER_CARD = 500  // px di scroll per avanzare di una card
+
 export default function ProjectsSection() {
   const [active, setActive]         = useState(0)
   const [containerW, setContainerW] = useState(0)
-  const wrapRef    = useRef<HTMLDivElement>(null)
-  const throttleRef = useRef(false)
+  const outerRef = useRef<HTMLDivElement>(null)
+  const wrapRef  = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const el = wrapRef.current
@@ -230,33 +232,29 @@ export default function ProjectsSection() {
   const STEP   = Math.round(CARD_W * 0.40)
   const CARD_H = Math.round(CARD_W * 0.75) + 84
 
-  // Scroll wheel → avanza/retrocede la card (throttle 900ms per rispettare l'animazione)
-  const handleWheel = useCallback((e: WheelEvent) => {
-    e.preventDefault()
-    if (throttleRef.current) return
-    throttleRef.current = true
-    if (e.deltaY > 0) {
-      setActive(i => (i + 1) % N)
-    } else {
-      setActive(i => (i - 1 + N) % N)
-    }
-    setTimeout(() => { throttleRef.current = false }, 900)
-  }, [])
-
+  // Page scroll → avanza card in base alla posizione relativa della sezione
   useEffect(() => {
-    const el = wrapRef.current
-    if (!el) return
-    el.addEventListener('wheel', handleWheel, { passive: false })
-    return () => el.removeEventListener('wheel', handleWheel)
-  }, [handleWheel])
+    const onScroll = () => {
+      const el = outerRef.current
+      if (!el) return
+      const scrolled = -el.getBoundingClientRect().top
+      const travel   = N * SCROLL_PER_CARD
+      const progress = Math.max(0, Math.min(1, scrolled / travel))
+      setActive(Math.min(Math.floor(progress * N), N - 1))
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const prev = useCallback(() => setActive(i => (i - 1 + N) % N), [])
   const next = useCallback(() => setActive(i => (i + 1) % N), [])
 
   return (
+    <div ref={outerRef} style={{ height: `calc(100vh + ${N * SCROLL_PER_CARD}px)` }}>
     <section
       id="progetti"
-      className="w-full py-20"
+      className="sticky top-0 w-full py-16 overflow-hidden"
+      style={{ height: '100vh' }}
     >
 
       {/* Header */}
@@ -369,5 +367,6 @@ export default function ProjectsSection() {
         ))}
       </div>
     </section>
+    </div>
   )
 }
