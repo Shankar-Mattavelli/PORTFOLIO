@@ -33,7 +33,7 @@ export default function HomePage() {
       {/* ── PROGETTI ── */}
       <section
         id="progetti"
-        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 py-20"
+        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
       >
         <SectionLabel label="Selected Work" />
         <SectionHeading white="Progetti" accent="selezionati." />
@@ -54,7 +54,7 @@ export default function HomePage() {
       {/* ── PERCORSO ── */}
       <section
         id="percorso"
-        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 py-20"
+        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
       >
         <SectionLabel label="Il mio percorso" />
         <SectionHeading white="Da zero" accent="all'obiettivo." />
@@ -75,7 +75,7 @@ export default function HomePage() {
       {/* ── CERTIFICAZIONI ── */}
       <section
         id="certificazioni"
-        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 py-20"
+        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
       >
         <SectionLabel label="Certificazioni" />
         <SectionHeading white="Competenze" accent="certificate." />
@@ -96,7 +96,7 @@ export default function HomePage() {
       {/* ── CONTATTO ── */}
       <section
         id="contatto"
-        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 py-20"
+        className="min-h-svh flex flex-col justify-center w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
       >
         <SectionLabel label="Contatto" />
         <SectionHeading white="Costruiamo" accent="qualcosa insieme." />

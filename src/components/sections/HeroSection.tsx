@@ -44,7 +44,7 @@ export default function HeroSection() {
       ))}
 
       {/* Contenuto principale */}
-      <div className="relative flex flex-col flex-1 w-full max-w-[1440px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 min-w-0">
+      <div className="relative flex flex-col flex-1 w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 min-w-0">
 
         {/* Blocco superiore — label + nome + ruolo */}
         <div className="flex flex-col pt-8 sm:pt-12 md:pt-14">
@@ -64,7 +64,7 @@ export default function HeroSection() {
           {/* Nome display */}
           <motion.h1
             className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0] min-w-0 w-full"
-            style={{ fontSize: 'clamp(46px, 8.5vw, 130px)' }}
+            style={{ fontSize: 'clamp(52px, 9.5vw, 138px)' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: easeExpOut, delay: 0.45 }}
