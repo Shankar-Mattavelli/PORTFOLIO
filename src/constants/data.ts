@@ -56,6 +56,7 @@ export const PROJECTS: Project[] = [
     gallery: [
       '/projects/lamborghini/shankar-mattaveli-shankar-art.jpg',
       '/projects/lamborghini/shankar-car-side.jpg',
+      '/projects/lamborghini/shankar-car-front.jpg',
     ],
   },
   {
@@ -76,7 +77,6 @@ export const PROJECTS: Project[] = [
       '/projects/solarsteinn/shankar-solarsteinn.jpg',
       '/projects/solarsteinn/shankar-boss-fight.jpg',
       '/projects/solarsteinn/shankar-minion-evil.jpg',
-      '/projects/solarsteinn/shankar-car-front.jpg',
       '/projects/solarsteinn/shankar-screenshot-2023-08-28-193912.jpg',
       '/projects/solarsteinn/shankar-state-machine.jpg',
     ],
