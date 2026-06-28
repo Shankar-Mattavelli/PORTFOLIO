@@ -117,13 +117,19 @@ function ProjectCard({
             <motion.img
               src={projectImage(project)}
               alt={project.title}
-              className="absolute inset-0 w-full h-full object-cover"
-              animate={{
-                filter: hovered && isActive
-                  ? 'grayscale(1) brightness(0.28) blur(3px)'
-                  : 'grayscale(1) brightness(0.68)',
+              className="absolute inset-0 w-full h-full"
+              style={{
+                objectFit: project.isIcon ? 'contain' : 'cover',
+                padding: project.isIcon ? '18%' : undefined,
               }}
-              transition={{ duration: 0.38 }}
+              animate={{
+                filter: project.isIcon
+                  ? (hovered ? 'grayscale(0) brightness(1)' : 'grayscale(1) brightness(0.9)')
+                  : (hovered && isActive
+                      ? 'grayscale(1) brightness(0.28) blur(3px)'
+                      : 'grayscale(1) brightness(0.68)'),
+              }}
+              transition={{ duration: 0.45 }}
               loading="lazy"
             />
 

@@ -8,6 +8,7 @@ export interface Project {
   techTags: string[]    // tag tecnici visualizzati nell'hover card
   slug: string
   preview?: string      // immagine carousel (path locale o URL)
+  isIcon?: boolean      // true = PNG icon: object-contain, grayscale→color on hover
   description: string
   role: string
   duration: string
