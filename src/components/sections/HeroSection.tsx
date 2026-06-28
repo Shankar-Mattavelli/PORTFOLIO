@@ -43,14 +43,14 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
 
     let timerId: ReturnType<typeof setTimeout> | null = null
     let frame = 0
-    const totalFrames = 18 // ~1.45s totali: inizia a 22ms, finisce a 150ms per frame
+    const totalFrames = 20 // ~1.9s totali: inizia veloce, rallenta verso la fine
 
     function step() {
       frame++
       if (frame < totalFrames) {
         const rand = Math.floor(Math.random() * 10)
         setDisplay(rand + suffix)
-        timerId = setTimeout(step, 22 + (frame / totalFrames) * 128)
+        timerId = setTimeout(step, 22 + (frame / totalFrames) * 155)
       } else {
         setDisplay(value)
       }
