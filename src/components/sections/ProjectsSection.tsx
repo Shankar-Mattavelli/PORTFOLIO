@@ -9,13 +9,14 @@ import TypedText from '@/components/ui/TypedText'
 const ease: [number, number, number, number] = [0.45, 0, 0.55, 1]  // smooth ease-in-out
 const N = PROJECTS.length
 
-const PROJECT_IMAGES: Record<string, string> = {
-  strata:   'https://picsum.photos/seed/strata42/800/600',
-  nocturne: 'https://picsum.photos/seed/nocturne7/800/600',
-  forma:    'https://picsum.photos/seed/forma88/800/600',
+const FALLBACK_IMAGES: Record<string, string> = {
   reverie:  'https://picsum.photos/seed/reverie21/800/600',
   atlas:    'https://picsum.photos/seed/atlas55/800/600',
   prism:    'https://picsum.photos/seed/prism33/800/600',
+}
+
+function projectImage(project: Project): string {
+  return project.preview ?? FALLBACK_IMAGES[project.id] ?? ''
 }
 
 // ── Slot logic ─────────────────────────────────────────────────────────────
@@ -120,7 +121,7 @@ function ProjectCard({
             )}
 
             <motion.img
-              src={PROJECT_IMAGES[project.id]}
+              src={projectImage(project)}
               alt={project.title}
               className="absolute inset-0 w-full h-full object-cover"
               animate={{

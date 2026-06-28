@@ -7,11 +7,12 @@ export interface Project {
   tags: string[]        // badge compatto (es. '3D')
   techTags: string[]    // tag tecnici visualizzati nell'hover card
   slug: string
-  image?: string
+  preview?: string      // immagine carousel (path locale o URL)
   description: string
   role: string
   duration: string
   type: string
+  gallery?: string[]    // immagini pagina dettaglio
 }
 
 export interface TimelineItem {
