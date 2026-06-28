@@ -53,13 +53,41 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* CTA disponibile */}
-        <div className="hidden md:flex items-center gap-3 border border-white/[0.15] px-4 py-[7px] text-[11px] font-medium tracking-[0.18em] text-white/80 hover:border-white/30 hover:text-white transition-all duration-200 cursor-pointer">
-          DISPONIBILE
-          <span className="relative flex h-[7px] w-[7px]">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-            <span className="relative inline-flex rounded-full h-[7px] w-[7px] bg-emerald-400" />
-          </span>
+        {/* Status dot */}
+        <div className="hidden md:block relative group">
+          <div className="flex items-center justify-center w-8 h-8 cursor-default">
+            <span className="relative flex h-[8px] w-[8px]">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-30" />
+              <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-amber-400" />
+            </span>
+          </div>
+
+          {/* Tooltip dropdown */}
+          <div
+            className="absolute top-full right-0 mt-2 w-60 pointer-events-none opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-200"
+            style={{ zIndex: 60 }}
+          >
+            <div
+              className="p-4"
+              style={{
+                backgroundColor: '#0e0e0e',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderRadius: 4,
+              }}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span className="relative flex h-[6px] w-[6px]">
+                  <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-amber-400" />
+                </span>
+                <span className="text-[9px] font-mono tracking-[0.22em] text-amber-400 uppercase">
+                  Apprendistato in corso
+                </span>
+              </div>
+              <p className="text-[11px] text-white/45 leading-relaxed font-light">
+                Attualmente impegnato come apprendista. Aperto a colloqui e opportunità per il futuro.
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Mobile hamburger */}
@@ -102,11 +130,12 @@ export default function Header() {
               {label}
             </button>
           ))}
-          <div className="flex items-center gap-2 text-[11px] font-medium tracking-[0.18em] text-emerald-400">
-            DISPONIBILE
+          <div className="flex items-center gap-2">
             <span className="relative flex h-[6px] w-[6px]">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
-              <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-emerald-400" />
+              <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-amber-400" />
+            </span>
+            <span className="text-[10px] font-mono tracking-[0.2em] text-amber-400 uppercase">
+              Apprendistato in corso
             </span>
           </div>
         </div>
