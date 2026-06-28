@@ -39,7 +39,6 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
     if (!inView) return
     const match = value.match(/^(\d+)(\+?)$/)
     if (!match) return
-    const num = parseInt(match[1])
     const suffix = match[2] ?? ''
 
     let timerId: ReturnType<typeof setTimeout> | null = null
