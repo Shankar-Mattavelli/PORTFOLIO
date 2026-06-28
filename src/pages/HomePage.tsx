@@ -10,29 +10,34 @@ function SectionDivider() {
 
 export default function HomePage() {
   return (
-    <>
-      {/* ── HERO ── */}
-      <HeroSection />
+    <div style={{ position: 'relative' }}>
 
-      <SectionDivider />
+      {/* ── CONTATTO — fissa dietro, layer 1 ── */}
+      <div style={{ position: 'fixed', inset: 0, zIndex: 1 }}>
+        <ContattoSection />
+      </div>
 
-      {/* ── PROGETTI ── */}
-      <ProjectsSection />
+      {/* ── PAGINA PRINCIPALE — scorre sopra, layer 2 ── */}
+      <div style={{ position: 'relative', zIndex: 2, backgroundColor: '#080808' }}>
 
-      <SectionDivider />
+        <HeroSection />
 
-      {/* ── PERCORSO ── */}
-      <PercorsoSection />
+        <SectionDivider />
 
-      <SectionDivider />
+        <ProjectsSection />
 
-      {/* ── CERTIFICAZIONI ── */}
-      <CertificazioniSection />
+        <SectionDivider />
 
-      <SectionDivider />
+        <PercorsoSection />
 
-      {/* ── CONTATTO ── */}
-      <ContattoSection />
-    </>
+        <SectionDivider />
+
+        <CertificazioniSection />
+
+        {/* Spacer: permette di scrollare fino a esporre completamente il contatto */}
+        <div style={{ height: '100vh' }} />
+
+      </div>
+    </div>
   )
 }

@@ -1,5 +1,5 @@
-import { useState, useRef } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { PERSONAL_INFO } from '@/constants/data'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
@@ -199,38 +199,22 @@ function ContactForm() {
 // ── Sezione principale ────────────────────────────────────────────────────
 
 export default function ContattoSection() {
-  const sectionRef = useRef<HTMLElement>(null)
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start 85%', 'start 5%'],
-  })
-  // clipPath rivela il blocco dall'alto verso il basso (effetto "blocco che sale")
-  const clipPath = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ['inset(0 0 100% 0)', 'inset(0 0 0% 0)']
-  )
-  const contentY = useTransform(scrollYProgress, [0, 1], ['22%', '0%'])
-
   return (
     <section
-      ref={sectionRef}
       id="contatto"
-      className="relative w-full overflow-hidden"
+      className="relative w-full h-full flex flex-col justify-center"
     >
-      <motion.div className="relative" style={{ clipPath, y: contentY }}>
-        {/* Glow viola centrale */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,91,223,0.07) 0%, transparent 70%)',
-            backgroundColor: '#080808',
-          }}
-        />
+      {/* Glow viola centrale */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,91,223,0.09) 0%, transparent 70%)',
+          backgroundColor: '#080808',
+        }}
+      />
 
-        {/* Contenuto */}
-        <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 pt-36 pb-24">
+      {/* Contenuto */}
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
 
           {/* ── Colonna sinistra ── */}
@@ -314,7 +298,6 @@ export default function ContattoSection() {
 
         </div>
       </div>
-      </motion.div>
     </section>
   )
 }
