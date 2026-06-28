@@ -15,7 +15,7 @@ export const PERSONAL_INFO = {
 
 export const STATS: Stat[] = [
   { value: '6+', label: 'PROGETTI' },
-  { value: '5', label: 'CERTIFICAZIONI' },
+  { value: '6', label: 'CERTIFICAZIONI' },
   { value: '5+', label: 'ANNI' },
 ]
 
@@ -199,6 +199,7 @@ export const CERTIFICATIONS: Certification[] = [
   { id: 'ied', title: 'Diploma Accademico', issuer: 'IED — Istituto Europeo di Design', year: '2023' },
   { id: 'formatore', title: 'Qualifica Formatore Sicurezza sul Lavoro', issuer: 'Digitech Center S.r.l.', year: '2024' },
   { id: 'elettronica', title: 'Attestato Corso Elettronica', issuer: 'Digitech Center S.r.l.', year: '2025' },
+  { id: 'cybersecurity', title: 'Cybersecurity — Difesa dei Sistemi Aziendali', issuer: 'Digitech Center S.r.l.', year: '2025' },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [
