@@ -15,7 +15,7 @@ export const PERSONAL_INFO = {
 } as const
 
 export const STATS: Stat[] = [
-  { value: '6+', label: 'PROGETTI' },
+  { value: '5+', label: 'PROGETTI' },
   { value: '6', label: 'CERTIFICAZIONI' },
   { value: '5+', label: 'ANNI' },
 ]
@@ -82,26 +82,8 @@ export const PROJECTS: Project[] = [
     ],
   },
   {
-    id: 'horizon',
-    num: '03',
-    title: 'Horizon',
-    category: '3D SCULPTING',
-    year: '2023',
-    tags: ['3D'],
-    techTags: ['Blender', 'Sculpting', '3D Modeling', 'Clay Render'],
-    slug: 'horizon',
-    preview: '/projects/horizon/shankar-hzd-2.jpg',
-    description: 'Creatura meccanica ispirata all\'estetica sci-fi post-apocalittica — modellazione e sculpting completo in Blender, clay render finale.',
-    role: 'Solo 3D Artist',
-    duration: '—',
-    type: '3D Sculpting',
-    gallery: [
-      '/projects/horizon/shankar-hzd-2.jpg',
-    ],
-  },
-  {
     id: 'uniquiz',
-    num: '04',
+    num: '03',
     title: 'UniQuiz',
     category: 'WEB APPLICATION',
     year: '2024',
@@ -118,7 +100,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'mira',
-    num: '05',
+    num: '04',
     title: 'MIRA',
     category: 'AI APPLICATION',
     year: '2025',
@@ -135,7 +117,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 'work-management',
-    num: '06',
+    num: '05',
     title: 'Work Management',
     category: 'WEB APPLICATION',
     year: '2025',
