@@ -201,12 +201,17 @@ function ContactForm() {
 export default function ContattoSection() {
   const sectionRef = useRef<HTMLElement>(null)
 
-  // Curtain scroll-driven: la tendina sale mentre la sezione entra in viewport
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start 92%', 'start 15%'],
+    offset: ['start end', 'start 15%'],
   })
-  const curtainY = useTransform(scrollYProgress, [0, 1], ['0%', '-102%'])
+  // clipPath rivela il blocco dall'alto verso il basso (effetto "blocco che sale")
+  const clipPath = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ['inset(0 0 100% 0)', 'inset(0 0 0% 0)']
+  )
+  const contentY = useTransform(scrollYProgress, [0, 1], ['10%', '0%'])
 
   return (
     <section
@@ -214,23 +219,18 @@ export default function ContattoSection() {
       id="contatto"
       className="relative w-full overflow-hidden"
     >
-      {/* Sfondo differenziato — leggero glow centrale viola */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,91,223,0.07) 0%, transparent 70%)',
-          backgroundColor: '#080810',
-        }}
-      />
+      <motion.div className="relative" style={{ clipPath, y: contentY }}>
+        {/* Glow viola centrale */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,91,223,0.07) 0%, transparent 70%)',
+            backgroundColor: '#080808',
+          }}
+        />
 
-      {/* Curtain — tendina che sale con lo scroll */}
-      <motion.div
-        className="absolute inset-0 z-20 pointer-events-none"
-        style={{ y: curtainY, backgroundColor: '#080808' }}
-      />
-
-      {/* Contenuto */}
-      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-24">
+        {/* Contenuto */}
+        <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-24">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
 
           {/* ── Colonna sinistra ── */}
@@ -314,6 +314,7 @@ export default function ContattoSection() {
 
         </div>
       </div>
+      </motion.div>
     </section>
   )
 }
