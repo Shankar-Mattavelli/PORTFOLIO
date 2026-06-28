@@ -9,14 +9,8 @@ import TypedText from '@/components/ui/TypedText'
 const ease: [number, number, number, number] = [0.45, 0, 0.55, 1]  // smooth ease-in-out
 const N = PROJECTS.length
 
-const FALLBACK_IMAGES: Record<string, string> = {
-  reverie:  'https://picsum.photos/seed/reverie21/800/600',
-  atlas:    'https://picsum.photos/seed/atlas55/800/600',
-  prism:    'https://picsum.photos/seed/prism33/800/600',
-}
-
 function projectImage(project: Project): string {
-  return project.preview ?? FALLBACK_IMAGES[project.id] ?? ''
+  return project.preview ?? ''
 }
 
 // ── Slot logic ─────────────────────────────────────────────────────────────
