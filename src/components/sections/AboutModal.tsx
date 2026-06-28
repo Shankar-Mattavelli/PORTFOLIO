@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
-const TRAITS = ['Curiosità', 'Crescita continua', 'Creatività', 'Problem Solving']
+const TRAITS = ['Curiosità', 'Crescita continua', 'Adattabilità', 'Pensiero analitico']
 
 const TIMELINE = [
   {
@@ -15,11 +15,6 @@ const TIMELINE = [
     title:  'Scopro il mondo del design',
     sub:    'Istituto Europeo di Design (IED)',
     period: '2020 – 2023',
-  },
-  {
-    title:  'Prima esperienza lavorativa',
-    sub:    'Magazziniere',
-    period: '2020 – 2021',
   },
   {
     title:  'Tecnologia e comunicazione, insieme',
@@ -139,7 +134,7 @@ export default function AboutModal({ open, onClose }: Props) {
                       style={{
                         border: '1px solid rgba(124,91,223,0.28)',
                         color: 'var(--color-accent)',
-                        borderRadius: 2,
+                        borderRadius: 6,
                       }}
                       initial={{ opacity: 0, y: 6 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -152,7 +147,7 @@ export default function AboutModal({ open, onClose }: Props) {
               </div>
 
               {/* RIGHT — bio + timeline */}
-              <div className="flex flex-col gap-16">
+              <div className="flex flex-col gap-16 lg:pt-14">
 
                 {/* Bio — paragrafi ben spaziati */}
                 <div className="flex flex-col gap-9">
