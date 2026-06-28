@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { PERSONAL_INFO, STATS, HERO_BADGES } from '@/constants/data'
 import TypedText from '@/components/ui/TypedText'
 
@@ -28,6 +28,42 @@ const ROLES = [
   'Formatore Sicurezza sul Lavoro',
   'WebGL Enthusiast',
 ]
+
+// Slot-machine effect: cicla numeri casuali (decelerando) poi atterra sul valore reale
+function ScrambleValue({ value, startDelay }: { value: string; startDelay: number }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true })
+  const [display, setDisplay] = useState(value)
+
+  useEffect(() => {
+    if (!inView) return
+    const match = value.match(/^(\d+)(\+?)$/)
+    if (!match) return
+    const num = parseInt(match[1])
+    const suffix = match[2] ?? ''
+
+    let timerId: ReturnType<typeof setTimeout> | null = null
+    let frame = 0
+    const totalFrames = 22
+
+    function step() {
+      frame++
+      if (frame < totalFrames) {
+        const rand = Math.floor(Math.random() * Math.max(num + 5, 10))
+        setDisplay(rand + suffix)
+        // Decelerazione esponenziale: parte a 30ms, arriva a 230ms
+        timerId = setTimeout(step, 30 + (frame / totalFrames) * 200)
+      } else {
+        setDisplay(value)
+      }
+    }
+
+    const startId = setTimeout(step, startDelay)
+    return () => { clearTimeout(startId); if (timerId) clearTimeout(timerId) }
+  }, [inView, value, startDelay])
+
+  return <span ref={ref}>{display}</span>
+}
 
 export default function HeroSection() {
   const [roleIndex, setRoleIndex] = useState(0)
@@ -186,7 +222,7 @@ export default function HeroSection() {
                   className="font-display font-black leading-none"
                   style={{ fontSize: 'clamp(26px, 3vw, 42px)', color: 'var(--color-accent)' }}
                 >
-                  {stat.value}
+                  <ScrambleValue value={stat.value} startDelay={1600 + i * 220} />
                 </span>
                 <span className="mt-1.5 text-[9px] font-medium tracking-[0.22em] text-white/30 uppercase whitespace-nowrap">
                   {stat.label}

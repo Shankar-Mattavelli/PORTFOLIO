@@ -11,6 +11,7 @@ export const PERSONAL_INFO = {
   phone: '+39 334 925 0900',
   linkedin: 'https://www.linkedin.com/in/shankar-mattavelli',
   objective: 'Ruolo IT / Developer con focus su Computer Graphics, WebGL e Interactive 3D',
+  contactBio: 'Curiosità, sperimentazione e apprendimento continuo guidano ogni progetto che realizzo.',
 } as const
 
 export const STATS: Stat[] = [

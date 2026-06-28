@@ -281,7 +281,7 @@ export default function ContattoSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease, delay: 0.4 }}
           >
-            {PERSONAL_INFO.bio}
+            {PERSONAL_INFO.contactBio}
           </motion.p>
 
           {/* Contact items */}
