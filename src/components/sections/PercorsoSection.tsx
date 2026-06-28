@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react'
+import { useRef, useMemo, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import type { MotionValue } from 'framer-motion'
 import { TIMELINE } from '@/constants/data'
@@ -38,14 +38,45 @@ function TimelineNode({
 }) {
   const opacity = useTransform(progress, [t - 0.02, t + 0.05], [0, 1])
   const scale   = useTransform(progress, [t - 0.02, t + 0.05], [0.2, 1])
+  const [burst, setBurst] = useState(false)
+
+  useEffect(() => {
+    return opacity.on('change', v => {
+      if (v > 0.6) setBurst(true)
+    })
+  }, [opacity])
 
   return (
     <motion.g style={{ opacity, scale, transformOrigin: `${cx}px ${cy}px` }}>
+      {/* Burst one-shot — tre anelli che esplodono quando il nodo appare */}
+      {burst && (
+        <>
+          <motion.circle cx={cx} cy={cy} r={8} fill="none"
+            stroke="var(--color-accent)" strokeWidth={2} strokeOpacity={0.7}
+            initial={{ r: 8, opacity: 0.7 }}
+            animate={{ r: 42, opacity: 0 }}
+            transition={{ duration: 0.7, ease: 'easeOut' }}
+          />
+          <motion.circle cx={cx} cy={cy} r={8} fill="none"
+            stroke="var(--color-accent)" strokeWidth={1} strokeOpacity={0.4}
+            initial={{ r: 8, opacity: 0.4 }}
+            animate={{ r: 64, opacity: 0 }}
+            transition={{ duration: 1.1, ease: 'easeOut', delay: 0.12 }}
+          />
+          <motion.circle cx={cx} cy={cy} r={8} fill="none"
+            stroke="var(--color-accent)" strokeWidth={0.5} strokeOpacity={0.2}
+            initial={{ r: 8, opacity: 0.2 }}
+            animate={{ r: 88, opacity: 0 }}
+            transition={{ duration: 1.5, ease: 'easeOut', delay: 0.25 }}
+          />
+        </>
+      )}
+      {/* Pulse continuo */}
       <motion.circle
         cx={cx} cy={cy} r={14}
-        fill="none" stroke="var(--color-accent)" strokeWidth={0.8} strokeOpacity={0.2}
-        animate={{ r: [14, 26], opacity: [0.2, 0] }}
-        transition={{ duration: 2.2, repeat: Infinity, ease: 'easeOut', delay: t * 3.5 }}
+        fill="none" stroke="var(--color-accent)" strokeWidth={0.8} strokeOpacity={0.15}
+        animate={{ r: [14, 28], opacity: [0.15, 0] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut', delay: t * 2 }}
       />
       <circle cx={cx} cy={cy} r={7}
         fill="none" stroke="var(--color-accent)" strokeWidth={1.5} />

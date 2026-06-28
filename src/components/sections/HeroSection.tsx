@@ -111,7 +111,7 @@ export default function HeroSection() {
               ease: 'easeInOut',
               delay: badge.floatDelay * 1.6,
             }}
-            className="border border-white/[0.1] bg-white/[0.02] px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] text-white/30 whitespace-nowrap"
+            className="border border-white/[0.1] bg-white/[0.02] px-3 py-1.5 font-mono text-[10px] tracking-[0.1em] text-white/30 whitespace-nowrap rounded-md"
           >
             {badge.label}
           </motion.div>
