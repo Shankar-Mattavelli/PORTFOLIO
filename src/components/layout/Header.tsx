@@ -57,8 +57,8 @@ export default function Header() {
         <div className="hidden md:block relative group">
           <div className="flex items-center justify-center w-8 h-8 cursor-default">
             <span className="relative flex h-[8px] w-[8px]">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-30" />
-              <span className="relative inline-flex rounded-full h-[8px] w-[8px] bg-amber-400" />
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-20" style={{ backgroundColor: 'var(--color-accent)' }} />
+              <span className="relative inline-flex rounded-full h-[8px] w-[8px]" style={{ backgroundColor: 'var(--color-accent)', opacity: 0.7 }} />
             </span>
           </div>
 
@@ -77,9 +77,9 @@ export default function Header() {
             >
               <div className="flex items-center gap-2">
                 <span className="relative flex h-[6px] w-[6px]">
-                  <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-amber-400" />
+                  <span className="relative inline-flex rounded-full h-[6px] w-[6px]" style={{ backgroundColor: 'var(--color-accent)', opacity: 0.7 }} />
                 </span>
-                <span className="text-[9px] font-mono tracking-[0.22em] text-amber-400 uppercase">
+                <span className="text-[9px] font-mono tracking-[0.22em] uppercase" style={{ color: 'var(--color-accent)', opacity: 0.7 }}>
                   Apprendistato in corso
                 </span>
               </div>
@@ -129,9 +129,9 @@ export default function Header() {
           ))}
           <div className="flex items-center gap-2">
             <span className="relative flex h-[6px] w-[6px]">
-              <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-amber-400" />
+              <span className="relative inline-flex rounded-full h-[6px] w-[6px]" style={{ backgroundColor: 'var(--color-accent)', opacity: 0.7 }} />
             </span>
-            <span className="text-[10px] font-mono tracking-[0.2em] text-amber-400 uppercase">
+            <span className="text-[10px] font-mono tracking-[0.2em] uppercase" style={{ color: 'var(--color-accent)', opacity: 0.7 }}>
               Apprendistato in corso
             </span>
           </div>
