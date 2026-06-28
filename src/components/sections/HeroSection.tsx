@@ -49,7 +49,7 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
     function step() {
       frame++
       if (frame < totalFrames) {
-        const rand = Math.floor(Math.random() * Math.max(num + 5, 10))
+        const rand = Math.floor(Math.random() * 10) // 0-9: stessa larghezza del valore finale
         setDisplay(rand + suffix)
         // Decelerazione esponenziale: parte a 30ms, arriva a 230ms
         timerId = setTimeout(step, 30 + (frame / totalFrames) * 200)
@@ -62,7 +62,7 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
     return () => { clearTimeout(startId); if (timerId) clearTimeout(timerId) }
   }, [inView, value, startDelay])
 
-  return <span ref={ref}>{display}</span>
+  return <span ref={ref} style={{ fontVariantNumeric: 'tabular-nums', display: 'inline-block', minWidth: '1ch' }}>{display}</span>
 }
 
 export default function HeroSection() {
