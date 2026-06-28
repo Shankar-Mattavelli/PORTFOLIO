@@ -43,15 +43,14 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
 
     let timerId: ReturnType<typeof setTimeout> | null = null
     let frame = 0
-    const totalFrames = 22
+    const totalFrames = 18 // ~1.45s totali: inizia a 22ms, finisce a 150ms per frame
 
     function step() {
       frame++
       if (frame < totalFrames) {
-        const rand = Math.floor(Math.random() * 10) // 0-9: stessa larghezza del valore finale
+        const rand = Math.floor(Math.random() * 10)
         setDisplay(rand + suffix)
-        // Decelerazione esponenziale: parte a 30ms, arriva a 230ms
-        timerId = setTimeout(step, 30 + (frame / totalFrames) * 200)
+        timerId = setTimeout(step, 22 + (frame / totalFrames) * 128)
       } else {
         setDisplay(value)
       }
@@ -215,13 +214,13 @@ export default function HeroSection() {
                 className={`flex flex-col items-center justify-center px-5 sm:px-7 md:px-8 py-2 ${i > 0 ? 'border-l border-white/[0.15]' : ''}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: easeExpOut, delay: 1.0 + i * 0.12 }}
+                transition={{ duration: 0.5, ease: easeExpOut, delay: 0.2 + i * 0.08 }}
               >
                 <span
                   className="font-display font-black leading-none"
                   style={{ fontSize: 'clamp(26px, 3vw, 42px)', color: 'var(--color-accent)' }}
                 >
-                  <ScrambleValue value={stat.value} startDelay={1600 + i * 220} />
+                  <ScrambleValue value={stat.value} startDelay={350 + i * 100} />
                 </span>
                 <span className="mt-1.5 text-[9px] font-medium tracking-[0.22em] text-white/30 uppercase whitespace-nowrap">
                   {stat.label}
