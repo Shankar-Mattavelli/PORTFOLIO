@@ -6,6 +6,7 @@ import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
+const flipEase: [number, number, number, number] = [0.45, 0, 0.1, 1]
 
 function BadgeIcon() {
   return (
@@ -17,244 +18,233 @@ function BadgeIcon() {
   )
 }
 
-function CertCard({ cert, index, onClick }: {
-  cert: Certification
-  index: number
-  onClick: () => void
-}) {
+// ── Front face ─────────────────────────────────────────────────────────────
+
+function CardFront({ cert }: { cert: Certification }) {
   return (
-    <motion.div
-      className="group relative border border-white/[0.08] bg-white/[0.02] p-6 cursor-pointer overflow-hidden"
-      style={{ borderRadius: 8 }}
-      initial={{ opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.15 }}
-      transition={{ duration: 0.55, ease, delay: index * 0.07 }}
-      whileHover={{ scale: 1.04, backgroundColor: 'rgba(255,255,255,0.04)' }}
-      onClick={onClick}
+    <div
+      className="group absolute inset-0 border border-white/[0.08] bg-white/[0.02] p-6 overflow-hidden flex flex-col"
+      style={{ borderRadius: 8, backfaceVisibility: 'hidden' }}
     >
-      {/* Accent line bottom — CSS transition su hover del gruppo */}
+      {/* Accent line bottom */}
       <div
         className="absolute bottom-0 left-0 right-0 h-[1px] origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"
         style={{ background: 'var(--color-accent)' }}
       />
-
-      {/* Top-right glow — appare su hover */}
+      {/* Glow top-right */}
       <div
         className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{ background: 'radial-gradient(circle, rgba(124,91,223,0.15) 0%, transparent 70%)' }}
       />
 
-      {/* Badge icon */}
+      {/* Icon */}
       <div
-        className="w-10 h-10 flex items-center justify-center border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 mb-5 transition-colors duration-300 group-hover:border-[var(--color-accent)]/40 group-hover:bg-[var(--color-accent)]/10"
+        className="w-10 h-10 flex items-center justify-center border border-[var(--color-accent)]/20 bg-[var(--color-accent)]/5 mb-5 shrink-0 transition-colors duration-300 group-hover:border-[var(--color-accent)]/40"
         style={{ borderRadius: 6 }}
       >
         <BadgeIcon />
       </div>
 
-      {/* Titolo */}
-      <h3 className="font-display font-black text-[16px] text-[#f0ece0] leading-tight mb-2 transition-colors duration-200 group-hover:text-white">
-        {cert.title}
-      </h3>
+      <div className="flex flex-col flex-1 min-w-0">
+        <h3 className="font-display font-black text-[16px] text-[#f0ece0] leading-tight mb-2">
+          {cert.title}
+        </h3>
+        <p className="text-[11px] font-mono text-white/35 tracking-[0.1em]">{cert.issuer}</p>
+      </div>
 
-      {/* Ente */}
-      <p className="text-[11px] font-mono text-white/35 tracking-[0.1em]">{cert.issuer}</p>
-
-      {/* Footer */}
       <div className="flex items-center justify-between mt-5">
         <span className="text-[11px] font-mono font-bold" style={{ color: 'var(--color-accent)' }}>
           {cert.year}
         </span>
-        <span className="text-[9px] font-mono tracking-[0.15em] text-white/0 group-hover:text-white/40 transition-colors duration-300">
-          VISUALIZZA ↗
+        <span className="text-[9px] font-mono tracking-[0.15em] text-white/0 group-hover:text-white/35 transition-colors duration-300">
+          GIRA ↻
         </span>
-      </div>
-    </motion.div>
-  )
-}
-
-// ── Placeholder documento (finché non vengono caricati i PDF reali) ────────
-
-function CertPlaceholder({ cert }: { cert: Certification }) {
-  return (
-    <div
-      className="bg-[#f5f0e8] text-[#111] w-full p-10 relative overflow-hidden"
-      style={{ borderRadius: 6 }}
-    >
-      {/* Angoli decorativi */}
-      {[
-        'top-5 left-5 border-t-2 border-l-2',
-        'top-5 right-5 border-t-2 border-r-2',
-        'bottom-5 left-5 border-b-2 border-l-2',
-        'bottom-5 right-5 border-b-2 border-r-2',
-      ].map((cls, i) => (
-        <div key={i} className={`absolute w-7 h-7 ${cls}`} style={{ borderColor: 'rgba(124,91,223,0.25)' }} />
-      ))}
-
-      {/* Header */}
-      <div className="text-center mb-8">
-        <p className="text-[9px] font-mono tracking-[0.3em] uppercase" style={{ color: '#7c5bdf' }}>
-          {cert.issuer}
-        </p>
-        <div className="w-8 h-[1px] mx-auto my-4" style={{ background: 'rgba(124,91,223,0.35)' }} />
-        <p className="text-[10px] font-mono tracking-[0.2em] text-[#888] uppercase">
-          Certificate of Achievement
-        </p>
-      </div>
-
-      {/* Body */}
-      <div className="text-center border-y border-black/10 py-7 mb-7">
-        <p className="text-[9px] font-mono tracking-[0.2em] text-[#999] uppercase mb-4">
-          Questo attesta che
-        </p>
-        <p className="font-display font-black text-[26px] text-[#0a0a0a] leading-none mb-4">
-          Shankar Mattavelli
-        </p>
-        <p className="text-[11px] font-mono text-[#666] mb-3">
-          ha completato con successo il programma
-        </p>
-        <p className="font-display font-black text-[18px] leading-tight" style={{ color: '#0a0a0a' }}>
-          {cert.title}
-        </p>
-      </div>
-
-      {/* Footer */}
-      <div className="flex items-end justify-between">
-        <div>
-          <p className="text-[8px] font-mono tracking-[0.22em] text-[#aaa] uppercase mb-1">Anno</p>
-          <p className="font-display font-black text-[16px] text-[#0a0a0a]">{cert.year}</p>
-        </div>
-        {/* Sigillo decorativo */}
-        <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
-          <circle cx="32" cy="32" r="29" stroke="#7c5bdf" strokeWidth="1" strokeOpacity="0.25" fill="none" />
-          <circle cx="32" cy="32" r="23" stroke="#7c5bdf" strokeWidth="0.5" strokeOpacity="0.18" fill="none" strokeDasharray="2 3" />
-          <text x="32" y="29" textAnchor="middle" fontSize="5.5" fontFamily="monospace" fill="#7c5bdf" fillOpacity="0.45" letterSpacing="1.5">VERIFIED</text>
-          <text x="32" y="37" textAnchor="middle" fontSize="5" fontFamily="monospace" fill="#7c5bdf" fillOpacity="0.35" letterSpacing="1">{cert.year}</text>
-        </svg>
-      </div>
-
-      {/* Nota placeholder */}
-      <div className="mt-7 border border-black/[0.08] py-2.5 text-center" style={{ borderRadius: 3 }}>
-        <p className="text-[8px] font-mono tracking-[0.14em] text-[#bbb] uppercase">
-          — documento pdf originale in caricamento —
-        </p>
       </div>
     </div>
   )
 }
 
-// ── Modal documento ────────────────────────────────────────────────────────
+// ── Back face — stile pergamena ────────────────────────────────────────────
 
-function DocumentModal({ cert, onClose }: { cert: Certification; onClose: () => void }) {
+function CardBack({ cert, onOpenPdf }: { cert: Certification; onOpenPdf: () => void }) {
+  return (
+    <div
+      className="absolute inset-0 p-6 flex flex-col overflow-hidden"
+      style={{
+        borderRadius: 8,
+        background: '#f5f0e8',
+        backfaceVisibility: 'hidden',
+        transform: 'rotateY(180deg)',
+      }}
+    >
+      {/* Angoli decorativi */}
+      {(['top-3 left-3 border-t border-l', 'top-3 right-3 border-t border-r', 'bottom-3 left-3 border-b border-l', 'bottom-3 right-3 border-b border-r'] as const).map((cls, i) => (
+        <div key={i} className={`absolute w-5 h-5 ${cls}`} style={{ borderColor: 'rgba(124,91,223,0.28)' }} />
+      ))}
+
+      <p className="text-[8px] font-mono tracking-[0.22em] uppercase mb-1" style={{ color: '#7c5bdf' }}>
+        {cert.issuer}
+      </p>
+      <div className="w-7 h-[1px] mb-3" style={{ background: 'rgba(124,91,223,0.28)' }} />
+
+      <p className="text-[9px] font-mono text-[#999] tracking-[0.1em] mb-1.5">Questo attesta che</p>
+      <p className="font-display font-black text-[19px] text-[#0a0a0a] leading-none mb-2">
+        Shankar Mattavelli
+      </p>
+      <p className="text-[9px] font-mono text-[#666] mb-1.5">ha conseguito</p>
+      <p className="font-display font-black text-[13px] leading-tight text-[#0a0a0a] flex-1">
+        {cert.title}
+      </p>
+
+      <div className="flex items-end justify-between mt-4">
+        <div>
+          <p className="text-[7px] font-mono text-[#aaa] uppercase tracking-[0.2em] mb-0.5">Anno</p>
+          <p className="font-display font-black text-[16px] text-[#0a0a0a]">{cert.year}</p>
+        </div>
+        {cert.documentUrl ? (
+          <button
+            onClick={e => { e.stopPropagation(); onOpenPdf() }}
+            className="text-[8px] font-mono tracking-[0.15em] uppercase px-2.5 py-1.5 border"
+            style={{ color: '#7c5bdf', borderColor: 'rgba(124,91,223,0.4)', borderRadius: 3 }}
+          >
+            APRI PDF ↗
+          </button>
+        ) : (
+          <svg width="42" height="42" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="32" r="28" stroke="#7c5bdf" strokeWidth="0.8" strokeOpacity="0.22" fill="none" />
+            <circle cx="32" cy="32" r="21" stroke="#7c5bdf" strokeWidth="0.5" strokeOpacity="0.14" fill="none" strokeDasharray="2 3" />
+            <text x="32" y="35" textAnchor="middle" fontSize="7" fontFamily="monospace" fill="#7c5bdf" fillOpacity="0.45" letterSpacing="0.5">{cert.year}</text>
+          </svg>
+        )}
+      </div>
+
+      <p className="mt-2.5 text-[7px] font-mono text-[#ccc] tracking-[0.12em] text-center uppercase">
+        clicca per tornare
+      </p>
+    </div>
+  )
+}
+
+// ── PDF Modal (usato solo quando documentUrl è presente) ───────────────────
+
+function PdfModal({ url, title, onClose }: { url: string; title: string; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
     document.body.style.overflow = 'hidden'
-    return () => {
-      window.removeEventListener('keydown', onKey)
-      document.body.style.overflow = ''
-    }
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = '' }
   }, [onClose])
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center p-5 overflow-y-auto"
-      style={{ backgroundColor: 'rgba(8,8,8,0.88)', backdropFilter: 'blur(14px)' }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center p-5"
+      style={{ backgroundColor: 'rgba(8,8,8,0.90)', backdropFilter: 'blur(14px)' }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       transition={{ duration: 0.22 }}
       onClick={onClose}
     >
       <motion.div
-        className="relative w-full max-w-[580px] my-auto"
-        initial={{ scale: 0.90, y: 28, opacity: 0 }}
+        className="relative w-full max-w-[680px]"
+        initial={{ scale: 0.92, y: 24, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
-        exit={{ scale: 0.94, y: 12, opacity: 0 }}
+        exit={{ scale: 0.96, y: 12, opacity: 0 }}
         transition={{ duration: 0.38, ease }}
         onClick={e => e.stopPropagation()}
       >
-        {/* Chiudi */}
         <button
           onClick={onClose}
           className="absolute -top-9 right-0 font-mono text-[10px] tracking-[0.18em] text-white/35 hover:text-white/70 transition-colors duration-200"
         >
           ESC · CHIUDI ✕
         </button>
-
-        {/* Documento */}
-        {cert.documentUrl ? (
-          <iframe
-            src={cert.documentUrl}
-            title={cert.title}
-            className="w-full"
-            style={{ height: '75vh', borderRadius: 6, border: 'none' }}
-          />
-        ) : (
-          <CertPlaceholder cert={cert} />
-        )}
+        <iframe src={url} title={title} className="w-full" style={{ height: '78vh', borderRadius: 6, border: 'none' }} />
       </motion.div>
     </motion.div>
+  )
+}
+
+// ── Card flip wrapper ──────────────────────────────────────────────────────
+
+function CertCard({ cert, index }: { cert: Certification; index: number }) {
+  const [flipped, setFlipped] = useState(false)
+  const [pdfOpen, setPdfOpen] = useState(false)
+
+  return (
+    <>
+      <motion.div
+        className="cursor-pointer"
+        initial={{ opacity: 0, y: 24 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ duration: 0.55, ease, delay: index * 0.07 }}
+        onClick={() => setFlipped(f => !f)}
+      >
+        {/* perspective su container plain per non interferire con Framer Motion */}
+        <div style={{ perspective: '1200px', minHeight: 240 }}>
+          <motion.div
+            style={{
+              transformStyle: 'preserve-3d',
+              position: 'relative',
+              minHeight: 240,
+            }}
+            animate={{ rotateY: flipped ? 180 : 0 }}
+            transition={{ duration: 0.72, ease: flipEase }}
+          >
+            <CardFront cert={cert} />
+            <CardBack cert={cert} onOpenPdf={() => setPdfOpen(true)} />
+          </motion.div>
+        </div>
+      </motion.div>
+
+      <AnimatePresence>
+        {pdfOpen && cert.documentUrl && (
+          <PdfModal url={cert.documentUrl} title={cert.title} onClose={() => setPdfOpen(false)} />
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 
 // ── Sezione principale ─────────────────────────────────────────────────────
 
 export default function CertificazioniSection() {
-  const [selected, setSelected] = useState<Certification | null>(null)
-
   return (
-    <>
-      <section
-        id="certificazioni"
-        className="w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
+    <section
+      id="certificazioni"
+      className="w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
+    >
+      <SectionLabel label="Certificazioni" />
+      <motion.h2
+        className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
+        style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
+        initial={{ opacity: 1, y: 24 }}
+        whileInView={{ y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, ease, delay: 0.1 }}
       >
-        <SectionLabel label="Certificazioni" />
-        <motion.h2
-          className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
-          style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
-          initial={{ opacity: 1, y: 24 }}
-          whileInView={{ y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease, delay: 0.1 }}
-        >
-          <span className="text-[#f0ece0] block">
-            <TypedText text="Competenze" delay={0.25} />
-          </span>
-          <span style={{ color: 'var(--color-accent)' }} className="block">
-            <TypedText text="certificate." delay={0.25 + 10 * 0.045 + 0.07} />
-          </span>
-        </motion.h2>
+        <span className="text-[#f0ece0] block">
+          <TypedText text="Competenze" delay={0.25} />
+        </span>
+        <span style={{ color: 'var(--color-accent)' }} className="block">
+          <TypedText text="certificate." delay={0.25 + 10 * 0.045 + 0.07} />
+        </span>
+      </motion.h2>
 
-        <motion.p
-          className="mt-4 text-[11px] font-mono text-white/25 tracking-[0.1em]"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-        >
-          Clicca su una certificazione per visualizzare il documento
-        </motion.p>
+      <motion.p
+        className="mt-4 text-[11px] font-mono text-white/25 tracking-[0.1em]"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.5 }}
+      >
+        Clicca su una card per girare il documento
+      </motion.p>
 
-        {/* Grid 3×2 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
-          {CERTIFICATIONS.map((cert, i) => (
-            <CertCard
-              key={cert.id}
-              cert={cert}
-              index={i}
-              onClick={() => setSelected(cert)}
-            />
-          ))}
-        </div>
-      </section>
-
-      <AnimatePresence>
-        {selected && (
-          <DocumentModal cert={selected} onClose={() => setSelected(null)} />
-        )}
-      </AnimatePresence>
-    </>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
+        {CERTIFICATIONS.map((cert, i) => (
+          <CertCard key={cert.id} cert={cert} index={i} />
+        ))}
+      </div>
+    </section>
   )
 }

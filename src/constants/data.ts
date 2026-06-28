@@ -15,7 +15,7 @@ export const PERSONAL_INFO = {
 
 export const STATS: Stat[] = [
   { value: '6+', label: 'PROGETTI' },
-  { value: '6', label: 'CERTIFICAZIONI' },
+  { value: '5', label: 'CERTIFICAZIONI' },
   { value: '5+', label: 'ANNI' },
 ]
 
@@ -194,12 +194,11 @@ export const TIMELINE: TimelineItem[] = [
 ]
 
 export const CERTIFICATIONS: Certification[] = [
-  { id: 'google-it', title: 'Google IT Support Professional', issuer: 'Google / Coursera', year: '2023' },
-  { id: 'blender', title: 'Blender Certified Artist', issuer: 'Blender Foundation', year: '2023' },
-  { id: 'maya', title: 'Autodesk Certified User — Maya', issuer: 'Autodesk', year: '2023' },
-  { id: 'threejs', title: 'Three.js Journey', issuer: 'Bruno Simon / Threejs', year: '2023' },
-  { id: 'adobe', title: 'Adobe Certified — Premiere Pro', issuer: 'Adobe', year: '2023' },
-  { id: 'comptia', title: 'CompTIA IT Fundamentals+', issuer: 'CompTIA', year: '2023' },
+  { id: 'maturita', title: 'Diploma di Maturità Scientifica', issuer: 'Liceo Scientifico Antonio Banfi', year: '2020' },
+  { id: 'inglese', title: 'Certificato di Lingua Inglese', issuer: 'EAS Milan', year: '2021' },
+  { id: 'ied', title: 'Diploma Accademico', issuer: 'IED — Istituto Europeo di Design', year: '2023' },
+  { id: 'formatore', title: 'Qualifica Formatore Sicurezza sul Lavoro', issuer: 'Digitech Center S.r.l.', year: '2024' },
+  { id: 'elettronica', title: 'Attestato Corso Elettronica', issuer: 'Digitech Center S.r.l.', year: '2025' },
 ]
 
 export const SOCIAL_LINKS: SocialLink[] = [
