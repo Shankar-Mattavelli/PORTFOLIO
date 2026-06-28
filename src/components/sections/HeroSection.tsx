@@ -22,9 +22,10 @@ const BADGE_WANDER: Array<{ x: number[]; y: number[] }> = [
 ]
 
 const ROLES = [
-  'Frontend Developer',
-  'Creative Developer',
-  'CG Artist & 3D Specialist',
+  'Studente di Ingegneria Informatica',
+  'Interactive Developer',
+  'Tecnico Multimediale',
+  'Formatore Sicurezza sul Lavoro',
   'WebGL Enthusiast',
 ]
 
@@ -95,7 +96,7 @@ export default function HeroSection() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <span className="text-[10px] font-medium tracking-[0.35em] text-white/35 uppercase">
-              Portfolio 2024
+              Portfolio 2026
             </span>
           </motion.div>
 
@@ -141,7 +142,6 @@ export default function HeroSection() {
                 {ROLES[roleIndex]}
               </motion.span>
             </AnimatePresence>
-            <span className="cursor-blink" aria-hidden="true" />
           </motion.p>
         </div>
 
