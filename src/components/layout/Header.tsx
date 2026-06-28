@@ -33,11 +33,25 @@ export default function Header() {
       <div className="max-w-[1440px] mx-auto px-6 md:px-10 h-[68px] flex items-center justify-between">
 
         {/* Logo */}
-        <Link
-          to="/"
-          className="font-mono text-[13px] font-medium tracking-[0.2em] text-white/90 hover:text-white transition-colors duration-200"
-        >
-          SM.DEV
+        <Link to="/" aria-label="Home" className="flex items-center">
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              backgroundColor: 'rgba(255,255,255,0.85)',
+              WebkitMaskImage: 'url(/logo.png)',
+              maskImage: 'url(/logo.png)',
+              WebkitMaskSize: 'contain',
+              maskSize: 'contain',
+              WebkitMaskRepeat: 'no-repeat',
+              maskRepeat: 'no-repeat',
+              WebkitMaskPosition: 'center',
+              maskPosition: 'center',
+              transition: 'background-color 0.2s ease',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,1)')}
+            onMouseLeave={e => (e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.85)')}
+          />
         </Link>
 
         {/* Desktop nav */}
