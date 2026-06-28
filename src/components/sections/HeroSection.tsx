@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { PERSONAL_INFO, STATS, HERO_BADGES } from '@/constants/data'
 import TypedText from '@/components/ui/TypedText'
+import AboutModal from '@/components/sections/AboutModal'
 
 const easeExpOut: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
@@ -64,7 +65,8 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
 }
 
 export default function HeroSection() {
-  const [roleIndex, setRoleIndex] = useState(0)
+  const [roleIndex, setRoleIndex]   = useState(0)
+  const [aboutOpen, setAboutOpen]   = useState(false)
 
   useEffect(() => {
     const t = setInterval(() => setRoleIndex(i => (i + 1) % ROLES.length), 2800)
@@ -134,28 +136,42 @@ export default function HeroSection() {
             </span>
           </motion.div>
 
-          {/* Nome display — senza cursore, è statico */}
-          <motion.h1
-            className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0] min-w-0 w-full"
-            style={{ fontSize: 'clamp(52px, 9.5vw, 138px)' }}
-            initial={{ y: 30 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.9, ease: easeExpOut, delay: 0.3 }}
+          {/* Nome display — cliccabile → AboutModal */}
+          <div
+            className="group cursor-pointer select-none w-fit"
+            onClick={() => setAboutOpen(true)}
+            role="button"
+            aria-label="Scopri chi sono"
           >
-            <TypedText
-              text={PERSONAL_INFO.nameFirstLine}
-              delay={0.45}
-              speed={0.055}
-              inView={false}
-            />
-            <br />
-            <TypedText
-              text={PERSONAL_INFO.nameSecondLine}
-              delay={0.45 + PERSONAL_INFO.nameFirstLine.length * 0.055 + 0.06}
-              speed={0.05}
-              inView={false}
-            />
-          </motion.h1>
+            <motion.h1
+              className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0] min-w-0 transition-opacity duration-300 group-hover:opacity-75"
+              style={{ fontSize: 'clamp(52px, 9.5vw, 138px)' }}
+              initial={{ y: 30 }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.9, ease: easeExpOut, delay: 0.3 }}
+            >
+              <TypedText
+                text={PERSONAL_INFO.nameFirstLine}
+                delay={0.45}
+                speed={0.055}
+                inView={false}
+              />
+              <br />
+              <TypedText
+                text={PERSONAL_INFO.nameSecondLine}
+                delay={0.45 + PERSONAL_INFO.nameFirstLine.length * 0.055 + 0.06}
+                speed={0.05}
+                inView={false}
+              />
+            </motion.h1>
+            {/* Hint al hover */}
+            <div className="mt-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <span className="block w-5 h-px" style={{ backgroundColor: 'var(--color-accent)' }} />
+              <span className="font-mono text-[9px] tracking-[0.22em] uppercase" style={{ color: 'var(--color-accent)' }}>
+                Chi sono
+              </span>
+            </div>
+          </div>
 
           {/* Ruolo ciclico con cursore lampeggiante */}
           <motion.p
@@ -230,6 +246,8 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+
+      <AboutModal open={aboutOpen} onClose={() => setAboutOpen(false)} />
     </section>
   )
 }
