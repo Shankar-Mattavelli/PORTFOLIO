@@ -1,12 +1,12 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { PERSONAL_INFO, SOCIAL_LINKS } from '@/constants/data'
+import { useState, useRef } from 'react'
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { PERSONAL_INFO } from '@/constants/data'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
 
-// ── Icone SVG (Feather Icons) ─────────────────────────────────────────────
+// ── Icone ─────────────────────────────────────────────────────────────────
 
 function IconMail() {
   return (
@@ -52,7 +52,7 @@ function IconArrow() {
   )
 }
 
-// ── Componenti ────────────────────────────────────────────────────────────
+// ── ContactItem ───────────────────────────────────────────────────────────
 
 function ContactItem({ icon, label, value, href }: {
   icon: React.ReactNode; label: string; value: string; href: string
@@ -63,46 +63,25 @@ function ContactItem({ icon, label, value, href }: {
       href={href}
       target={isExternal ? '_blank' : undefined}
       rel={isExternal ? 'noopener noreferrer' : undefined}
-      className="group flex items-center gap-4 py-4 border-b border-white/[0.07] hover:border-white/[0.14] transition-colors duration-300"
+      className="group flex items-center gap-4 py-4 border-b border-white/[0.06] hover:border-[var(--color-accent)]/30 transition-colors duration-300"
       whileHover={{ x: 5 }}
       transition={{ duration: 0.22, ease: 'easeOut' }}
     >
-      {/* Icona */}
       <div
-        className="w-9 h-9 shrink-0 flex items-center justify-center border border-white/[0.1] text-white/35 group-hover:border-[#7c5bdf]/60 group-hover:text-[#7c5bdf] group-hover:bg-[#7c5bdf]/8 transition-all duration-300"
+        className="w-9 h-9 shrink-0 flex items-center justify-center border border-white/[0.08] text-white/30 group-hover:border-[var(--color-accent)]/50 group-hover:text-[var(--color-accent)] group-hover:bg-[var(--color-accent)]/8 transition-all duration-300"
         style={{ borderRadius: 6 }}
       >
         {icon}
       </div>
-      {/* Testo */}
       <div className="min-w-0 flex-1">
-        <p className="text-[8px] font-mono tracking-[0.22em] text-white/28 uppercase mb-0.5">{label}</p>
-        <p className="text-[12px] font-mono text-white/60 group-hover:text-white/90 transition-colors duration-200 truncate">
+        <p className="text-[8px] font-mono tracking-[0.22em] text-white/25 uppercase mb-0.5">{label}</p>
+        <p className="text-[12px] font-mono text-white/55 group-hover:text-white/90 transition-colors duration-200 truncate">
           {value}
         </p>
       </div>
-      {/* Freccia */}
-      <span className="shrink-0 text-white/18 group-hover:text-[#7c5bdf] transition-colors duration-200">
+      <span className="shrink-0 text-white/15 group-hover:text-[var(--color-accent)] transition-colors duration-200">
         <IconArrow />
       </span>
-    </motion.a>
-  )
-}
-
-function SocialBtn({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
-  return (
-    <motion.a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={label}
-      className="w-10 h-10 flex items-center justify-center border border-white/[0.1] text-white/30 hover:border-[#7c5bdf]/50 hover:text-[#7c5bdf] transition-all duration-250"
-      style={{ borderRadius: 6 }}
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ duration: 0.18 }}
-    >
-      {icon}
     </motion.a>
   )
 }
@@ -110,18 +89,18 @@ function SocialBtn({ href, icon, label }: { href: string; icon: React.ReactNode;
 // ── Form ──────────────────────────────────────────────────────────────────
 
 const fieldBase =
-  'w-full bg-transparent border-b border-white/[0.1] py-3 text-[14px] text-[#f0ece0] placeholder:text-white/18 focus:outline-none focus:border-[#7c5bdf] transition-colors duration-250'
+  'w-full bg-transparent border-b py-3 text-[14px] text-[#f0ece0] placeholder:text-white/18 focus:outline-none transition-colors duration-250'
 
 function ContactForm() {
-  const [name, setName]       = useState('')
-  const [email, setEmail]     = useState('')
-  const [message, setMessage] = useState('')
+  const [name, setName]           = useState('')
+  const [email, setEmail]         = useState('')
+  const [message, setMessage]     = useState('')
   const [submitted, setSubmitted] = useState(false)
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     const subject = encodeURIComponent(`Portfolio — messaggio da ${name}`)
-    const body = encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMessaggio:\n${message}`)
+    const body    = encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMessaggio:\n${message}`)
     window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subject}&body=${body}`
     setSubmitted(true)
   }
@@ -137,22 +116,20 @@ function ContactForm() {
           transition={{ duration: 0.5, ease }}
         >
           <motion.div
-            className="w-14 h-14 rounded-full border border-[#7c5bdf] flex items-center justify-center mb-5"
+            className="w-14 h-14 rounded-full border flex items-center justify-center mb-5"
+            style={{ borderColor: 'var(--color-accent)' }}
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.4, delay: 0.15, ease: [0.34, 1.56, 0.64, 1] }}
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#7c5bdf" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="20 6 9 17 4 12"/>
             </svg>
           </motion.div>
           <p className="font-display font-black text-[20px] text-[#f0ece0] mb-2">Client email aperto</p>
           <p className="text-[12px] font-mono text-white/35 leading-relaxed">
             Se non si aprisse, scrivimi direttamente:<br/>
-            <a
-              href={`mailto:${PERSONAL_INFO.email}`}
-              className="text-[#7c5bdf] hover:underline"
-            >
+            <a href={`mailto:${PERSONAL_INFO.email}`} className="hover:underline" style={{ color: 'var(--color-accent)' }}>
               {PERSONAL_INFO.email}
             </a>
           </p>
@@ -172,43 +149,26 @@ function ContactForm() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
-          {/* Nome */}
+          {[
+            { id: 'name',    label: 'Nome',     type: 'text',  placeholder: 'Marco Rossi',        value: name,    setter: setName },
+            { id: 'email',   label: 'Email',    type: 'email', placeholder: 'marco@example.com',  value: email,   setter: setEmail },
+          ].map(f => (
+            <div key={f.id}>
+              <label className="block text-[9px] font-mono tracking-[0.22em] text-white/28 uppercase mb-2">{f.label}</label>
+              <input
+                className={`${fieldBase} border-white/[0.08] focus:border-[var(--color-accent)]`}
+                type={f.type}
+                placeholder={f.placeholder}
+                required
+                value={f.value}
+                onChange={e => f.setter(e.target.value)}
+              />
+            </div>
+          ))}
           <div>
-            <label className="block text-[9px] font-mono tracking-[0.22em] text-white/30 uppercase mb-2">
-              Nome
-            </label>
-            <input
-              className={fieldBase}
-              type="text"
-              placeholder="Marco Rossi"
-              required
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-          </div>
-
-          {/* Email */}
-          <div>
-            <label className="block text-[9px] font-mono tracking-[0.22em] text-white/30 uppercase mb-2">
-              Email
-            </label>
-            <input
-              className={fieldBase}
-              type="email"
-              placeholder="marco@example.com"
-              required
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-          </div>
-
-          {/* Messaggio */}
-          <div>
-            <label className="block text-[9px] font-mono tracking-[0.22em] text-white/30 uppercase mb-2">
-              Messaggio
-            </label>
+            <label className="block text-[9px] font-mono tracking-[0.22em] text-white/28 uppercase mb-2">Messaggio</label>
             <textarea
-              className={`${fieldBase} resize-none`}
+              className={`${fieldBase} resize-none border-white/[0.08] focus:border-[var(--color-accent)]`}
               placeholder="Dimmi del progetto..."
               required
               rows={5}
@@ -216,13 +176,11 @@ function ContactForm() {
               onChange={e => setMessage(e.target.value)}
             />
           </div>
-
-          {/* Submit */}
           <motion.button
             type="submit"
             className="w-full font-display font-black text-[13px] tracking-[0.08em] uppercase text-white py-4 flex items-center justify-center gap-2.5"
-            style={{ backgroundColor: '#7c5bdf', borderRadius: 6 }}
-            whileHover={{ scale: 1.02, backgroundColor: '#9170f5' }}
+            style={{ backgroundColor: 'var(--color-accent)', borderRadius: 6 }}
+            whileHover={{ scale: 1.02, backgroundColor: 'var(--color-accent-bright)' }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.18 }}
           >
@@ -241,107 +199,120 @@ function ContactForm() {
 // ── Sezione principale ────────────────────────────────────────────────────
 
 export default function ContattoSection() {
-  // Filtra solo GitHub e LinkedIn per i social icon
-  const socialIcons = SOCIAL_LINKS.filter(s => s.id === 'github' || s.id === 'linkedin')
+  const sectionRef = useRef<HTMLElement>(null)
+
+  // Curtain scroll-driven: la tendina sale mentre la sezione entra in viewport
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 92%', 'start 15%'],
+  })
+  const curtainY = useTransform(scrollYProgress, [0, 1], ['0%', '-102%'])
 
   return (
     <section
+      ref={sectionRef}
       id="contatto"
-      className="w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-24"
+      className="relative w-full overflow-hidden"
     >
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
+      {/* Sfondo differenziato — leggero glow centrale viola */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,91,223,0.07) 0%, transparent 70%)',
+          backgroundColor: '#080810',
+        }}
+      />
 
-        {/* ── Colonna sinistra ── */}
-        <div>
-          <SectionLabel label="Contatto" />
+      {/* Curtain — tendina che sale con lo scroll */}
+      <motion.div
+        className="absolute inset-0 z-20 pointer-events-none"
+        style={{ y: curtainY, backgroundColor: '#080808' }}
+      />
 
-          <motion.h2
-            className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
-            style={{ fontSize: 'clamp(38px, 5vw, 72px)' }}
-            initial={{ opacity: 1, y: 24 }}
-            whileInView={{ y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease, delay: 0.1 }}
-          >
-            <span className="text-[#f0ece0] block">
-              <TypedText text="Costruiamo" delay={0.25} />
-            </span>
-            <span style={{ color: 'var(--color-accent)' }} className="block">
-              <TypedText text="qualcosa" delay={0.25 + 10 * 0.045 + 0.06} />
-            </span>
-            <span style={{ color: 'var(--color-accent)' }} className="block">
-              <TypedText text="insieme." delay={0.25 + 18 * 0.045 + 0.12} />
-            </span>
-          </motion.h2>
+      {/* Contenuto */}
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
 
-          <motion.p
-            className="mt-7 text-[14px] leading-relaxed text-white/40 font-light max-w-sm"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease, delay: 0.4 }}
-          >
-            {PERSONAL_INFO.contactBio}
-          </motion.p>
+          {/* ── Colonna sinistra ── */}
+          <div>
+            <SectionLabel label="Contatto" />
 
-          {/* Contact items */}
-          <motion.div
-            className="mt-10"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease, delay: 0.5 }}
-          >
-            <ContactItem
-              icon={<IconMail />}
-              label="Email"
-              value={PERSONAL_INFO.email}
-              href={`mailto:${PERSONAL_INFO.email}`}
-            />
-            <ContactItem
-              icon={<IconPhone />}
-              label="Telefono"
-              value={PERSONAL_INFO.phone}
-              href={`tel:${PERSONAL_INFO.phone.replace(/\s/g, '')}`}
-            />
-            <ContactItem
-              icon={<IconLinkedIn />}
-              label="LinkedIn"
-              value="shankar-mattavelli"
-              href={PERSONAL_INFO.linkedin}
-            />
-          </motion.div>
+            <motion.h2
+              className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
+              style={{ fontSize: 'clamp(38px, 5vw, 72px)' }}
+              initial={{ opacity: 1, y: 24 }}
+              whileInView={{ y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease, delay: 0.1 }}
+            >
+              <span className="text-[#f0ece0] block">
+                <TypedText text="Costruiamo" />
+              </span>
+              <span style={{ color: 'var(--color-accent)' }} className="block">
+                <TypedText text="qualcosa" delay={10 * 0.045 + 0.06} />
+              </span>
+              <span style={{ color: 'var(--color-accent)' }} className="block">
+                <TypedText text="insieme." delay={18 * 0.045 + 0.12} />
+              </span>
+            </motion.h2>
 
-          {/* Social icons */}
-          <motion.div
-            className="mt-8 flex gap-2.5"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.7 }}
-          >
-            {socialIcons.map(s => (
-              <SocialBtn
-                key={s.id}
-                href={s.url}
-                label={s.label}
-                icon={s.id === 'github' ? <IconGitHub /> : <IconLinkedIn />}
+            <motion.p
+              className="mt-7 text-[14px] leading-relaxed text-white/38 font-light max-w-sm"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease, delay: 0.4 }}
+            >
+              {PERSONAL_INFO.contactBio}
+            </motion.p>
+
+            {/* Contact items — Email, Telefono, LinkedIn, GitHub */}
+            <motion.div
+              className="mt-10"
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease, delay: 0.5 }}
+            >
+              <ContactItem
+                icon={<IconMail />}
+                label="Email"
+                value={PERSONAL_INFO.email}
+                href={`mailto:${PERSONAL_INFO.email}`}
               />
-            ))}
+              <ContactItem
+                icon={<IconPhone />}
+                label="Telefono"
+                value={PERSONAL_INFO.phone}
+                href={`tel:${PERSONAL_INFO.phone.replace(/\s/g, '')}`}
+              />
+              <ContactItem
+                icon={<IconLinkedIn />}
+                label="LinkedIn"
+                value="shankar-mattavelli"
+                href={PERSONAL_INFO.linkedin}
+              />
+              <ContactItem
+                icon={<IconGitHub />}
+                label="GitHub — progetti & codice"
+                value="github.com/shankar-mattavelli"
+                href="https://github.com/shankar-mattavelli"
+              />
+            </motion.div>
+          </div>
+
+          {/* ── Colonna destra (form) ── */}
+          <motion.div
+            className="lg:pt-[90px]"
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, ease, delay: 0.2 }}
+          >
+            <ContactForm />
           </motion.div>
+
         </div>
-
-        {/* ── Colonna destra (form) ── */}
-        <motion.div
-          className="lg:pt-[90px]"
-          initial={{ opacity: 0, x: 30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease, delay: 0.2 }}
-        >
-          <ContactForm />
-        </motion.div>
-
       </div>
     </section>
   )

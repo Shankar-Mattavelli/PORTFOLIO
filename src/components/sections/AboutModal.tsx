@@ -130,7 +130,7 @@ export default function AboutModal({ open, onClose }: Props) {
                   {TRAITS.map((trait, i) => (
                     <motion.span
                       key={trait}
-                      className="font-mono text-[9px] tracking-[0.12em] uppercase py-[6px] flex items-center justify-center text-center"
+                      className="font-mono text-[9px] tracking-[0.06em] uppercase py-[10px] px-1 flex items-center justify-center text-center leading-tight"
                       style={{
                         border: '1px solid rgba(124,91,223,0.28)',
                         color: 'var(--color-accent)',
