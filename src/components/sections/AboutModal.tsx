@@ -125,12 +125,12 @@ export default function AboutModal({ open, onClose }: Props) {
                   />
                 </div>
 
-                {/* Trait pills — distaccate dalla foto, effetto firma */}
-                <div className="mt-14 flex flex-wrap gap-2">
+                {/* Trait pills — firma, unica riga, larghezza immagine */}
+                <div className="mt-14 grid grid-cols-4 gap-2">
                   {TRAITS.map((trait, i) => (
                     <motion.span
                       key={trait}
-                      className="font-mono text-[9px] tracking-[0.18em] uppercase px-3 py-[5px]"
+                      className="font-mono text-[9px] tracking-[0.12em] uppercase py-[6px] flex items-center justify-center text-center"
                       style={{
                         border: '1px solid rgba(124,91,223,0.28)',
                         color: 'var(--color-accent)',
