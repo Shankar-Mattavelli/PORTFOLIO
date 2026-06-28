@@ -1,12 +1,14 @@
 import { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from '@/components/layout/Layout'
+import { LanguageProvider } from '@/context/LanguageContext'
 
 const HomePage    = lazy(() => import('@/pages/HomePage'))
 const ProjectPage = lazy(() => import('@/pages/ProjectPage'))
 
 export default function App() {
   return (
+    <LanguageProvider>
     <Layout>
       <Routes>
         <Route
@@ -27,5 +29,6 @@ export default function App() {
         />
       </Routes>
     </Layout>
+    </LanguageProvider>
   )
 }
