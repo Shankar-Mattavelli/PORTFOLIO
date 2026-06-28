@@ -75,7 +75,7 @@ export default function Header() {
                 borderRadius: 4,
               }}
             >
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2">
                 <span className="relative flex h-[6px] w-[6px]">
                   <span className="relative inline-flex rounded-full h-[6px] w-[6px] bg-amber-400" />
                 </span>
@@ -83,9 +83,6 @@ export default function Header() {
                   Apprendistato in corso
                 </span>
               </div>
-              <p className="text-[11px] text-white/45 leading-relaxed font-light">
-                Attualmente impegnato come apprendista. Aperto a colloqui e opportunità per il futuro.
-              </p>
             </div>
           </div>
         </div>
