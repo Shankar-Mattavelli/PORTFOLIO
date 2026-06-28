@@ -203,7 +203,7 @@ export default function ContattoSection() {
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ['start end', 'start 15%'],
+    offset: ['start 85%', 'start 5%'],
   })
   // clipPath rivela il blocco dall'alto verso il basso (effetto "blocco che sale")
   const clipPath = useTransform(
@@ -211,7 +211,7 @@ export default function ContattoSection() {
     [0, 1],
     ['inset(0 0 100% 0)', 'inset(0 0 0% 0)']
   )
-  const contentY = useTransform(scrollYProgress, [0, 1], ['10%', '0%'])
+  const contentY = useTransform(scrollYProgress, [0, 1], ['22%', '0%'])
 
   return (
     <section
@@ -230,7 +230,7 @@ export default function ContattoSection() {
         />
 
         {/* Contenuto */}
-        <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-24">
+        <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 pt-36 pb-24">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
 
           {/* ── Colonna sinistra ── */}
