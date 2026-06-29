@@ -76,10 +76,10 @@
   /* Firefox */
   html {
     scrollbar-width: thin;
-    scrollbar-color: rgba(124, 91, 223, 0.35) transparent;
+    scrollbar-color: rgba(124, 91, 223, 0.4) transparent;
   }
 
-  /* Webkit — thumb sottile di default, si allarga all'hover */
+  /* Webkit — binario trasparente, thumb espande verso SINISTRA all'hover */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -87,16 +87,20 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgba(124, 91, 223, 0.35);
-    border-radius: 10px;
-    border: 2px solid transparent;   /* gap 2px per lato → thumb visivo = 4px */
+    background: rgba(124, 91, 223, 0.4);
+    border-radius: 4px 0 0 4px;      /* arrotondato solo a sinistra */
+    border-right: 0;                  /* flush con il bordo destro della pagina */
+    border-left: 5px solid transparent; /* gap sinistro → thumb visivo = 3px */
     background-clip: padding-box;
-    transition: border-width 0.18s ease, background-color 0.18s ease;
+    transition: border-left-width 0.2s ease, background-color 0.18s ease;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 91, 223, 0.7);
-    border-width: 0px;               /* gap rimosso → thumb visivo = 8px */
+    background: rgba(124, 91, 223, 0.72);
+    border-left-width: 1px;           /* gap ridotto → thumb espande a sinistra = 7px */
     background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-corner {
+    background: transparent;
   }
 }
 
