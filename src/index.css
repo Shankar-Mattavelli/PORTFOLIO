@@ -73,16 +73,18 @@
     color: var(--color-accent-bright);
   }
 
-  /* Scrollbar — track trasparente, thumb violetto */
+  /* Scrollbar — track invisibile, thumb violetto */
   html {
     scrollbar-color: rgba(124, 91, 223, 0.45) transparent;
     scrollbar-width: thin;
   }
   ::-webkit-scrollbar {
     width: 6px;
+    background: rgba(0, 0, 0, 0);
   }
-  ::-webkit-scrollbar-track {
-    background: transparent;
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-track-piece {
+    background: rgba(0, 0, 0, 0);
   }
   ::-webkit-scrollbar-thumb {
     background-color: rgba(124, 91, 223, 0.45);
@@ -90,6 +92,9 @@
   }
   ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(124, 91, 223, 0.7);
+  }
+  ::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0);
   }
 
 }
