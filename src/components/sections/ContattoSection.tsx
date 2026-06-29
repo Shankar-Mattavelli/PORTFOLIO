@@ -203,13 +203,13 @@ export default function ContattoSection() {
     <section
       id="contatto"
       className="relative w-full"
+      style={{ backgroundColor: '#0f0d28' }}
     >
-      {/* Glow viola centrale */}
+      {/* Glow viola — più leggibile sul nuovo sfondo */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,91,223,0.09) 0%, transparent 70%)',
-          backgroundColor: '#080808',
+          background: 'radial-gradient(ellipse 90% 55% at 50% 0%, rgba(124,91,223,0.18) 0%, transparent 70%)',
         }}
       />
 

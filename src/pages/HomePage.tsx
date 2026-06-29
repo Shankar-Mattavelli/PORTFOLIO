@@ -46,8 +46,12 @@ export default function HomePage() {
 
         <CertificazioniSection />
 
-        {/* Pausa visiva prima che inizi il reveal (bg solido = stesso sfondo) */}
-        <div style={{ height: '60vh' }} />
+        {/* Pausa visiva + gradiente di transizione verso il viola del contatto */}
+        <div style={{ height: '55vh' }} />
+        <div style={{
+          height: '5vh',
+          background: 'linear-gradient(to bottom, #080808 0%, #0a0916 100%)',
+        }} />
 
       </div>
     </div>
