@@ -1,44 +1,8 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useTrans } from '@/context/LanguageContext'
 
 const ease: [number, number, number, number] = [0.16, 1, 0.3, 1]
-
-const TRAITS = ['Curiosità', 'Crescita continua', 'Adattabilità', 'Pensiero analitico']
-
-const TIMELINE = [
-  {
-    title:  'I primi anni della formazione',
-    sub:    'Liceo Scientifico — Scienze Applicate',
-    period: '2015 – 2020',
-  },
-  {
-    title:  'Scopro il mondo del design',
-    sub:    'Istituto Europeo di Design (IED)',
-    period: '2020 – 2023',
-  },
-  {
-    title:  'Tecnologia e comunicazione, insieme',
-    sub:    'Formazione sulla Sicurezza & Multimedia',
-    period: '2024 – oggi',
-  },
-  {
-    title:  'Un nuovo capitolo nella tech',
-    sub:    'Ingegneria Informatica',
-    period: '2024 – oggi',
-  },
-  {
-    title:  'La palestra quotidiana',
-    sub:    'Progetti personali in continua evoluzione',
-    period: 'in continuo',
-  },
-]
-
-const BIO = [
-  "Mi chiamo Shankar e sono una persona guidata dalla curiosità. Credo che ogni esperienza rappresenti un'opportunità di crescita e che ogni nuova sfida sia un'occasione per scoprire qualcosa in più su ciò che posso diventare.",
-  "Il mio percorso è iniziato nel mondo del design, dove ho frequentato l'Istituto Europeo di Design (IED), sviluppando una particolare attenzione alla comunicazione visiva e alla cura dei dettagli. Parallelamente agli studi ho lavorato come magazziniere, un'esperienza che mi ha insegnato disciplina, organizzazione e il valore della costanza.",
-  "Con il tempo la curiosità mi ha portato ad avvicinarmi sempre di più al mondo della tecnologia, fino a intraprendere gli studi in Ingegneria Informatica. Oggi mi occupo di formazione sulla sicurezza e della realizzazione di contenuti multimediali, unendo creatività e tecnologia in un contesto concreto.",
-  "Nel tempo libero amo sperimentare nuove idee, sviluppare progetti personali ed esplorare strumenti e tecnologie che mi permettono di crescere continuamente. Credo che la curiosità, la capacità di adattarsi e la voglia di mettermi in gioco siano gli elementi che guidano il mio percorso, dentro e fuori dal lavoro.",
-]
 
 interface Props {
   open: boolean
@@ -46,6 +10,8 @@ interface Props {
 }
 
 export default function AboutModal({ open, onClose }: Props) {
+  const t = useTrans()
+
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
@@ -73,9 +39,9 @@ export default function AboutModal({ open, onClose }: Props) {
           <button
             onClick={onClose}
             className="fixed top-6 left-6 z-[101] inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-white/30 hover:text-white/70 transition-colors duration-200 uppercase"
-            aria-label="Torna al portfolio"
+            aria-label={t.about.backBtn}
           >
-            ← Torna al portfolio
+            {t.about.backBtn}
           </button>
 
           <motion.div
@@ -89,17 +55,17 @@ export default function AboutModal({ open, onClose }: Props) {
             <div className="mb-16 md:mb-24">
               <div className="flex items-center gap-3 mb-6">
                 <span className="block w-7 h-px" style={{ backgroundColor: 'var(--color-accent)' }} />
-                <span className="text-[10px] font-medium tracking-[0.35em] text-white/35 uppercase">Chi Sono</span>
+                <span className="text-[10px] font-medium tracking-[0.35em] text-white/35 uppercase">{t.about.sectionLabel}</span>
               </div>
               <h2
                 className="font-display font-black leading-[0.9] tracking-[-0.02em]"
                 style={{ fontSize: 'clamp(40px, 5.5vw, 82px)' }}
               >
-                <span className="text-[#f0ece0] block">Il mio</span>
-                <span style={{ color: 'var(--color-accent)' }} className="block">percorso.</span>
+                <span className="text-[#f0ece0] block">{t.about.h2[0]}</span>
+                <span style={{ color: 'var(--color-accent)' }} className="block">{t.about.h2[1]}</span>
               </h2>
               <p className="mt-5 text-[13px] text-white/30 font-light max-w-lg leading-relaxed">
-                Un percorso costruito tra creatività, tecnologia e voglia di mettersi continuamente alla prova.
+                {t.about.description}
               </p>
             </div>
 
@@ -127,7 +93,7 @@ export default function AboutModal({ open, onClose }: Props) {
 
                 {/* Trait pills — firma, unica riga, larghezza immagine */}
                 <div className="mt-14 grid grid-cols-4 gap-2">
-                  {TRAITS.map((trait, i) => (
+                  {t.about.traits.map((trait, i) => (
                     <motion.span
                       key={trait}
                       className="font-mono text-[9px] tracking-[0.06em] uppercase py-[10px] px-1 flex items-center justify-center text-center leading-tight"
@@ -151,7 +117,7 @@ export default function AboutModal({ open, onClose }: Props) {
 
                 {/* Bio — paragrafi ben spaziati */}
                 <div className="flex flex-col gap-9">
-                  {BIO.map((para, i) => (
+                  {t.about.bio.map((para, i) => (
                     <motion.p
                       key={i}
                       className="text-[14px] leading-[1.9] text-white/45 font-light"
@@ -167,7 +133,7 @@ export default function AboutModal({ open, onClose }: Props) {
                 {/* Timeline narrativa */}
                 <div>
                   <p className="text-[9px] font-mono tracking-[0.28em] text-white/22 uppercase mb-10">
-                    Tappe del percorso
+                    {t.about.milestonesLabel}
                   </p>
                   <div className="relative">
                     <div
@@ -175,8 +141,8 @@ export default function AboutModal({ open, onClose }: Props) {
                       style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
                     />
                     <div className="flex flex-col gap-9">
-                      {TIMELINE.map((item, i) => {
-                        const isLast = i === TIMELINE.length - 1
+                      {t.about.timeline.map((item, i) => {
+                        const isLast = i === t.about.timeline.length - 1
                         return (
                           <motion.div
                             key={item.title}

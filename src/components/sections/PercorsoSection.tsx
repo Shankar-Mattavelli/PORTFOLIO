@@ -2,6 +2,7 @@ import { useRef, useMemo, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import type { MotionValue } from 'framer-motion'
 import { TIMELINE } from '@/constants/data'
+import { useTrans } from '@/context/LanguageContext'
 import type { TimelineItem } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
@@ -174,10 +175,10 @@ function TimelineCard({
 
 // ── Mobile fallback ───────────────────────────────────────────────────────
 
-function MobileTimeline() {
+function MobileTimeline({ items }: { items: TimelineItem[] }) {
   return (
     <div className="flex flex-col gap-0 pl-5 border-l border-white/[0.12]">
-      {TIMELINE.map((item, i) => (
+      {items.map((item, i) => (
         <motion.div
           key={item.id}
           className="relative pb-10"
@@ -220,15 +221,20 @@ function MobileTimeline() {
 // ── Main section ──────────────────────────────────────────────────────────
 
 export default function PercorsoSection() {
+  const tr = useTrans()
   const timelineRef = useRef<HTMLDivElement>(null)
 
-  // ['start X%', 'end X%'] con X uguale → range = altezza container (scroll 1:1)
+  // Merge dei dati strutturali con il testo tradotto
+  const timeline = TIMELINE.map(item => ({
+    ...item,
+    ...tr.percorso.timelineItems[item.id],
+  }))
+
   const { scrollYProgress } = useScroll({
     target: timelineRef,
     offset: ['start 70%', 'end 70%'],
   })
 
-  // Path completamente organico: control-point indipendenti per ogni segmento
   const pathD = useMemo(() => {
     const r = (n: number) => (Math.random() - 0.5) * n
     const segs: string[] = []
@@ -249,7 +255,7 @@ export default function PercorsoSection() {
 
       {/* Header */}
       <div className="max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 mb-16">
-        <SectionLabel label="Il mio percorso" />
+        <SectionLabel label={tr.percorso.sectionLabel} />
         <motion.h2
           className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
           style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
@@ -259,17 +265,17 @@ export default function PercorsoSection() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
         >
           <span className="text-[#f0ece0] block">
-            <TypedText text="Da zero" delay={0.3} />
+            <TypedText text={tr.percorso.h2[0]} delay={0.3} />
           </span>
           <span style={{ color: 'var(--color-accent)' }} className="block">
-            <TypedText text="all'obiettivo." delay={0.3 + 7 * 0.045 + 0.08} />
+            <TypedText text={tr.percorso.h2[1]} delay={0.3 + tr.percorso.h2[0].length * 0.045 + 0.08} />
           </span>
         </motion.h2>
       </div>
 
       {/* Mobile */}
       <div className="block lg:hidden max-w-[1440px] mx-auto px-5 sm:px-10">
-        <MobileTimeline />
+        <MobileTimeline items={timeline} />
       </div>
 
       {/* Desktop — visibile da lg (1024px) in su */}
@@ -322,7 +328,7 @@ export default function PercorsoSection() {
         </div>
 
         {/* Card alternanti */}
-        {TIMELINE.map((item, i) => (
+        {timeline.map((item, i) => (
           <TimelineCard
             key={item.id}
             item={item}
@@ -333,7 +339,7 @@ export default function PercorsoSection() {
         ))}
 
         {/* Label anni */}
-        {TIMELINE.map((item, i) => (
+        {timeline.map((item, i) => (
           <YearLabel
             key={`yr-${item.id}`}
             item={item}

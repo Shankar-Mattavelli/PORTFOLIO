@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { PERSONAL_INFO, STATS, HERO_BADGES } from '@/constants/data'
+import { useTrans } from '@/context/LanguageContext'
 import TypedText from '@/components/ui/TypedText'
 import AboutModal from '@/components/sections/AboutModal'
 
@@ -22,13 +23,6 @@ const BADGE_WANDER: Array<{ x: number[]; y: number[] }> = [
   { x: [0,-12,  9,-20,  5, 0],   y: [0,  -9,-15, -5,-11, 0]  }, // Unreal Engine
 ]
 
-const ROLES = [
-  'Interactive Developer',
-  'Studente di Ingegneria Informatica',
-  'Tecnico Multimediale',
-  'Formatore Sicurezza sul Lavoro',
-  'WebGL Enthusiast',
-]
 
 // Slot-machine effect: cicla numeri casuali (decelerando) poi atterra sul valore reale
 function ScrambleValue({ value, startDelay }: { value: string; startDelay: number }) {
@@ -65,14 +59,20 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
 }
 
 export default function HeroSection() {
-  const [roleIndex, setRoleIndex]   = useState(0)
-  const [aboutOpen, setAboutOpen]   = useState(false)
+  const tr = useTrans()
+  const roles = tr.hero.roles as readonly string[]
+  const [roleIndex, setRoleIndex]     = useState(0)
+  const [aboutOpen, setAboutOpen]     = useState(false)
   const [nameHovered, setNameHovered] = useState(false)
 
   useEffect(() => {
-    const t = setInterval(() => setRoleIndex(i => (i + 1) % ROLES.length), 2800)
-    return () => clearInterval(t)
-  }, [])
+    setRoleIndex(0)
+  }, [roles])
+
+  useEffect(() => {
+    const id = setInterval(() => setRoleIndex(i => (i + 1) % roles.length), 2800)
+    return () => clearInterval(id)
+  }, [roles.length])
 
   return (
     <section
@@ -158,7 +158,7 @@ export default function HeroSection() {
             onMouseEnter={() => setNameHovered(true)}
             onMouseLeave={() => setNameHovered(false)}
             role="button"
-            aria-label="Scopri chi sono"
+            aria-label={tr.hero.aboutAriaLabel}
             style={{ position: 'relative', zIndex: 6 }}
           >
             <motion.h1
@@ -186,7 +186,7 @@ export default function HeroSection() {
             <div className="mt-3 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <span className="block w-5 h-px" style={{ backgroundColor: 'var(--color-accent)' }} />
               <span className="font-mono text-[9px] tracking-[0.22em] uppercase" style={{ color: 'var(--color-accent)' }}>
-                Chi sono
+                {tr.hero.aboutHint}
               </span>
             </div>
           </div>
@@ -207,7 +207,7 @@ export default function HeroSection() {
                 exit={{ opacity: 0, y: -5 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
               >
-                {ROLES[roleIndex]}
+                {roles[roleIndex]}
               </motion.span>
             </AnimatePresence>
           </motion.p>
@@ -233,10 +233,10 @@ export default function HeroSection() {
             transition={{ duration: 0.7, delay: 1.0 }}
           >
             <p className="text-sm md:text-[15px] leading-relaxed text-white/40 font-light">
-              {PERSONAL_INFO.bio}
+              {tr.hero.bio}
             </p>
             <div className="inline-flex border border-white/[0.08] bg-white/[0.02] px-3 py-2 font-mono text-[11px] tracking-[0.1em] text-white/25 w-fit">
-              scroll per esplorare
+              {tr.hero.scrollHint}
             </div>
           </motion.div>
 
@@ -257,7 +257,7 @@ export default function HeroSection() {
                   <ScrambleValue value={stat.value} startDelay={350 + i * 100} />
                 </span>
                 <span className="mt-1.5 text-[9px] font-medium tracking-[0.22em] text-white/30 uppercase whitespace-nowrap">
-                  {stat.label}
+                  {tr.hero.stats[i]}
                 </span>
               </motion.div>
             ))}

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
 import type { ReactNode } from 'react'
-
-type Lang = 'it' | 'en'
+import { TRANSLATIONS } from '@/constants/translations'
+import type { Lang } from '@/constants/translations'
 
 interface LanguageContextValue {
   lang: Lang
@@ -25,4 +25,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
 export function useLang() {
   return useContext(LanguageContext)
+}
+
+export function useTrans() {
+  const { lang } = useContext(LanguageContext)
+  return TRANSLATIONS[lang]
 }

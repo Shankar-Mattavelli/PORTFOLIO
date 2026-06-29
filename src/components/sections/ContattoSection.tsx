@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PERSONAL_INFO } from '@/constants/data'
+import { useTrans } from '@/context/LanguageContext'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
 
@@ -92,6 +93,7 @@ const fieldBase =
   'w-full bg-transparent border-b py-3 text-[14px] text-[#f0ece0] placeholder:text-white/18 focus:outline-none transition-colors duration-250'
 
 function ContactForm() {
+  const t = useTrans()
   const [name, setName]           = useState('')
   const [email, setEmail]         = useState('')
   const [message, setMessage]     = useState('')
@@ -99,8 +101,8 @@ function ContactForm() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    const subject = encodeURIComponent(`Portfolio — messaggio da ${name}`)
-    const body    = encodeURIComponent(`Nome: ${name}\nEmail: ${email}\n\nMessaggio:\n${message}`)
+    const subject = encodeURIComponent(`Portfolio — ${t.contact.emailSubjectFrom} ${name}`)
+    const body    = encodeURIComponent(`${t.contact.emailBodyName}: ${name}\n${t.contact.emailBodyEmail}: ${email}\n\n${t.contact.emailBodyMessage}:\n${message}`)
     window.location.href = `mailto:${PERSONAL_INFO.email}?subject=${subject}&body=${body}`
     setSubmitted(true)
   }
@@ -126,9 +128,9 @@ function ContactForm() {
               <polyline points="20 6 9 17 4 12"/>
             </svg>
           </motion.div>
-          <p className="font-display font-black text-[20px] text-[#f0ece0] mb-2">Client email aperto</p>
+          <p className="font-display font-black text-[20px] text-[#f0ece0] mb-2">{t.contact.successTitle}</p>
           <p className="text-[12px] font-mono text-white/35 leading-relaxed">
-            Se non si aprisse, scrivimi direttamente:<br/>
+            {t.contact.successSub}<br/>
             <a href={`mailto:${PERSONAL_INFO.email}`} className="hover:underline" style={{ color: 'var(--color-accent)' }}>
               {PERSONAL_INFO.email}
             </a>
@@ -137,7 +139,7 @@ function ContactForm() {
             onClick={() => setSubmitted(false)}
             className="mt-8 text-[9px] font-mono tracking-[0.18em] text-white/25 hover:text-white/50 transition-colors duration-200 uppercase"
           >
-            ← Nuovo messaggio
+            {t.contact.newMessageBtn}
           </button>
         </motion.div>
       ) : (
@@ -150,8 +152,8 @@ function ContactForm() {
           transition={{ duration: 0.4 }}
         >
           {[
-            { id: 'name',    label: 'Nome',     type: 'text',  placeholder: 'Marco Rossi',        value: name,    setter: setName },
-            { id: 'email',   label: 'Email',    type: 'email', placeholder: 'marco@example.com',  value: email,   setter: setEmail },
+            { id: 'name',  label: t.contact.nameLabel,  type: 'text',  placeholder: t.contact.namePlaceholder, value: name,  setter: setName },
+            { id: 'email', label: t.contact.emailLabel,  type: 'email', placeholder: 'marco@example.com',       value: email, setter: setEmail },
           ].map(f => (
             <div key={f.id}>
               <label className="block text-[9px] font-mono tracking-[0.22em] text-white/28 uppercase mb-2">{f.label}</label>
@@ -166,10 +168,10 @@ function ContactForm() {
             </div>
           ))}
           <div>
-            <label className="block text-[9px] font-mono tracking-[0.22em] text-white/28 uppercase mb-2">Messaggio</label>
+            <label className="block text-[9px] font-mono tracking-[0.22em] text-white/28 uppercase mb-2">{t.contact.messageLabel}</label>
             <textarea
               className={`${fieldBase} resize-none border-white/[0.08] focus:border-[var(--color-accent)]`}
-              placeholder="Dimmi del progetto..."
+              placeholder={t.contact.messagePlaceholder}
               required
               rows={5}
               value={message}
@@ -184,7 +186,7 @@ function ContactForm() {
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.18 }}
           >
-            Invia Messaggio
+            {t.contact.submitBtn}
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -199,6 +201,7 @@ function ContactForm() {
 // ── Sezione principale ────────────────────────────────────────────────────
 
 export default function ContattoSection() {
+  const t    = useTrans()
   const year = new Date().getFullYear()
 
   return (
@@ -220,7 +223,7 @@ export default function ContattoSection() {
 
           {/* ── Colonna sinistra ── */}
           <div>
-            <SectionLabel label="Contatto" />
+            <SectionLabel label={t.contact.sectionLabel} />
 
             <motion.h2
               className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
@@ -231,13 +234,13 @@ export default function ContattoSection() {
               transition={{ duration: 0.8, ease, delay: 0.1 }}
             >
               <span className="text-[#f0ece0] block">
-                <TypedText text="Costruiamo" />
+                <TypedText text={t.contact.h2[0]} />
               </span>
               <span style={{ color: 'var(--color-accent)' }} className="block">
-                <TypedText text="qualcosa" delay={10 * 0.045 + 0.06} />
+                <TypedText text={t.contact.h2[1]} delay={t.contact.h2[0].length * 0.045 + 0.06} />
               </span>
               <span style={{ color: 'var(--color-accent)' }} className="block">
-                <TypedText text="insieme." delay={18 * 0.045 + 0.12} />
+                <TypedText text={t.contact.h2[2]} delay={(t.contact.h2[0].length + t.contact.h2[1].length) * 0.045 + 0.12} />
               </span>
             </motion.h2>
 
@@ -248,7 +251,7 @@ export default function ContattoSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.7, ease, delay: 0.4 }}
             >
-              {PERSONAL_INFO.contactBio}
+              {t.contact.bio}
             </motion.p>
 
             {/* Contact items — Email, Telefono, LinkedIn, GitHub */}
@@ -267,7 +270,7 @@ export default function ContattoSection() {
               />
               <ContactItem
                 icon={<IconPhone />}
-                label="Telefono"
+                label={t.contact.phoneLabel}
                 value={PERSONAL_INFO.phone}
                 href={`tel:${PERSONAL_INFO.phone.replace(/\s/g, '')}`}
               />
@@ -279,7 +282,7 @@ export default function ContattoSection() {
               />
               <ContactItem
                 icon={<IconGitHub />}
-                label="GitHub — progetti & codice"
+                label={t.contact.githubLabel}
                 value="github.com/shankar-mattavelli"
                 href="https://github.com/shankar-mattavelli"
               />
@@ -296,7 +299,7 @@ export default function ContattoSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease, delay: 0.6 }}
           >
-            Invia Messaggio
+            {t.contact.submitBtn}
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
             </svg>

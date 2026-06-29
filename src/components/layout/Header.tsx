@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { NAV_ITEMS, CURRENT_STATUS, STATUS_CONFIG } from '@/constants/data'
+import { CURRENT_STATUS, STATUS_CONFIG } from '@/constants/data'
+import { useTrans } from '@/context/LanguageContext'
 
 function scrollTo(href: string) {
   const id = href.replace('#', '')
@@ -8,8 +9,16 @@ function scrollTo(href: string) {
 }
 
 export default function Header() {
+  const t = useTrans()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const NAV_ITEMS = [
+    { label: t.nav.projects,       href: '#progetti'       },
+    { label: t.nav.percorso,       href: '#percorso'       },
+    { label: t.nav.certifications, href: '#certificazioni' },
+    { label: t.nav.contact,        href: '#contatto'       },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30)
@@ -111,7 +120,7 @@ export default function Header() {
                   className="text-[9px] font-mono tracking-[0.22em] uppercase"
                   style={{ color: STATUS_CONFIG[CURRENT_STATUS].color, opacity: 0.85 }}
                 >
-                  {STATUS_CONFIG[CURRENT_STATUS].label}
+                  {t.status[CURRENT_STATUS]}
                 </span>
               </div>
             </div>
@@ -167,7 +176,7 @@ export default function Header() {
               className="text-[10px] font-mono tracking-[0.2em] uppercase"
               style={{ color: STATUS_CONFIG[CURRENT_STATUS].color, opacity: 0.85 }}
             >
-              {STATUS_CONFIG[CURRENT_STATUS].label}
+              {t.status[CURRENT_STATUS]}
             </span>
           </div>
         </div>

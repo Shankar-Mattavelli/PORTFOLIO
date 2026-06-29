@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { PROJECTS } from '@/constants/data'
+import { useTrans } from '@/context/LanguageContext'
 import type { Project } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
@@ -85,6 +86,7 @@ function ProjectCard({
   onClick: () => void
   cardW: number
 }) {
+  const t = useTrans()
   const [hovered, setHovered] = useState(false)
 
   return (
@@ -149,7 +151,7 @@ function ProjectCard({
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 0.28, delay: 0.04 }}
                   >
-                    APRI ↗
+                    {t.projects.openBtn}
                   </motion.div>
                 </motion.div>
               )}
@@ -187,6 +189,7 @@ function ProjectCard({
 // ── Sezione ────────────────────────────────────────────────────────────────
 
 export default function ProjectsSection() {
+  const t = useTrans()
   const [active, setActive]         = useState(0)
   const [containerW, setContainerW] = useState(0)
   const wrapRef   = useRef<HTMLDivElement>(null)
@@ -230,7 +233,7 @@ export default function ProjectsSection() {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 mb-10">
         <div className="flex items-end justify-between gap-6">
           <div>
-            <SectionLabel label="Selected Work" />
+            <SectionLabel label={t.projects.sectionLabel} />
             <motion.h2
               className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
               style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
@@ -240,10 +243,10 @@ export default function ProjectsSection() {
               transition={{ duration: 0.8, ease, delay: 0.1 }}
             >
               <span className="text-[#f0ece0] block">
-                <TypedText text="Progetti" delay={0.2} />
+                <TypedText text={t.projects.h2[0]} delay={0.2} />
               </span>
               <span style={{ color: 'var(--color-accent)' }} className="block">
-                <TypedText text="selezionati." delay={0.2 + 8 * 0.045 + 0.06} />
+                <TypedText text={t.projects.h2[1]} delay={0.2 + t.projects.h2[0].length * 0.045 + 0.06} />
               </span>
             </motion.h2>
           </div>
@@ -253,7 +256,7 @@ export default function ProjectsSection() {
               <button
                 key={arrow}
                 onClick={idx === 0 ? prev : next}
-                aria-label={idx === 0 ? 'Precedente' : 'Successivo'}
+                aria-label={idx === 0 ? t.projects.prevLabel : t.projects.nextLabel}
                 className="w-11 h-11 border border-white/[0.12] flex items-center justify-center text-white/40 text-xl hover:text-white hover:border-white/30 transition-colors duration-200"
                 style={{ borderRadius: 4 }}
               >

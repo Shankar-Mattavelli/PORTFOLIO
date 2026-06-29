@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CERTIFICATIONS } from '@/constants/data'
+import { useTrans } from '@/context/LanguageContext'
 import type { Certification } from '@/types'
 import SectionLabel from '@/components/ui/SectionLabel'
 import TypedText from '@/components/ui/TypedText'
@@ -21,6 +22,7 @@ function BadgeIcon() {
 // ── Front face ─────────────────────────────────────────────────────────────
 
 function CardFront({ cert }: { cert: Certification }) {
+  const t = useTrans()
   return (
     <div
       className="group absolute inset-0 border border-white/[0.08] bg-white/[0.02] p-6 overflow-hidden flex flex-col"
@@ -57,7 +59,7 @@ function CardFront({ cert }: { cert: Certification }) {
           {cert.year}
         </span>
         <span className="text-[9px] font-mono tracking-[0.15em] text-white/0 group-hover:text-white/35 transition-colors duration-300">
-          GIRA ↻
+          {t.certifications.flipBtn}
         </span>
       </div>
     </div>
@@ -67,6 +69,7 @@ function CardFront({ cert }: { cert: Certification }) {
 // ── Back face — stile pergamena ────────────────────────────────────────────
 
 function CardBack({ cert, onOpenPdf }: { cert: Certification; onOpenPdf: () => void }) {
+  const t = useTrans()
   return (
     <div
       className="absolute inset-0 p-6 flex flex-col overflow-hidden"
@@ -87,18 +90,18 @@ function CardBack({ cert, onOpenPdf }: { cert: Certification; onOpenPdf: () => v
       </p>
       <div className="w-7 h-[1px] mb-3" style={{ background: 'rgba(124,91,223,0.28)' }} />
 
-      <p className="text-[9px] font-mono text-[#999] tracking-[0.1em] mb-1.5">Questo attesta che</p>
+      <p className="text-[9px] font-mono text-[#999] tracking-[0.1em] mb-1.5">{t.certifications.certifies}</p>
       <p className="font-display font-black text-[19px] text-[#0a0a0a] leading-none mb-2">
         Shankar Mattavelli
       </p>
-      <p className="text-[9px] font-mono text-[#666] mb-1.5">ha conseguito</p>
+      <p className="text-[9px] font-mono text-[#666] mb-1.5">{t.certifications.achieved}</p>
       <p className="font-display font-black text-[13px] leading-tight text-[#0a0a0a] flex-1">
-        {cert.title}
+        {t.certifications.titles[cert.id] ?? cert.title}
       </p>
 
       <div className="flex items-end justify-between mt-4">
         <div>
-          <p className="text-[7px] font-mono text-[#aaa] uppercase tracking-[0.2em] mb-0.5">Anno</p>
+          <p className="text-[7px] font-mono text-[#aaa] uppercase tracking-[0.2em] mb-0.5">{t.certifications.yearLabel}</p>
           <p className="font-display font-black text-[16px] text-[#0a0a0a]">{cert.year}</p>
         </div>
         {cert.documentUrl ? (
@@ -107,7 +110,7 @@ function CardBack({ cert, onOpenPdf }: { cert: Certification; onOpenPdf: () => v
             className="text-[8px] font-mono tracking-[0.15em] uppercase px-2.5 py-1.5 border"
             style={{ color: '#7c5bdf', borderColor: 'rgba(124,91,223,0.4)', borderRadius: 3 }}
           >
-            APRI PDF ↗
+            {t.certifications.openPdf}
           </button>
         ) : (
           <svg width="42" height="42" viewBox="0 0 64 64" aria-hidden="true">
@@ -119,7 +122,7 @@ function CardBack({ cert, onOpenPdf }: { cert: Certification; onOpenPdf: () => v
       </div>
 
       <p className="mt-2.5 text-[7px] font-mono text-[#ccc] tracking-[0.12em] text-center uppercase">
-        clicca per tornare
+        {t.certifications.backHint}
       </p>
     </div>
   )
@@ -128,6 +131,7 @@ function CardBack({ cert, onOpenPdf }: { cert: Certification; onOpenPdf: () => v
 // ── PDF Modal (usato solo quando documentUrl è presente) ───────────────────
 
 function PdfModal({ url, title, onClose }: { url: string; title: string; onClose: () => void }) {
+  const t = useTrans()
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
     window.addEventListener('keydown', onKey)
@@ -155,7 +159,7 @@ function PdfModal({ url, title, onClose }: { url: string; title: string; onClose
           onClick={onClose}
           className="absolute -top-9 right-0 font-mono text-[10px] tracking-[0.18em] text-white/35 hover:text-white/70 transition-colors duration-200"
         >
-          ESC · CHIUDI ✕
+          {t.certifications.closeModal}
         </button>
         <iframe src={`${url}#navpanes=0&view=Fit`} title={title} className="w-full" style={{ height: '82vh', borderRadius: 6, border: 'none' }} />
       </motion.div>
@@ -222,12 +226,13 @@ function CertCard({ cert, index }: { cert: Certification; index: number }) {
 // ── Sezione principale ─────────────────────────────────────────────────────
 
 export default function CertificazioniSection() {
+  const t = useTrans()
   return (
     <section
       id="certificazioni"
       className="w-full max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20"
     >
-      <SectionLabel label="Certificazioni" />
+      <SectionLabel label={t.certifications.sectionLabel} />
       <motion.h2
         className="font-display font-black leading-[1.0] tracking-[-0.02em] mt-5"
         style={{ fontSize: 'clamp(40px, 5.5vw, 80px)' }}
@@ -237,10 +242,10 @@ export default function CertificazioniSection() {
         transition={{ duration: 0.8, ease, delay: 0.1 }}
       >
         <span className="text-[#f0ece0] block">
-          <TypedText text="Competenze" delay={0.25} />
+          <TypedText text={t.certifications.h2[0]} delay={0.25} />
         </span>
         <span style={{ color: 'var(--color-accent)' }} className="block">
-          <TypedText text="certificate." delay={0.25 + 10 * 0.045 + 0.07} />
+          <TypedText text={t.certifications.h2[1]} delay={0.25 + t.certifications.h2[0].length * 0.045 + 0.07} />
         </span>
       </motion.h2>
 
@@ -251,7 +256,7 @@ export default function CertificazioniSection() {
         viewport={{ once: true }}
         transition={{ delay: 0.5 }}
       >
-        Clicca su una card per girare il documento
+        {t.certifications.flipHint}
       </motion.p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
