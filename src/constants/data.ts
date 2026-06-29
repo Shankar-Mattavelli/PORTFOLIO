@@ -232,11 +232,11 @@ export const TIMELINE: TimelineItem[] = [
 ]
 
 export const CERTIFICATIONS: Certification[] = [
-  { id: 'maturita', title: 'Diploma di Maturità Scientifica', issuer: 'Liceo Scientifico Antonio Banfi', year: '2020' },
-  { id: 'inglese', title: 'Certificato di Lingua Inglese', issuer: 'EAS Milan', year: '2021' },
-  { id: 'ied', title: 'Diploma Accademico', issuer: 'IED — Istituto Europeo di Design', year: '2023' },
+  { id: 'maturita', title: 'Diploma di Maturità Scientifica', issuer: 'Liceo Scientifico Antonio Banfi', year: '2020', documentUrl: '/certificates/Diploma%20Maturit%C3%A0-%20Shankar%20Mattavelli.pdf' },
+  { id: 'inglese', title: 'Certificato di Lingua Inglese', issuer: 'EAS Milan', year: '2021', documentUrl: '/certificates/certificato%20di%20Inglese.pdf' },
+  { id: 'ied', title: 'Diploma Accademico', issuer: 'IED — Istituto Europeo di Design', year: '2023', documentUrl: '/certificates/Diploma%20accademico%20-%20IED.pdf' },
   { id: 'formatore', title: 'Qualifica Formatore Sicurezza sul Lavoro', issuer: 'Digitech Center S.r.l.', year: '2024', documentUrl: '/certificates/ATTESTATO%20FORMATORE%20-%20SHANKAR%20MATTAVELLI.pdf' },
-  { id: 'elettronica', title: 'Attestato Corso Elettronica', issuer: 'Digitech Center S.r.l.', year: '2025' },
+  { id: 'elettronica', title: 'Attestato Corso Elettronica', issuer: 'Digitech Center S.r.l.', year: '2025', documentUrl: '/certificates/28.03.2024%20-%20ATTESTATO%20ELETTRONICA%20-%20SHANKAR%20MATTAVELLI.pdf' },
   { id: 'cybersecurity', title: 'Cyber Awareness — Sicurezza Digitale sul Lavoro', issuer: 'Digitech Center S.r.l.', year: '2025' },
 ]
 
