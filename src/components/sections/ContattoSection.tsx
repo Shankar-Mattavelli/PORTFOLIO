@@ -202,7 +202,7 @@ export default function ContattoSection() {
   return (
     <section
       id="contatto"
-      className="relative w-full h-full flex flex-col justify-center"
+      className="relative w-full"
     >
       {/* Glow viola centrale */}
       <div
@@ -214,7 +214,7 @@ export default function ContattoSection() {
       />
 
       {/* Contenuto */}
-      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-20 w-full">
+      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 pt-14 pb-12 lg:py-20 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
 
           {/* ── Colonna sinistra ── */}
@@ -285,9 +285,9 @@ export default function ContattoSection() {
             </motion.div>
           </div>
 
-          {/* ── Colonna destra (form) ── */}
+          {/* ── Colonna destra (form) — nascosta su mobile, visibile da lg ── */}
           <motion.div
-            className="lg:pt-[90px]"
+            className="hidden lg:block lg:pt-[90px]"
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
