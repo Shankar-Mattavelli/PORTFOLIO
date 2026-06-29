@@ -34,6 +34,7 @@ export interface Certification {
   issuer: string
   year: string
   documentUrl?: string
+  landscape?: boolean
 }
 
 export interface SocialLink {

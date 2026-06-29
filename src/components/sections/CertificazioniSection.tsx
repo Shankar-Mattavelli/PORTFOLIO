@@ -130,7 +130,7 @@ function CardBack({ cert, onOpenPdf }: { cert: Certification; onOpenPdf: () => v
 
 // ── PDF Modal (usato solo quando documentUrl è presente) ───────────────────
 
-function PdfModal({ url, title, onClose }: { url: string; title: string; onClose: () => void }) {
+function PdfModal({ url, title, landscape, onClose }: { url: string; title: string; landscape?: boolean; onClose: () => void }) {
   const t = useTrans()
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
@@ -148,7 +148,8 @@ function PdfModal({ url, title, onClose }: { url: string; title: string; onClose
       onClick={onClose}
     >
       <motion.div
-        className="relative w-full max-w-[680px]"
+        className="relative w-full"
+        style={{ maxWidth: landscape ? 1100 : 680 }}
         initial={{ scale: 0.92, y: 24, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
         exit={{ scale: 0.96, y: 12, opacity: 0 }}
@@ -161,7 +162,12 @@ function PdfModal({ url, title, onClose }: { url: string; title: string; onClose
         >
           {t.certifications.closeModal}
         </button>
-        <iframe src={`${url}#navpanes=0&view=Fit`} title={title} className="w-full" style={{ height: '82vh', borderRadius: 6, border: 'none' }} />
+        <iframe
+          src={`${url}#navpanes=0&view=Fit`}
+          title={title}
+          className="w-full"
+          style={{ height: landscape ? '70vh' : '82vh', borderRadius: 6, border: 'none' }}
+        />
       </motion.div>
     </motion.div>
   )
@@ -216,7 +222,7 @@ function CertCard({ cert, index }: { cert: Certification; index: number }) {
 
       <AnimatePresence>
         {pdfOpen && cert.documentUrl && (
-          <PdfModal url={cert.documentUrl} title={cert.title} onClose={() => setPdfOpen(false)} />
+          <PdfModal url={cert.documentUrl} title={cert.title} landscape={cert.landscape} onClose={() => setPdfOpen(false)} />
         )}
       </AnimatePresence>
     </>
