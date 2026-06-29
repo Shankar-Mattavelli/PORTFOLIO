@@ -227,7 +227,7 @@ export default function HeroSection() {
 
           {/* Bio + scroll hint */}
           <motion.div
-            className="flex flex-col gap-4 min-w-0 max-w-xs"
+            className="flex flex-col gap-7 min-w-0 max-w-xs"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 1.0 }}
