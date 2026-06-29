@@ -10,16 +10,17 @@ function SectionDivider() {
 
 export default function HomePage() {
   /*
-   * Stacking senza z-index espliciti: il DOM order determina chi sta sopra.
-   * Contatto è PRIMA nel DOM (absolute bottom) → sotto.
-   * Contenuto principale è DOPO nel DOM (position relative) → sopra.
-   * Nessun z-index = nessun stacking context = il modal e i suoi bottoni
-   * vivono nel root context e appaiono correttamente sopra all'header (z-50).
+   * Come funziona il reveal:
+   *   - outerWrapper height = mainContent (H) + paddingBottom (100vh)
+   *   - Contact è position:absolute bottom:0 height:100vh → vive nella padding area (H … H+100vh)
+   *   - mainContent ha bg #080808 solido e copre il contact fino a che non esce dal viewport
+   *   - Scrollando da (H-vh) a H il mainContent sale e il contact appare dal basso in sincronia
+   *   - Effetto: "foglio che si solleva e rivela la sezione sotto"
    */
   return (
-    <div style={{ position: 'relative', overflow: 'hidden' }}>
+    <div style={{ position: 'relative', overflow: 'hidden', paddingBottom: '100vh' }}>
 
-      {/* ── CONTATTO — absolute in fondo, dipinto per primo (sotto) ── */}
+      {/* ── CONTATTO — nella padding area, dipinto per primo (sotto) ── */}
       <div style={{
         position: 'absolute',
         bottom: 0, left: 0, right: 0,
@@ -28,7 +29,7 @@ export default function HomePage() {
         <ContattoSection />
       </div>
 
-      {/* ── PAGINA PRINCIPALE — dipinta per seconda (sopra), bg pieno ── */}
+      {/* ── PAGINA PRINCIPALE — bg solido, scorre sopra il contatto ── */}
       <div style={{ position: 'relative', backgroundColor: '#080808' }}>
 
         <HeroSection />
@@ -45,8 +46,8 @@ export default function HomePage() {
 
         <CertificazioniSection />
 
-        {/* Spacer: fornisce i 100vh di scroll per sollevare il foglio */}
-        <div style={{ height: '100vh' }} />
+        {/* Pausa visiva prima che inizi il reveal (bg solido = stesso sfondo) */}
+        <div style={{ height: '60vh' }} />
 
       </div>
     </div>
