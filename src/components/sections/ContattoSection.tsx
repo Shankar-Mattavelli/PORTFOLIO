@@ -285,6 +285,22 @@ export default function ContattoSection() {
             </motion.div>
           </div>
 
+          {/* ── CTA mobile — bottone mailto, solo su schermi < lg ── */}
+          <motion.a
+            href={`mailto:${PERSONAL_INFO.email}`}
+            className="lg:hidden mt-2 flex items-center justify-center gap-2.5 font-display font-black text-[13px] tracking-[0.08em] uppercase text-white py-4 w-full"
+            style={{ backgroundColor: 'var(--color-accent)', borderRadius: 6 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease, delay: 0.6 }}
+          >
+            Invia Messaggio
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </motion.a>
+
           {/* ── Colonna destra (form) — nascosta su mobile, visibile da lg ── */}
           <motion.div
             className="hidden lg:block lg:pt-[90px]"
