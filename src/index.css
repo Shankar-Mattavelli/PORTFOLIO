@@ -73,15 +73,30 @@
     color: var(--color-accent-bright);
   }
 
+  /* Firefox */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(124, 91, 223, 0.35) transparent;
+  }
+
+  /* Webkit — thumb sottile di default, si allarga all'hover */
   ::-webkit-scrollbar {
-    width: 3px;
+    width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: var(--color-bg);
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--color-accent);
-    border-radius: 2px;
+    background: rgba(124, 91, 223, 0.35);
+    border-radius: 10px;
+    border: 2px solid transparent;   /* gap 2px per lato → thumb visivo = 4px */
+    background-clip: padding-box;
+    transition: border-width 0.18s ease, background-color 0.18s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 91, 223, 0.7);
+    border-width: 0px;               /* gap rimosso → thumb visivo = 8px */
+    background-clip: padding-box;
   }
 }
 
