@@ -81,21 +81,23 @@
 
   /* Webkit — binario trasparente, thumb espande verso SINISTRA all'hover */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
-  ::-webkit-scrollbar-track {
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-track:hover {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: rgba(124, 91, 223, 0.4);
-    border-radius: 4px 0 0 4px;      /* arrotondato solo a sinistra */
-    border-right: 0;                  /* flush con il bordo destro della pagina */
-    border-left: 5px solid transparent; /* gap sinistro → thumb visivo = 3px */
+    border-radius: 4px 0 0 4px;
+    border-right: 0;
+    border-left: 3px solid transparent;  /* thumb visivo = 3px */
     background-clip: padding-box;
-    transition: border-left-width 0.2s ease, background-color 0.18s ease;
+    transition: border-left-width 0.2s ease;
   }
   ::-webkit-scrollbar-thumb:hover {
-    border-left-width: 1px;           /* gap ridotto → thumb espande a sinistra = 7px */
+    background: rgba(124, 91, 223, 0.4); /* stesso colore — nessun "accensione" */
+    border-left-width: 0;                /* thumb visivo = 6px, espande a sinistra */
     background-clip: padding-box;
   }
   ::-webkit-scrollbar-corner {
