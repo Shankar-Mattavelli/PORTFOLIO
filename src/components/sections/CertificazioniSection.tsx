@@ -157,7 +157,7 @@ function PdfModal({ url, title, onClose }: { url: string; title: string; onClose
         >
           ESC · CHIUDI ✕
         </button>
-        <iframe src={url} title={title} className="w-full" style={{ height: '78vh', borderRadius: 6, border: 'none' }} />
+        <iframe src={`${url}#navpanes=0&view=Fit`} title={title} className="w-full" style={{ height: '82vh', borderRadius: 6, border: 'none' }} />
       </motion.div>
     </motion.div>
   )
