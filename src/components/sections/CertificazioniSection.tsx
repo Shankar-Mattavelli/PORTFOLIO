@@ -165,9 +165,23 @@ function PdfModal({ url, title, onClose }: { url: string; title: string; onClose
 
 // ── Card flip wrapper ──────────────────────────────────────────────────────
 
+function isMobileDevice() {
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 1024
+}
+
 function CertCard({ cert, index }: { cert: Certification; index: number }) {
   const [flipped, setFlipped] = useState(false)
   const [pdfOpen, setPdfOpen] = useState(false)
+
+  function handleOpenPdf() {
+    if (!cert.documentUrl) return
+    // Su mobile Android/iOS, iframe non supporta PDF inline → apri direttamente in nuova scheda
+    if (isMobileDevice()) {
+      window.open(cert.documentUrl, '_blank', 'noopener,noreferrer')
+    } else {
+      setPdfOpen(true)
+    }
+  }
 
   return (
     <>
@@ -191,7 +205,7 @@ function CertCard({ cert, index }: { cert: Certification; index: number }) {
             transition={{ duration: 0.72, ease: flipEase }}
           >
             <CardFront cert={cert} />
-            <CardBack cert={cert} onOpenPdf={() => setPdfOpen(true)} />
+            <CardBack cert={cert} onOpenPdf={handleOpenPdf} />
           </motion.div>
         </div>
       </motion.div>
