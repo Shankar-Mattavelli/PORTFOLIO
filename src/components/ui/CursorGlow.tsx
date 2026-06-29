@@ -30,7 +30,7 @@ export default function CursorGlow() {
           'radial-gradient(circle, rgba(124,91,223,0.14) 0%, rgba(124,91,223,0.05) 45%, transparent 70%)',
         filter: 'blur(6px)',
         pointerEvents: 'none',
-        zIndex: 0,
+        zIndex: 9,
       }}
     />
   )
