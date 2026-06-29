@@ -1,5 +1,33 @@
 import type { Project, TimelineItem, Certification, SocialLink, Stat, HeroBadge } from '@/types'
 
+// ── Status dot ────────────────────────────────────────────────────────────
+// Cambia CURRENT_STATUS per aggiornare il dot nell'header.
+export type StatusType = 'disponibile' | 'occupato' | 'apprendistato'
+
+export const CURRENT_STATUS: StatusType = 'apprendistato'
+
+export const STATUS_CONFIG: Record<StatusType, {
+  color: string
+  label: string
+  pingDuration: number   // durata animazione ping (s)
+}> = {
+  disponibile: {
+    color: '#2dd4bf',       // teal — positivo, coerente col dark theme
+    label: 'Disponibile',
+    pingDuration: 1.4,
+  },
+  occupato: {
+    color: '#e879a0',       // fuchsia-pink — vivace, nell'orbita del viola accent
+    label: 'Impegnato in attività',
+    pingDuration: 1.0,
+  },
+  apprendistato: {
+    color: '#71717a',       // zinc-500 — neutro, pulsa molto lentamente
+    label: 'Apprendistato in corso',
+    pingDuration: 3.5,
+  },
+}
+
 export const PERSONAL_INFO = {
   name: 'Shankar Mattavelli',
   nameFirstLine: 'Shankar',
