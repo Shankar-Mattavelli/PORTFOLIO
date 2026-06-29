@@ -95,7 +95,6 @@
     transition: border-left-width 0.2s ease, background-color 0.18s ease;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 91, 223, 0.72);
     border-left-width: 1px;           /* gap ridotto → thumb espande a sinistra = 7px */
     background-clip: padding-box;
   }
