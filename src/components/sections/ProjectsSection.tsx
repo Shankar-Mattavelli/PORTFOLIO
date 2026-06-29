@@ -123,28 +123,26 @@ function ProjectCard({
                 padding: project.isIcon ? '18%' : undefined,
               }}
               animate={{
-                filter: project.isIcon
-                  ? (hovered ? 'grayscale(0) brightness(1)' : 'grayscale(1) brightness(0.9)')
-                  : (hovered && isActive
-                      ? 'grayscale(1) brightness(0.28) blur(3px)'
-                      : 'grayscale(1) brightness(0.68)'),
+                filter: hovered && isActive
+                  ? 'grayscale(0) brightness(1)'
+                  : 'grayscale(1) brightness(0.68)',
               }}
               transition={{ duration: 0.45 }}
               loading="lazy"
             />
 
-            {/* Overlay hover — solo sulla card attiva */}
+            {/* Badge APRI — solo sulla card attiva in hover */}
             <AnimatePresence>
               {hovered && isActive && (
                 <motion.div
-                  className="absolute inset-0 z-10 flex flex-col justify-between p-5"
+                  className="absolute inset-0 z-10 flex items-start justify-end p-4"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.22 }}
                 >
                   <motion.div
-                    className="self-end flex items-center gap-1.5 bg-[var(--color-accent)] px-3 py-1.5 text-[10px] font-mono tracking-[0.12em] text-white"
+                    className="flex items-center gap-1.5 bg-[var(--color-accent)] px-3 py-1.5 text-[10px] font-mono tracking-[0.12em] text-white"
                     style={{ borderRadius: 3 }}
                     initial={{ opacity: 0, y: -8, filter: 'blur(4px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
@@ -152,28 +150,6 @@ function ProjectCard({
                     transition={{ duration: 0.28, delay: 0.04 }}
                   >
                     APRI ↗
-                  </motion.div>
-
-                  <motion.div
-                    initial={{ opacity: 0, y: 10, filter: 'blur(6px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.32, delay: 0.06 }}
-                  >
-                    <p className="text-[13px] leading-relaxed text-white/85 mb-3">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.techTags.map(tag => (
-                        <span
-                          key={tag}
-                          className="border border-[var(--color-accent)]/60 text-[var(--color-accent)] text-[8px] tracking-[0.15em] px-2 py-[3px] font-mono uppercase"
-                          style={{ borderRadius: 2 }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
                   </motion.div>
                 </motion.div>
               )}
