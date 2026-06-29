@@ -199,13 +199,14 @@ function ContactForm() {
 // ── Sezione principale ────────────────────────────────────────────────────
 
 export default function ContattoSection() {
+  const year = new Date().getFullYear()
+
   return (
     <section
-      id="contatto"
-      className="relative w-full"
+      className="relative w-full h-full flex flex-col overflow-hidden"
       style={{ backgroundColor: '#0f0d28' }}
     >
-      {/* Glow viola — più leggibile sul nuovo sfondo */}
+      {/* Glow viola */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -213,8 +214,8 @@ export default function ContattoSection() {
         }}
       />
 
-      {/* Contenuto */}
-      <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 pt-14 pb-12 lg:py-20 w-full">
+      {/* Contenuto principale — cresce per riempire lo spazio */}
+      <div className="relative z-10 flex-1 max-w-[1440px] mx-auto px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 pt-10 pb-4 lg:pt-14 lg:pb-6 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.15fr] gap-16 lg:gap-24 items-start">
 
           {/* ── Colonna sinistra ── */}
@@ -313,6 +314,32 @@ export default function ContattoSection() {
           </motion.div>
 
         </div>
+      </div>
+
+      {/* ── Footer bar ── */}
+      <div
+        className="relative z-10 shrink-0 border-t px-5 sm:px-10 md:px-14 lg:px-20 xl:px-24 py-4 flex items-center justify-between gap-4"
+        style={{ borderColor: 'rgba(255,255,255,0.06)' }}
+      >
+        <div
+          style={{
+            width: 22,
+            height: 22,
+            backgroundColor: 'rgba(255,255,255,0.18)',
+            WebkitMaskImage: 'url(/logo.png)',
+            maskImage: 'url(/logo.png)',
+            WebkitMaskSize: 'contain',
+            maskSize: 'contain',
+            WebkitMaskRepeat: 'no-repeat',
+            maskRepeat: 'no-repeat',
+            WebkitMaskPosition: 'center',
+            maskPosition: 'center',
+            flexShrink: 0,
+          }}
+        />
+        <span className="font-mono text-[10px] tracking-[0.14em] text-white/15 text-right">
+          © {year} Shankar Mattavelli — All rights reserved
+        </span>
       </div>
     </section>
   )

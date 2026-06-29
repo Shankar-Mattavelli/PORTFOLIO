@@ -10,50 +10,35 @@ function SectionDivider() {
 
 export default function HomePage() {
   /*
-   * Come funziona il reveal:
-   *   - outerWrapper height = mainContent (H) + paddingBottom (100vh)
-   *   - Contact è position:absolute bottom:0 height:100vh → vive nella padding area (H … H+100vh)
-   *   - mainContent ha bg #080808 solido e copre il contact fino a che non esce dal viewport
-   *   - Scrollando da (H-vh) a H il mainContent sale e il contact appare dal basso in sincronia
-   *   - Effetto: "foglio che si solleva e rivela la sezione sotto"
+   * Reveal effect: contact è position:fixed al fondo del viewport.
+   * Il main content (bg solido #080808) scorre sopra di essa e la copre.
+   * Quando il main finisce, lo spacer trasparente (100vh) è l'unica cosa
+   * nel viewport → la contact fixed diventa visibile sotto.
+   * Risultato: la pagina "si solleva" rivelando la sezione sotto ferma.
    */
   return (
-    <div style={{ position: 'relative', overflow: 'hidden', paddingBottom: '100vh' }}>
-
-      {/* ── CONTATTO — nella padding area, dipinto per primo (sotto) ── */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0, left: 0, right: 0,
-        height: '100vh',
-      }}>
+    <>
+      {/* ── CONTATTO: veramente fissa al fondo del viewport ── */}
+      <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, height: '100vh' }}>
         <ContattoSection />
       </div>
 
-      {/* ── PAGINA PRINCIPALE — bg solido, scorre sopra il contatto ── */}
+      {/* ── MAIN CONTENT: bg solido copre la sezione fissa mentre è visibile ── */}
       <div style={{ position: 'relative', backgroundColor: '#080808' }}>
-
         <HeroSection />
-
         <SectionDivider />
-
         <ProjectsSection />
-
         <SectionDivider />
-
         <PercorsoSection />
-
         <SectionDivider />
-
         <CertificazioniSection />
-
-        {/* Pausa visiva + gradiente di transizione verso il viola del contatto */}
-        <div style={{ height: '55vh' }} />
-        <div style={{
-          height: '5vh',
-          background: 'linear-gradient(to bottom, #080808 0%, #0a0916 100%)',
-        }} />
-
+        {/* Gradiente sul bordo inferiore: anticipa visivamente la transizione */}
+        <div style={{ height: '4vh', background: 'linear-gradient(to bottom, #080808 0%, #0a0916 100%)' }} />
       </div>
-    </div>
+
+      {/* ── SPACER trasparente: la contact fixed è visibile attraverso ──
+          id="contatto" qui per far funzionare il nav link */}
+      <div id="contatto" style={{ height: '100vh' }} />
+    </>
   )
 }
