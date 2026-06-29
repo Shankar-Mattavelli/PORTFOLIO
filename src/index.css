@@ -47,6 +47,7 @@
   }
 
   html {
+    scroll-behavior: smooth;
     overflow-x: clip;
   }
 
@@ -72,13 +73,6 @@
     color: var(--color-accent-bright);
   }
 
-  /* Scrollbar nativo nascosto — sostituito da CustomScrollbar (React) */
-  html {
-    scrollbar-width: none;
-  }
-  ::-webkit-scrollbar {
-    display: none;
-  }
 }
 
 /* Animazione cursore lampeggiante */
