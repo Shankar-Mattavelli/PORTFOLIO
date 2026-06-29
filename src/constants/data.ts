@@ -34,7 +34,7 @@ export const PERSONAL_INFO = {
   nameSecondLine: 'Mattavelli',
   role: 'Frontend Developer',
   location: 'Milano, Italia',
-  bio: 'Ogni nuovo progetto rappresenta un\'opportunità per crescere. Mi piace sperimentare, adattarmi a contesti diversi e migliorare costantemente le mie competenze.',
+  bio: "Ogni nuovo progetto è un'opportunità per crescere. Mi piace sperimentare, adattarmi a nuovi contesti e migliorare continuamente.",
   email: 'shankar.mattavelli@gmail.com',
   phone: '+39 334 925 0900',
   linkedin: 'https://www.linkedin.com/in/shankar-mattavelli',
@@ -235,7 +235,7 @@ export const CERTIFICATIONS: Certification[] = [
   { id: 'maturita', title: 'Diploma di Maturità Scientifica', issuer: 'Liceo Scientifico Antonio Banfi', year: '2020' },
   { id: 'inglese', title: 'Certificato di Lingua Inglese', issuer: 'EAS Milan', year: '2021' },
   { id: 'ied', title: 'Diploma Accademico', issuer: 'IED — Istituto Europeo di Design', year: '2023' },
-  { id: 'formatore', title: 'Qualifica Formatore Sicurezza sul Lavoro', issuer: 'Digitech Center S.r.l.', year: '2024' },
+  { id: 'formatore', title: 'Qualifica Formatore Sicurezza sul Lavoro', issuer: 'Digitech Center S.r.l.', year: '2024', documentUrl: '/certificates/ATTESTATO%20FORMATORE%20-%20SHANKAR%20MATTAVELLI.pdf' },
   { id: 'elettronica', title: 'Attestato Corso Elettronica', issuer: 'Digitech Center S.r.l.', year: '2025' },
   { id: 'cybersecurity', title: 'Cyber Awareness — Sicurezza Digitale sul Lavoro', issuer: 'Digitech Center S.r.l.', year: '2025' },
 ]

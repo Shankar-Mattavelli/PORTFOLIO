@@ -23,8 +23,8 @@ const BADGE_WANDER: Array<{ x: number[]; y: number[] }> = [
 ]
 
 const ROLES = [
-  'Studente di Ingegneria Informatica',
   'Interactive Developer',
+  'Studente di Ingegneria Informatica',
   'Tecnico Multimediale',
   'Formatore Sicurezza sul Lavoro',
   'WebGL Enthusiast',
@@ -67,6 +67,7 @@ function ScrambleValue({ value, startDelay }: { value: string; startDelay: numbe
 export default function HeroSection() {
   const [roleIndex, setRoleIndex]   = useState(0)
   const [aboutOpen, setAboutOpen]   = useState(false)
+  const [nameHovered, setNameHovered] = useState(false)
 
   useEffect(() => {
     const t = setInterval(() => setRoleIndex(i => (i + 1) % ROLES.length), 2800)
@@ -78,6 +79,20 @@ export default function HeroSection() {
       className="relative w-full min-h-svh flex flex-col overflow-hidden"
       aria-label="Hero"
     >
+      {/* Blur overlay — appare quando si passa sopra il nome */}
+      <AnimatePresence>
+        {nameHovered && (
+          <motion.div
+            aria-hidden="true"
+            className="fixed inset-0 pointer-events-none"
+            style={{ backdropFilter: 'blur(3px)', backgroundColor: 'rgba(8,8,8,0.45)', zIndex: 5 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+          />
+        )}
+      </AnimatePresence>
       {/* Spacer per header fisso */}
       <div className="h-[68px] shrink-0" />
 
@@ -140,8 +155,11 @@ export default function HeroSection() {
           <div
             className="group cursor-pointer select-none w-fit"
             onClick={() => setAboutOpen(true)}
+            onMouseEnter={() => setNameHovered(true)}
+            onMouseLeave={() => setNameHovered(false)}
             role="button"
             aria-label="Scopri chi sono"
+            style={{ position: 'relative', zIndex: 6 }}
           >
             <motion.h1
               className="font-display font-black leading-[0.88] tracking-[-0.02em] text-[#f0ece0] min-w-0 transition-opacity duration-300 group-hover:opacity-75"
