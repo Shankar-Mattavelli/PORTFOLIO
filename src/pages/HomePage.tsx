@@ -9,16 +9,27 @@ function SectionDivider() {
 }
 
 export default function HomePage() {
+  /*
+   * Stacking senza z-index espliciti: il DOM order determina chi sta sopra.
+   * Contatto è PRIMA nel DOM (absolute bottom) → sotto.
+   * Contenuto principale è DOPO nel DOM (position relative) → sopra.
+   * Nessun z-index = nessun stacking context = il modal e i suoi bottoni
+   * vivono nel root context e appaiono correttamente sopra all'header (z-50).
+   */
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative', overflow: 'hidden' }}>
 
-      {/* ── CONTATTO — fissa dietro, layer 1 ── */}
-      <div style={{ position: 'fixed', inset: 0, zIndex: 1 }}>
+      {/* ── CONTATTO — absolute in fondo, dipinto per primo (sotto) ── */}
+      <div style={{
+        position: 'absolute',
+        bottom: 0, left: 0, right: 0,
+        height: '100vh',
+      }}>
         <ContattoSection />
       </div>
 
-      {/* ── PAGINA PRINCIPALE — scorre sopra, layer 2 ── */}
-      <div style={{ position: 'relative', zIndex: 2, backgroundColor: '#080808' }}>
+      {/* ── PAGINA PRINCIPALE — dipinta per seconda (sopra), bg pieno ── */}
+      <div style={{ position: 'relative', backgroundColor: '#080808' }}>
 
         <HeroSection />
 
@@ -34,7 +45,7 @@ export default function HomePage() {
 
         <CertificazioniSection />
 
-        {/* Spacer: permette di scrollare fino a esporre completamente il contatto */}
+        {/* Spacer: fornisce i 100vh di scroll per sollevare il foglio */}
         <div style={{ height: '100vh' }} />
 
       </div>
