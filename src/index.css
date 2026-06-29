@@ -73,35 +73,12 @@
     color: var(--color-accent-bright);
   }
 
-  /* Firefox */
+  /* Scrollbar nativo nascosto — sostituito da CustomScrollbar (React) */
   html {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(124, 91, 223, 0.4) transparent;
+    scrollbar-width: none;
   }
-
-  /* Webkit — binario trasparente, thumb espande verso SINISTRA all'hover */
   ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track,
-  ::-webkit-scrollbar-track:hover {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: rgba(124, 91, 223, 0.4);
-    border-radius: 4px 0 0 4px;
-    border-right: 0;
-    border-left: 3px solid transparent;  /* thumb visivo = 3px */
-    background-clip: padding-box;
-    transition: border-left-width 0.2s ease;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 91, 223, 0.4); /* stesso colore — nessun "accensione" */
-    border-left-width: 0;                /* thumb visivo = 6px, espande a sinistra */
-    background-clip: padding-box;
-  }
-  ::-webkit-scrollbar-corner {
-    background: transparent;
+    display: none;
   }
 }
 
