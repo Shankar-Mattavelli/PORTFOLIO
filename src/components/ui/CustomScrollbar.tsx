@@ -12,21 +12,38 @@ export default function CustomScrollbar() {
   const updateThumb = useCallback(() => {
     const scrollY = window.scrollY
     const viewH   = window.innerHeight
-    const totalH  = document.documentElement.scrollHeight
-    const h       = Math.max((viewH / totalH) * viewH, 36)
+    // Usa il valore massimo tra le varie proprietà per robustezza
+    const totalH  = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight,
+      document.documentElement.offsetHeight,
+    )
+    if (totalH <= viewH) return
+
+    const h         = Math.max((viewH / totalH) * viewH, 40)
     const maxScroll = totalH - viewH
-    const top     = maxScroll > 0 ? (scrollY / maxScroll) * (viewH - h) : 0
+    const top       = (scrollY / maxScroll) * (viewH - h)
+
     setThumbHeight(h)
-    setThumbTop(top)
+    setThumbTop(Math.max(0, top))
   }, [])
 
   useEffect(() => {
+    // rAF garantisce che il DOM sia completamente dipinto prima della misura
+    const raf = requestAnimationFrame(updateThumb)
+
     window.addEventListener('scroll', updateThumb, { passive: true })
     window.addEventListener('resize', updateThumb)
-    updateThumb()
+
+    // ResizeObserver: aggiorna se l'altezza del contenuto cambia dopo il mount
+    const ro = new ResizeObserver(updateThumb)
+    ro.observe(document.body)
+
     return () => {
+      cancelAnimationFrame(raf)
       window.removeEventListener('scroll', updateThumb)
       window.removeEventListener('resize', updateThumb)
+      ro.disconnect()
     }
   }, [updateThumb])
 
@@ -36,7 +53,7 @@ export default function CustomScrollbar() {
     const onMove = (e: MouseEvent) => {
       const dy          = e.clientY - dragStartY.current
       const viewH       = window.innerHeight
-      const totalH      = document.documentElement.scrollHeight
+      const totalH      = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight)
       const trackRange  = viewH - thumbHeight
       const scrollRange = totalH - viewH
       window.scrollTo(0, dragStartScroll.current + (dy / trackRange) * scrollRange)
@@ -61,7 +78,7 @@ export default function CustomScrollbar() {
     <div
       style={{ position: 'fixed', top: 0, right: 0, height: '100%', width: 12, zIndex: 49 }}
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => !dragging && setHovered(false)}
+      onMouseLeave={() => { if (!dragging) setHovered(false) }}
     >
       <motion.div
         onMouseDown={onMouseDown}
