@@ -165,13 +165,13 @@ export const TRANSLATIONS = {
     },
     percorso: {
       sectionLabel:  'My Journey',
-      h2:            ['From zero', 'to the goal.'],
+      h2:            ['From scratch', 'to the top.'],
       timelineItems: {
         decathlon:     { role: 'Warehouse Operator',                    location: 'Basiano (MI)',          description: 'Fixed-term call contract. Warehouse management, goods receiving and sorting, picking and shelf restocking in a high-volume logistics environment.' },
         lambdacorp:    { role: 'Unreal Engine Developer',               location: 'Remote',                description: 'Gameplay development in Unreal Engine 5 within an indie team. Designed Blueprint systems, cinematics and optimised real-time 3D environments on a collaborative Git pipeline.' },
         babalu:        { role: 'Video Operator & Trade Show Stand',     location: 'Milan · Turin · Rome',  description: 'Freelance. Video editing and post-production, motion graphics and technical management of trade show stands on a national scale. DaVinci Resolve, After Effects and professional recording equipment.' },
         'leroy-merlin':{ role: 'Supply Chain Associate',                location: 'Busnago (MB)',          description: 'Part-time. Management of internal goods flow, supply receiving and support to the store supply chain in a large-scale retail context.' },
-        'digitech-tech':{ role: 'Technical & Multimedia Manager',      location: 'Vimercate (MB)',        description: 'Management of technical infrastructure and production of corporate multimedia content: videos, graphics, presentations and digital materials for professional courses and communications.' },
+        'digitech-tech':{ role: 'Tech & Multimedia Lead',               location: 'Vimercate (MB)',        description: 'Management of technical infrastructure and production of corporate multimedia content: videos, graphics, presentations and digital materials for professional courses and communications.' },
         'digitech-form':{ role: '+ Workplace Safety Trainer',          location: 'Vimercate (MB)',        description: 'Additional role alongside the ongoing technical position. Teaching mandatory workplace safety courses (Legislative Decree 81/08): classroom management, preparation of educational materials and participant documentation.' },
       } as Record<string, { role: string; location: string; description: string }>,
     },

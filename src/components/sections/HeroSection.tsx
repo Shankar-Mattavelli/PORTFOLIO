@@ -235,7 +235,7 @@ export default function HeroSection() {
             <p className="text-sm md:text-[15px] leading-relaxed text-white/40 font-light">
               {tr.hero.bio}
             </p>
-            <div className="inline-flex border border-white/[0.08] bg-white/[0.02] px-3 py-2 font-mono text-[11px] tracking-[0.1em] text-white/25 w-fit">
+            <div className="inline-flex font-mono text-[11px] tracking-[0.1em] text-white/25 w-fit">
               {tr.hero.scrollHint}
             </div>
           </motion.div>
