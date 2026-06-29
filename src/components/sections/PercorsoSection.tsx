@@ -39,12 +39,23 @@ function TimelineNode({
   const opacity = useTransform(progress, [t - 0.02, t + 0.05], [0, 1])
   const scale   = useTransform(progress, [t - 0.02, t + 0.05], [0.2, 1])
   const [burst, setBurst] = useState(false)
+  const prevOpacity = useRef(0)
 
+  // Scatta solo quando l'opacity AUMENTA oltre la soglia (scroll verso il basso)
   useEffect(() => {
     return opacity.on('change', v => {
-      if (v > 0.6) setBurst(true)
+      const prev = prevOpacity.current
+      prevOpacity.current = v
+      if (v > 0.6 && prev <= 0.6) setBurst(true)
     })
   }, [opacity])
+
+  // Auto-reset dopo il completamento dell'animazione più lunga (1.5s + buffer)
+  useEffect(() => {
+    if (!burst) return
+    const id = setTimeout(() => setBurst(false), 2200)
+    return () => clearTimeout(id)
+  }, [burst])
 
   return (
     <motion.g style={{ opacity, scale, transformOrigin: `${cx}px ${cy}px` }}>
